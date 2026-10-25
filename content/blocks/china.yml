@@ -1,0 +1,12 @@
+title: China
+type: selected
+heading: China Special
+introduction: Our series about a monk called Tripitaka.
+collection: ''
+category: ''
+tags: []
+tagMatch: any
+limit: 4
+items:
+  - type: podcasts
+    slug: journey-to-the-west

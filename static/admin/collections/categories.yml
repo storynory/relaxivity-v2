@@ -1,0 +1,54 @@
+
+collections:
+  - name: categories
+    label: Categories
+    label_singular: Category
+    folder: content/categories
+    create: true
+    extension: yml
+    format: yaml
+    slug: "{{slug}}"
+    identifier_field: title
+
+    fields:
+      - name: title
+        label: Category Name
+        widget: string
+        required: true
+
+      - name: description
+        label: Description
+        widget: text
+        required: false
+
+      - name: image
+        label: Category Image
+        widget: image
+        required: false
+
+      - name: parent
+        label: Parent Category
+        widget: relation
+        collection: categories
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        required: false
+        hint: Optional parent for hierarchical categories.
+
+      - name: seo
+        label: SEO
+        widget: object
+        collapsed: true
+        required: false
+        fields:
+          - name: title
+            label: SEO Title
+            widget: string
+            required: false
+
+          - name: description
+            label: Meta Description
+            widget: text
+            required: false
+

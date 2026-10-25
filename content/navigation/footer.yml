@@ -1,0 +1,6 @@
+title: Footer
+items:
+  - label: spotifiy
+    url: https://spotify.com
+    newTab: false
+    children: []

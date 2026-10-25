@@ -1,0 +1,31 @@
+siteName: Relaxivity
+tagline: Luxury Audio Stories
+siteUrl: https://relaxivity.app
+description: Treat yourself to gorgeous audio fantasies including classical and modern myths, legends and stories.  Think of  Relaxivity as fairytales for grown-up you.
+siteLogo: /uploads/relaxivity3.jpg
+favicon: ''
+defaultImage: /uploads/relaxivity3.jpg
+language: en-GB
+homePage: home
+activeScheme: warm-ivory-forest-green
+activeTypography: lora
+social: null
+footer: null
+rss:
+  enabled: true
+  limit: 20
+  content: summary
+sitemap:
+  enabled: true
+podcastFeed:
+  enabled: true
+  limit: 20
+  title: ''
+  description: ''
+  author: ''
+  image: ''
+  ownerName: ''
+  ownerEmail: ''
+  type: episodic
+  category: ''
+  explicit: false

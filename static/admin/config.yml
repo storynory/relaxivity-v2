@@ -1,0 +1,8 @@
+backend:
+  name: github
+  repo: storynory/relaxivity-v2
+  branch: main
+  base_url: https://sveltia-cms-auth.hugh-6ba.workers.dev
+
+media_folder: static/uploads
+public_folder: /uploads

@@ -1,0 +1,65 @@
+
+collections:
+  - name: navigation
+    label: Navigation
+    label_singular: Menu
+    icon: menu
+    folder: content/navigation
+    create: true
+    extension: yml
+    format: yaml
+    slug: "{{slug}}"
+
+    identifier_field: title
+    summary: "{{title}}"
+
+    fields:
+      - name: title
+        label: Menu Name
+        widget: string
+        required: true
+        hint: For example Main, Footer or Sidebar
+
+      - name: items
+        label: Menu Items
+        widget: list
+        required: false
+        collapsed: true
+        summary: "{{fields.label}}"
+
+        fields:
+          - name: label
+            label: Link Text
+            widget: string
+
+          - name: url
+            label: URL
+            widget: string
+            required: false
+
+          - name: newTab
+            label: Open in New Tab
+            widget: boolean
+            default: false
+
+          - name: children
+            label: Dropdown Links
+            widget: list
+            required: false
+            collapsed: true
+            summary: "{{fields.label}}"
+
+            fields:
+              - name: label
+                label: Link Text
+                widget: string
+
+              - name: url
+                label: URL
+                widget: string
+
+              - name: newTab
+                label: Open in New Tab
+                widget: boolean
+                default: false
+

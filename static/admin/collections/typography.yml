@@ -1,0 +1,51 @@
+collections:
+  - name: typography
+    label: Typography Presets
+    label_singular: Typography Preset
+    folder: content/typography
+    create: true
+    slug: "{{slug}}"
+    extension: yml
+    format: yaml
+
+    fields:
+      - name: title
+        label: Preset Name
+        widget: string
+        required: true
+
+      - name: bodyFont
+        label: Body Font Stack
+        widget: string
+        default: "system-ui, -apple-system, 'Segoe UI', sans-serif"
+        hint: "CSS font-family stack. Use system fonts or fonts loaded by your site."
+
+      - name: headingFont
+        label: Heading Font Stack
+        widget: string
+        default: "system-ui, -apple-system, 'Segoe UI', sans-serif"
+        hint: "Use a separate stack for headings; custom fonts must be loaded by the site."
+
+      - name: fontSize
+        label: Base Font Size (px)
+        widget: number
+        value_type: int
+        min: 12
+        max: 28
+        default: 17
+
+      - name: fontScale
+        label: Heading Scale
+        widget: number
+        value_type: float
+        min: 1
+        max: 1.6
+        default: 1.2
+
+      - name: lineHeight
+        label: Body Line Height
+        widget: number
+        value_type: float
+        min: 1
+        max: 2.2
+        default: 1.6

@@ -1,0 +1,22 @@
+title: Main Menu
+items:
+  - label: Home
+    url: /
+    newTab: false
+    children: []
+  - label: About
+    url: /pages/about/
+    newTab: false
+    children: []
+  - label: Contact
+    url: /contact/
+    newTab: false
+    children: []
+  - label: Podcasts
+    url: /podcasts/
+    newTab: false
+    children: []
+  - label: Search
+    url: /search/
+    newTab: false
+    children: []

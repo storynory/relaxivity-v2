@@ -1,0 +1,189 @@
+collections:
+  - name: podcasts
+    label: Podcasts
+    label_singular: Episode
+    public_route: true
+    rss: podcast
+    template: podcast
+    list_template: episodes
+    folder: content/podcasts
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} — {{date}}"
+    sortable_fields: [title, date, episodeNumber]
+    view_filters:
+      - label: Drafts
+        field: draft
+        pattern: true
+
+    fields:
+      - name: title
+        label: Episode Title
+        widget: string
+        required: true
+
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: true
+
+      - name: body
+        label: Full Transcript / Show Notes
+        widget: richtext
+        required: false
+        hint: Long-form content displayed on the episode page. A full transcript makes the episode searchable.
+
+      - name: excerpt
+        label: Excerpt
+        widget: text
+        required: false
+        hint: A short introduction for episode listings and previews.
+
+      - name: description
+        label: Podcast Feed Description
+        widget: text
+        required: false
+        hint: Concise episode summary sent to podcast apps and also displayed on the episode page. Do not paste the full transcript here.
+
+      - name: date
+        label: Publication Date
+        widget: datetime
+        required: true
+
+      - name: episodeNumber
+        label: Episode Number
+        widget: number
+        required: false
+        value_type: int
+        min: 1
+
+      - name: seasonNumber
+        label: Season Number
+        widget: number
+        required: false
+        value_type: int
+        min: 1
+
+      - name: audio
+        label: Audio URL
+        widget: string
+        required: false
+        hint: Public HTTPS URL of the MP3 file (for example, hosted on Libsyn). Used by the player and RSS enclosure.
+
+      - name: bitrate
+        label: MP3 bitrate (kbps)
+        widget: number
+        value_type: int
+        min: 1
+        default: 128
+        required: false
+        hint: Defaults to 128 kbps. Change this to the exported average bitrate when estimating the audio file size; variable-bitrate MP3s may differ.
+
+      - name: length
+        label: Audio File Length (bytes)
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        hint: Exact size in bytes where available; otherwise an estimate using duration and bitrate. May be corrected manually.
+
+      - name: duration
+        label: Running Time
+        widget: string
+        required: false
+        hint: Use HH:MM:SS or MM:SS, such as 00:12:35.
+
+      - name: author
+        label: Writer
+        widget: relation
+        collection: people
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+
+      - name: narrator
+        label: Narrator
+        widget: relation
+        collection: people
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+
+      - name: presenter
+        label: Presenter
+        widget: relation
+        collection: people
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+
+      - name: producer
+        label: Producer
+        widget: relation
+        collection: people
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+
+      - name: featuredImage
+        label: Cover Art
+        widget: image
+        required: false
+
+      - name: featuredImageAlt
+        label: Cover Art Alt Text
+        widget: string
+        required: false
+
+      - name: category
+        label: Category
+        widget: relation
+        collection: categories
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        required: false
+
+      - name: tags
+        label: Tags
+        widget: relation
+        collection: tags
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        multiple: true
+        required: false
+
+      - name: showOnHome
+        label: Show on Homepage
+        widget: boolean
+        required: false
+        default: true
+
+      - name: featured
+        label: Featured Episode
+        widget: boolean
+        required: false
+        default: false
+
+      - name: seo
+        label: SEO
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - name: title
+            label: SEO Title
+            widget: string
+            required: false
+          - name: description
+            label: Meta Description
+            widget: text
+            required: false

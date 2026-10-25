@@ -1,0 +1,42 @@
+
+collections:
+  - name: people
+    label: People
+    label_singular: Person
+    folder: content/people
+    create: true
+    extension: yml
+    format: yaml
+    slug: "{{slug}}"
+    identifier_field: name
+    public_route: true
+
+    fields:
+      - name: name
+        label: Full Name
+        widget: string
+        required: true
+
+      - name: roles
+        label: Roles
+        widget: select
+        multiple: true
+        required: false
+        options: [Author, Narrator, Presenter, Producer, Editor, Illustrator, Composer, Other]
+        hint: A person can have more than one role.
+
+      - name: bio
+        label: Biography
+        widget: text
+        required: false
+
+      - name: photo
+        label: Photo
+        widget: image
+        required: false
+
+      - name: website
+        label: Website
+        widget: string
+        required: false
+

@@ -1,0 +1,42 @@
+
+collections:
+  - name: "colour-schemes"
+    label: "Colour Schemes"
+    label_singular: "Colour Scheme"
+    folder: "content/colour-schemes"
+    create: true
+    slug: "{{slug}}"
+    extension: "yml"
+    format: "yaml"
+
+    fields:
+      - name: "title"
+        label: "Scheme Name"
+        widget: "string"
+        required: true
+
+      - name: "prime"
+        label: "Primary Colour"
+        widget: "color"
+        default: "#e3d2b7"
+
+      - name: "accent"
+        label: "Accent Colour"
+        widget: "color"
+        default: "#00634e"
+
+      - name: "second"
+        label: "Secondary Colour"
+        widget: "color"
+        default: "#f4e8d7"
+
+      - name: "gray"
+        label: "Neutral Colour"
+        widget: "color"
+        default: "#f8f9fa"
+
+      - name: "text"
+        label: "Text Colour"
+        widget: "color"
+        default: "#333333"
+

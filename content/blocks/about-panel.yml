@@ -1,0 +1,15 @@
+title: About Panel
+type: panel
+heading: Built for simple publishing
+introduction: A lightweight website with content you can edit in Sveltia and deploy via github.
+image: /uploads/icarus-1946.webp
+imageAlt: ''
+imagePosition: right
+buttonText: More about Starter
+buttonUrl: /pages/about/
+collection: ''
+category: ''
+tags: []
+tagMatch: any
+limit: 4
+items: []

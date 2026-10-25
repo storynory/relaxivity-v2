@@ -1,0 +1,15 @@
+title: Latest Podcasts
+type: latest
+heading: Latest Podcasts
+introduction: Discover our newest podcasts
+image: /uploads/dragon-horse.png
+imageAlt: dragon fights monkey
+imagePosition: right
+buttonText: Podcasts
+buttonUrl: /podcasts/
+collection: podcasts
+category: ''
+tags: []
+tagMatch: any
+limit: 3
+items: []

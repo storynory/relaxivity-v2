@@ -1,0 +1,136 @@
+
+collections:
+  - name: posts
+    label: Posts
+    label_singular: Post
+    public_route: true
+    rss: standard
+    template: post
+    folder: content/posts
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    identifier_field: title
+
+    summary: "{{title}} — {{date}}"
+
+    sortable_fields:
+      - title
+      - date
+      - author
+
+    view_filters:
+      - label: Drafts
+        field: draft
+        pattern: true
+
+    fields:
+      # WRITING
+
+      - name: title
+        label: Title
+        widget: string
+        required: true
+
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: true
+
+      - name: body
+        label: Content
+        widget: richtext
+
+      - name: excerpt
+        label: Excerpt
+        widget: text
+        required: false
+        hint: Short summary for listings and previews.
+
+      # PUBLICATION
+
+      - name: date
+        label: Publication Date
+        widget: datetime
+        required: true
+
+
+      - name: author
+        label: Author
+        widget: relation
+        collection: people
+        value_field: "{{slug}}"
+        search_fields: [name]
+        display_fields: [name]
+        required: false
+
+      # TAXONOMY
+
+      - name: category
+        label: Category
+        widget: relation
+        collection: categories
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        multiple: false
+        required: false
+
+      - name: tags
+        label: Tags
+        widget: relation
+        collection: tags
+        multiple: true
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        required: false
+
+      # HOMEPAGE DISPLAY
+
+      - name: showOnHome
+        label: Show on Homepage
+        widget: boolean
+        default: true
+        required: false
+        hint: Include this post in the homepage's latest posts.
+
+      - name: featured
+        label: Featured Post
+        widget: boolean
+        default: false
+        required: false
+        hint: Highlight this post in featured sections of the website.
+
+      # IMAGES
+
+      - name: featuredImage
+        label: Featured Image
+        widget: image
+        required: false
+
+      - name: featuredImageAlt
+        label: Featured Image Alt Text
+        widget: string
+        required: false
+
+      # SEO
+
+      - name: seo
+        label: SEO
+        widget: object
+        collapsed: true
+        required: false
+        fields:
+          - name: title
+            label: SEO Title
+            widget: string
+            required: false
+
+          - name: description
+            label: Meta Description
+            widget: text
+            required: false
+
+

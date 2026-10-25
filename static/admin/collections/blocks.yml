@@ -1,0 +1,117 @@
+collections:
+  - name: blocks
+    label: Blocks
+    label_singular: Block
+    icon: blocks
+    folder: content/blocks
+    create: true
+    extension: yml
+    format: yaml
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} — {{type}}"
+    fields:
+      - name: title
+        label: Internal Name
+        widget: string
+      - name: type
+        label: Block Type
+        widget: select
+        options: [selected, latest, featured, hero, panel]
+      - name: heading
+        label: Display Heading
+        widget: string
+        required: false
+      - name: introduction
+        label: Introduction
+        widget: text
+        required: false
+      - name: image
+        label: Image (Hero / Panel)
+        widget: image
+        required: false
+      - name: imageAlt
+        label: Image Description
+        widget: string
+        required: false
+      - name: imagePosition
+        label: Panel Image Position
+        widget: select
+        options: [left, right]
+        default: right
+        required: false
+      - name: buttonText
+        label: Button Text
+        widget: string
+        required: false
+      - name: buttonUrl
+        label: Button Link
+        widget: string
+        required: false
+        hint: Use a site path such as /posts/ or a full URL.
+      - name: collection
+        label: Collection for Latest / Featured
+        widget: select
+        options: [posts, podcasts]
+        required: false
+        hint: Selected can include items from different collections.
+      - name: category
+        label: Category Filter
+        widget: relation
+        collection: categories
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        required: false
+      - name: tags
+        label: Tag Filters
+        widget: relation
+        collection: tags
+        value_field: "{{slug}}"
+        search_fields: [title]
+        display_fields: [title]
+        multiple: true
+        required: false
+      - name: tagMatch
+        label: Match Tags
+        widget: select
+        options: [any, all]
+        default: any
+        required: false
+      - name: limit
+        label: Maximum Items
+        widget: number
+        min: 1
+        max: 30
+        value_type: int
+        default: 4
+        required: false
+      - name: items
+        label: Selected Items (drag to reorder)
+        widget: list
+        required: false
+        collapsed: true
+        hint: Add a Post or Podcast and search for its title.
+        types:
+          - name: posts
+            label: Post
+            widget: object
+            fields:
+              - name: slug
+                label: Choose Post
+                widget: relation
+                collection: posts
+                value_field: "{{slug}}"
+                search_fields: [title]
+                display_fields: [title]
+          - name: podcasts
+            label: Podcast
+            widget: object
+            fields:
+              - name: slug
+                label: Choose Podcast
+                widget: relation
+                collection: podcasts
+                value_field: "{{slug}}"
+                search_fields: [title]
+                display_fields: [title]

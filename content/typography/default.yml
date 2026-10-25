@@ -1,0 +1,6 @@
+title: System Sans
+bodyFont: "system-ui, -apple-system, 'Segoe UI', sans-serif"
+headingFont: "system-ui, -apple-system, 'Segoe UI', sans-serif"
+fontSize: 17
+fontScale: 1.2
+lineHeight: 1.6

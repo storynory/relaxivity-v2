@@ -1,0 +1,36 @@
+{
+  "provider": "sharp",
+  "sourceDir": "static/uploads",
+  "outputDir": "static/optimized",
+  "publicBase": "/uploads",
+  "generatedBase": "/optimized",
+  "inputExts": [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp"
+  ],
+  "widths": [
+    320,
+    640,
+    960
+  ],
+  "formats": {
+    "webp": {
+      "enabled": true,
+      "quality": 80
+    },
+    "avif": {
+      "enabled": false,
+      "quality": 50
+    }
+  },
+  "fallback": {
+    "enabled": true,
+    "format": "jpg",
+    "width": 640,
+    "quality": 82
+  },
+  "cacheFile": ".image-cache.json",
+  "manifestFile": "src/lib/generated/image-manifest.json"
+}

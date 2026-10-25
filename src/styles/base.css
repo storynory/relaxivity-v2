@@ -1,0 +1,96 @@
+@font-face {
+	font-family: 'Lora';
+	src: url('/fonts/lora.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 400 700;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Lora';
+	src: url('/fonts/lora-italic.woff2') format('woff2');
+	font-style: italic;
+	font-weight: 400 700;
+	font-display: swap;
+}
+
+/* A small global design vocabulary. Sveltia supplies the colour variables. */
+:root {
+	--font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-heading: var(--font-body);
+	--font-size: 1.0625rem;
+	--font-scale: 1.2;
+	--line-height: 1.6;
+	--space: 1.5rem;
+	--content-width: 50rem;
+	--wide-width: 68.75rem;
+	--radius: 0.75rem;
+}
+
+/* Keep the page width steady when search results introduce a scrollbar. */
+html { scrollbar-gutter: stable; }
+
+* { box-sizing: border-box; }
+
+body {
+	margin: 0;
+	font: var(--font-size) / var(--line-height) var(--font-body);
+}
+
+h1, h2, h3 {
+	font-family: var(--font-heading);
+	line-height: 1.25;
+}
+
+h1 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale) * var(--font-scale)); }
+h2 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale)); }
+h3 { font-size: calc(var(--font-size) * var(--font-scale)); }
+
+a { color: var(--accent); }
+img { max-width: 100%; }
+
+/* A few repeatable helpers, not a utility framework. */
+.container, .container-narrow, .container-wide {
+	width: 100%;
+	margin-inline: auto;
+	padding-inline: min(var(--space), 5vw);
+}
+.container { max-width: 1200px; }
+.container-narrow { max-width: 760px; }
+.container-wide { max-width: 1440px; }
+
+.bg-prime { background-color: var(--prime); }
+.bg-accent { background-color: var(--accent); }
+.bg-light { background-color: var(--second); }
+.bg-gray { background-color: var(--gray); }
+.txt-accent { color: var(--accent); }
+.txt-center { text-align: center; }
+.-p { padding: 0.5em; }
+.-p-lg { padding: 1em; }
+.-m-b { margin-bottom: 1em; }
+.-m-y { margin-block: 1em; }
+
+/* Opt-in form styling: specialised inputs keep their native appearance. */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.65em;
+  font: inherit;
+  color: var(--text);
+  background: #fff;
+  border: 1px solid var(--text);
+  border-radius: 0.3rem;
+}
+.button {
+  padding: 0.65em 1em;
+  font: inherit;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}

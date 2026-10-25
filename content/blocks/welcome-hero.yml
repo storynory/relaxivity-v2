@@ -1,0 +1,14 @@
+title: Welcome Hero
+type: hero
+heading: A Little Time to Yourself
+introduction: Welcome to Relaxivity
+image: /uploads/vlcsnap-11937.jpg
+imageAlt: ''
+buttonText: Browse Posts
+buttonUrl: /posts/
+collection: ''
+category: ''
+tags: []
+tagMatch: any
+limit: 4
+items: []

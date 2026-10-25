@@ -1,0 +1,148 @@
+{
+  "/uploads/buddha-tree-videoart.webp": {
+    "width": 600,
+    "height": 337,
+    "sizes": [
+      320
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/buddha-tree-videoart.600.jpg"
+  },
+  "/uploads/buddha-videoart.webp": {
+    "width": 600,
+    "height": 337,
+    "sizes": [
+      320
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/buddha-videoart.600.jpg"
+  },
+  "/uploads/dragon-horse.png": {
+    "width": 1312,
+    "height": 912,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/dragon-horse.640.jpg"
+  },
+  "/uploads/green-willow-videoart.webp": {
+    "width": 600,
+    "height": 337,
+    "sizes": [
+      320
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/green-willow-videoart.600.jpg"
+  },
+  "/uploads/icarus-1946.webp": {
+    "width": 618,
+    "height": 900,
+    "sizes": [
+      320
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/icarus-1946.618.jpg"
+  },
+  "/uploads/lanval-videoart.webp": {
+    "width": 600,
+    "height": 336,
+    "sizes": [
+      320
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/lanval-videoart.600.jpg"
+  },
+  "/uploads/mattise.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/mattise.640.jpg"
+  },
+  "/uploads/monkey-robber-1180x675.jpg.webp": {
+    "width": 1180,
+    "height": 675,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/monkey-robber-1180x675.jpg.640.jpg"
+  },
+  "/uploads/music-cropped.png": {
+    "width": 988,
+    "height": 667,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/music-cropped.640.jpg"
+  },
+  "/uploads/Northern-Lights.jpg": {
+    "width": 1450,
+    "height": 967,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/Northern-Lights.640.jpg"
+  },
+  "/uploads/relaxivity3.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/relaxivity3.640.jpg"
+  },
+  "/uploads/vlcsnap-11937.jpg": {
+    "width": 1024,
+    "height": 476,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/vlcsnap-11937.640.jpg"
+  }
+}
