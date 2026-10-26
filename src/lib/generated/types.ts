@@ -36,6 +36,10 @@ export type ColourSchemesContent = {
 	"second": string;
 	"gray": string;
 	"text": string;
+	"surfaceText"?: string;
+	"readingBackground": string;
+	"readingText": string;
+	"readingLink": string;
 };
 
 export type NavigationContent = {

@@ -75,7 +75,11 @@ export const load: LayoutServerLoad = async () => {
 			accent: colour(scheme.accent, defaults.accent),
 			second: colour(scheme.second, defaults.second),
 			gray: colour(scheme.gray, defaults.gray),
-			text: colour(scheme.text, defaults.text)
+			text: colour(scheme.text, defaults.text),
+			surfaceText: colour(scheme.surfaceText, colour(scheme.text, defaults.text)),
+			readingBackground: colour(scheme.readingBackground, '#f4e8d7'),
+			readingText: colour(scheme.readingText, '#252824'),
+			readingLink: colour(scheme.readingLink, '#005747')
 		}
 	};
 };

@@ -37,7 +37,7 @@ await write('pages', 'home', { title: 'Home' });
 await write('pages', 'about', { title: 'About' });
 await write('pages', 'draft', { title: 'Draft', draft: true });
 await write('settings', 'general', { homePage: 'home', siteName: 'Test Site', siteLogo: '/logo.svg' });
-await write('colour-schemes', 'default', { title: 'Default', prime: '#123456' });
+await write('colour-schemes', 'default', { title: 'Default', prime: '#123456', surfaceText: '#102030', readingBackground: '#fff8ee', readingText: 'invalid' });
 await write('typography', 'default', { title: 'System Sans', bodyFont: 'Arial, sans-serif', headingFont: 'Georgia, serif', fontSize: 17, fontScale: 1.2, lineHeight: 1.6 });
 await write('navigation', 'main-menu', { title: 'Main', items: [
 	{ label: 'About', url: '/pages/about/', newTab: false, children: [
@@ -107,6 +107,10 @@ test('root layout exposes branding and nested navigation alongside the selected 
 	assert.equal(data?.siteName, 'Test Site');
 	assert.equal(data?.siteLogo, '/logo.svg');
 	assert.equal(data?.colours.prime, '#123456');
+	assert.equal(data?.colours.surfaceText, '#102030');
+	assert.equal(data?.colours.readingBackground, '#fff8ee');
+	assert.equal(data?.colours.readingText, '#252824');
+	assert.equal(data?.colours.readingLink, '#005747');
 	assert.equal(data?.typography.bodyFont, 'Arial, sans-serif');
 	assert.equal(data?.typography.fontSize, 17);
 	assert.equal(data?.navigation[0].url, '/pages/about/');

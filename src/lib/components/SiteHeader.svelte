@@ -157,6 +157,12 @@
 </header>
 
 <style>
+	.submenu {
+		--text: var(--surface-text);
+		--accent: var(--surface-text);
+		--link-hover: color-mix(in srgb, var(--surface-text) 90%, var(--second));
+		color: var(--text);
+	}
 	header {
 		border-bottom: 1px solid var(--prime);
 	}
@@ -182,6 +188,7 @@
 	}
 
 	/* Reserve space for the logo before it loads */
+	.brand:hover, .brand:focus-visible { color: var(--accent); }
 
 	.logo-box {
 		display: block;
@@ -361,6 +368,9 @@
 
 		.submenu {
 			position: static;
+			--text: inherit;
+			--accent: inherit;
+			--link-hover: var(--text);
 			min-width: 0;
 			padding: 0 0 0 1rem;
 			border: 0;

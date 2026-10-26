@@ -39,7 +39,7 @@
 	article :global(picture) { display: block; max-width: 100%; }
 	article :global(img) { width: 100%; height: auto; }
 	h2 { margin: 0; }
-	.meta { display: flex; flex-wrap: wrap; gap: 1rem; color: #666; }
+	.meta { display: flex; flex-wrap: wrap; gap: 1rem; color: var(--text); }
 	a { color: inherit; }
 	@media (max-width: 560px) { article { grid-template-columns: minmax(0, 1fr); } }
 </style>

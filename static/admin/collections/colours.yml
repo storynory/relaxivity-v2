@@ -40,3 +40,23 @@ collections:
         widget: "color"
         default: "#333333"
 
+      - name: "surfaceText"
+        label: "Text and Links on Secondary Colour"
+        widget: "color"
+        required: false
+        hint: "Choose a dark colour for light or bright secondary backgrounds."
+
+      - name: "readingBackground"
+        label: "Reading Background"
+        widget: "color"
+        default: "#f4e8d7"
+
+      - name: "readingText"
+        label: "Reading Text and Headings"
+        widget: "color"
+        default: "#252824"
+
+      - name: "readingLink"
+        label: "Reading Links"
+        widget: "color"
+        default: "#005747"

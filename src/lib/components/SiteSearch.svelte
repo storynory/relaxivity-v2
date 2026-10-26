@@ -103,6 +103,11 @@
 {/if}
 
 <style>
+	input {
+		--text: var(--surface-text);
+		--accent: var(--surface-text);
+		color: var(--text);
+	}
 	form {
 		display: grid;
 		gap: 0.5rem;

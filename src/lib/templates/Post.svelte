@@ -16,31 +16,63 @@
 </script>
 
 <main>
-<article>
-	<header>
-		<h1>{title}</h1>
-		<div class="meta">
-			{#if date}<time>{date}</time>{/if}
-			{#if author}<span>By {author}</span>{/if}
-			{#if categoryLabel}<span>{categoryLabel}</span>{/if}
-		</div>
-	</header>
-	{#if featuredImage}
-		<Picture src={featuredImage} alt={featuredImageAlt || title} sizes="(min-width: 760px) 760px, 100vw" />
-	{/if}
-	<div class="content">{@html html}</div>
-	{#if tags.length}
-		<footer>{#each tags as tag}<span class="tag">{tag}</span>{/each}</footer>
-	{/if}
-</article>
+	<article class="reading">
+		<header>
+			<h1>{title}</h1>
+			<div class="meta">
+				{#if date}<time>{date}</time>{/if}
+				{#if author}<span>By {author}</span>{/if}
+				{#if categoryLabel}<span>{categoryLabel}</span>{/if}
+			</div>
+		</header>
+		{#if featuredImage}
+			<Picture
+				src={featuredImage}
+				alt={featuredImageAlt || title}
+				sizes="(min-width: 760px) 760px, 100vw"
+			/>
+		{/if}
+		<div class="content">{@html html}</div>
+		{#if tags.length}
+			<footer>
+				{#each tags as tag}<span class="tag">{tag}</span>{/each}
+			</footer>
+		{/if}
+	</article>
 </main>
 
 <style>
-	article { max-width: var(--content-width); margin: 3em auto; padding: 0 var(--space); line-height: var(--line-height); }
-	h1 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale) * var(--font-scale)); line-height: 1.2; }
-	.meta { display: flex; flex-wrap: wrap; gap: 1rem; color: var(--text); margin-bottom: 2rem; }
-	footer { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2rem; }
-	.tag { background: var(--gray); border-radius: 1rem; padding: .25rem .75rem; }
-	.content :global(picture) { display: block; max-width: 100%; }
-	.content :global(img) { display: block; max-width: 100%; height: auto; }
+	main {
+		padding: clamp(1.5rem, 4vw, 3rem) min(var(--space), 5vw) clamp(3rem, 6vw, 5rem);
+	}
+	article { margin-inline: auto; }
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+		font-size: 0.8em;
+		line-height: 1.6;
+		color: var(--text);
+		margin-bottom: 2rem;
+	}
+	footer {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 2rem;
+	}
+	.tag {
+		background: var(--gray);
+		border-radius: 1rem;
+		padding: 0.25rem 0.75rem;
+	}
+	.content :global(picture) {
+		display: block;
+		max-width: 100%;
+	}
+	.content :global(img) {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
 </style>

@@ -50,8 +50,13 @@
 </section>
 
 <style>
-	section { margin: 2.5em 0; }
-	.panel { padding: 1.5em; background: var(--second); border-radius: var(--radius); }
+	section {
+		margin: 2.5em 0;
+		padding: 1.5em;
+		background: var(--prime, #052025);
+		color: var(--text);
+		border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime));
+	}
 	.panel-layout { display: grid; gap: var(--space); align-items: center; }
 	@media (min-width: 700px) {
 		.panel-layout:has(.panel-image) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -60,18 +65,18 @@
 	}
 	.panel-image :global(img) { display: block; width: 100%; height: auto; }
 	.panel-image :global(picture) { display: block; }
-	.hero { padding: 1.5em; background: var(--gray); border: 1px solid var(--prime); border-radius: var(--radius); }
 	.hero :global(picture) { display: block; margin: 1.5em 0; }
 	.hero :global(img) { display: block; width: 100%; height: auto; }
-	.button { display: inline-block; padding: 0.75em 1.25em; border-radius: var(--radius); background: var(--accent); color: white; text-decoration: none; }
-	.button:hover { filter: brightness(0.85); }
+	.button { display: inline-block; padding: 0.75em 1.25em; border-radius: var(--radius); background: var(--text); color: var(--prime); border: 1px solid var(--text); text-decoration: none; }
+	.button:hover, .button:focus-visible { background: var(--prime); color: var(--text); }
+	a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
 	h2 { margin-top: 0; }
 	.intro { margin-bottom: 1.5em; }
 	.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: var(--space); }
-	article { min-width: 0; padding: 1em; background: var(--second); border-radius: var(--radius); }
+	article { min-width: 0; padding: 1em; background: var(--prime); border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime)); }
 	article h3 { margin-block: 0.5em; }
 	article :global(img) { max-width: 100%; height: auto; }
 	article :global(picture) { display: block; }
 	article a { color: var(--accent); }
-	.button { color: white; }
+	article h3 a { color: inherit; }
 </style>
