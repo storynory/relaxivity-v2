@@ -7,7 +7,7 @@ date: 2026-10-18T14:59:00
 episodeNumber: null
 seasonNumber: null
 audio: lanval-relaxivity.mp3
-length: 30358588
+length: 30926829
 duration: '00:31:37'
 author: bertie
 narrator: jana

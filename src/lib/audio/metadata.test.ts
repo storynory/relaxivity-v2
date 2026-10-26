@@ -34,6 +34,7 @@ async function save(values: Record<string, unknown>, options: {
 				return Response.json({ audioBaseUrl: 'https://audio.relaxivity.app/' });
 			}
 			assert.equal(init.method, 'HEAD');
+			assert.equal(init.cache, 'no-store', 'HEAD must bypass the Audio element’s non-CORS cached response');
 			if (options.headFails) throw new Error('CORS');
 			return new Response(null, { headers: options.header == null ? {} : { 'Content-Length': options.header } });
 		}

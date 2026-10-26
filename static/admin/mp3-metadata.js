@@ -46,7 +46,9 @@ function formatDuration(seconds) {
 
 async function audioLength(url) {
   // This works only when the host grants browser CORS access to HEAD.
-  const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(10000) });
+  // The Audio element can cache a non-CORS response while detecting duration.
+  // Do not reuse that response for this CORS metadata request.
+  const response = await fetch(url, { method: 'HEAD', cache: 'no-store', signal: AbortSignal.timeout(10000) });
   if (!response.ok) return null;
   const header = response.headers.get('content-length');
   if (!header || !/^\d+$/.test(header)) return null;
