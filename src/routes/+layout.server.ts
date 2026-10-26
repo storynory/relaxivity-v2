@@ -58,6 +58,7 @@ export const load: LayoutServerLoad = async () => {
 			lineHeight: boundedNumber(preset.lineHeight, defaultTypography.lineHeight, 1, 2.2)
 		},
 		siteUrl: typeof settings.siteUrl === 'string' ? settings.siteUrl : '',
+		audioBaseUrl: (settings.podcastFeed as { audioBaseUrl?: string } | null)?.audioBaseUrl ?? '',
 		siteDescription: typeof settings.description === 'string' ? settings.description : '',
 		defaultImage: typeof settings.defaultImage === 'string' ? settings.defaultImage : '',
 		siteName: typeof settings.siteName === 'string' ? settings.siteName : '',

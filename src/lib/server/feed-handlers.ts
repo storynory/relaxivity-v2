@@ -1,4 +1,5 @@
 import { collections } from '#lib/generated/collections.ts';
+import { audioUrl } from '#lib/audio/url.ts';
 import { renderMarkdown } from '#lib/content/render.ts';
 import type { FolderCollectionName } from '#lib/server/content.ts';
 import { absoluteUrl, channelHeader, feedData, feedResponse, itemBase, xml } from '#lib/server/rss.ts';
@@ -37,6 +38,7 @@ export const podcastFeed = async (collection: FolderCollectionName, origin: stri
 		enabled?: boolean; limit?: number; title?: string; description?: string;
 		author?: string; image?: string; category?: string; explicit?: boolean;
 		ownerName?: string; ownerEmail?: string; type?: 'episodic' | 'serial';
+		audioBaseUrl?: string;
 	} | null;
 	if (options?.enabled === false) return new Response('Podcast feed disabled', { status: 404 });
 	const limit = Number.isInteger(options?.limit) && (options?.limit ?? 0) > 0 ? options!.limit! : 20;
@@ -60,7 +62,7 @@ export const podcastFeed = async (collection: FolderCollectionName, origin: stri
 	}
 	const items = records
 		.filter(({ data }) => {
-			if (typeof data.audio !== 'string' || !/^https:\/\//i.test(data.audio)) return false;
+			if (!/^https:\/\//i.test(audioUrl(data.audio, options?.audioBaseUrl))) return false;
 			return typeof data.length === 'number' && Number.isSafeInteger(data.length) && data.length > 0;
 		})
 		.slice(0, limit)
@@ -68,7 +70,7 @@ export const podcastFeed = async (collection: FolderCollectionName, origin: stri
 			const link = absoluteUrl(`/${collection}/${encodeURIComponent(meta.slug!)}/`, base);
 			const description = typeof data.description === 'string' ? data.description : '';
 			const contents = itemBase(data.title, link, data.date, description);
-			contents.push(`<enclosure url="${xml(data.audio)}" length="${data.length}" type="audio/mpeg"/>`);
+			contents.push(`<enclosure url="${xml(audioUrl(data.audio, options?.audioBaseUrl))}" length="${data.length}" type="audio/mpeg"/>`);
 			if (typeof data.episodeNumber === 'number') contents.push(`<itunes:episode>${data.episodeNumber}</itunes:episode>`);
 			if (typeof data.seasonNumber === 'number') contents.push(`<itunes:season>${data.seasonNumber}</itunes:season>`);
 			if (typeof data.duration === 'string' && /^\d{1,3}:\d{2}(?::\d{2})?$/.test(data.duration))

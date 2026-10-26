@@ -175,6 +175,12 @@ collections:
             collapsed: true
             required: false
             fields:
+              - name: audioBaseUrl
+                label: Audio base URL
+                widget: string
+                required: false
+                hint: Public HTTPS base URL for relative episode audio paths, including a trailing slash. Rebuild the site after changing this setting.
+
               - name: enabled
                 label: Enable podcast RSS feed
                 widget: boolean

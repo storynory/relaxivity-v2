@@ -68,19 +68,10 @@ collections:
         min: 1
 
       - name: audio
-        label: Audio URL
+        label: Audio path
         widget: string
         required: false
-        hint: Public HTTPS URL of the MP3 file (for example, hosted on Libsyn). Used by the player and RSS enclosure.
-
-      - name: bitrate
-        label: MP3 bitrate (kbps)
-        widget: number
-        value_type: int
-        min: 1
-        default: 128
-        required: false
-        hint: Defaults to 128 kbps. Change this to the exported average bitrate when estimating the audio file size; variable-bitrate MP3s may differ.
+        hint: Path relative to the podcast Audio base URL, such as episodes/story.mp3. Existing full HTTPS URLs also work. Clear Audio File Length when replacing a file to retrieve its new size.
 
       - name: length
         label: Audio File Length (bytes)
@@ -88,7 +79,7 @@ collections:
         value_type: int
         min: 0
         required: false
-        hint: Exact size in bytes where available; otherwise an estimate using duration and bitrate. May be corrected manually.
+        hint: Exact size in bytes retrieved from the audio host. May be entered or corrected manually if unavailable.
 
       - name: duration
         label: Running Time

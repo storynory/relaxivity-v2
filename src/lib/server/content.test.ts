@@ -12,6 +12,8 @@ const { getAll } = await import('./content.ts');
 const { buildBlock } = await import('./blocks.ts');
 const { load } = await import('../../routes/[collection]/+page.server.ts');
 const { load: loadLayout } = await import('../../routes/+layout.server.ts');
+const { podcastFeed } = await import('./feed-handlers.ts');
+const { GET: podcastSettings } = await import('../../routes/admin/podcast-settings.json/+server.ts');
 process.chdir(originalCwd);
 after(() => fs.rm(root, { recursive: true, force: true }));
 
@@ -36,7 +38,7 @@ await write('podcasts', 'episode', { title: 'Episode', narrator: 'reader' }, 'Ep
 await write('pages', 'home', { title: 'Home' });
 await write('pages', 'about', { title: 'About' });
 await write('pages', 'draft', { title: 'Draft', draft: true });
-await write('settings', 'general', { homePage: 'home', siteName: 'Test Site', siteLogo: '/logo.svg' });
+await write('settings', 'general', { homePage: 'home', siteName: 'Test Site', siteLogo: '/logo.svg', podcastFeed: { audioBaseUrl: 'https://audio.relaxivity.app/' } });
 await write('colour-schemes', 'default', { title: 'Default', prime: '#123456', surfaceText: '#102030', readingBackground: '#fff8ee', readingText: 'invalid' });
 await write('typography', 'default', { title: 'System Sans', bodyFont: 'Arial, sans-serif', headingFont: 'Georgia, serif', fontSize: 17, fontScale: 1.2, lineHeight: 1.6 });
 await write('navigation', 'main-menu', { title: 'Main', items: [
@@ -106,6 +108,7 @@ test('root layout exposes branding and nested navigation alongside the selected 
 	const data = await loadLayout({} as Parameters<typeof loadLayout>[0]);
 	assert.equal(data?.siteName, 'Test Site');
 	assert.equal(data?.siteLogo, '/logo.svg');
+	assert.equal(data?.audioBaseUrl, 'https://audio.relaxivity.app/');
 	assert.equal(data?.colours.prime, '#123456');
 	assert.equal(data?.colours.surfaceText, '#102030');
 	assert.equal(data?.colours.readingBackground, '#fff8ee');
@@ -117,4 +120,18 @@ test('root layout exposes branding and nested navigation alongside the selected 
 	assert.deepEqual(data?.navigation[0].children, [
 		{ label: 'External', url: 'https://example.com', newTab: true }
 	]);
+});
+
+test('podcast RSS resolves R2 paths and retains full URLs, byte lengths and publication filtering', async () => {
+	const episode = { date: '2026-01-01', length: 12345, duration: '01:30', draft: false };
+	await write('podcasts', 'r2', { ...episode, title: 'R2', audio: 'episodes/story.mp3?x=1&y=2' });
+	await write('podcasts', 'legacy', { ...episode, title: 'Legacy', audio: 'https://old.example/story.mp3' });
+	await write('podcasts', 'draft-audio', { ...episode, title: 'Draft audio', audio: 'draft.mp3', draft: true });
+	await write('podcasts', 'no-size', { ...episode, title: 'No size', audio: 'missing.mp3', length: 0 });
+	const feed = await (await podcastFeed('podcasts', 'https://example.com')).text();
+	assert.match(feed, /<enclosure url="https:\/\/audio.relaxivity.app\/episodes\/story.mp3\?x=1&amp;y=2" length="12345" type="audio\/mpeg"\/>/);
+	assert.match(feed, /<enclosure url="https:\/\/old.example\/story.mp3"/);
+	assert.match(feed, /<itunes:duration>01:30<\/itunes:duration>/);
+	assert.doesNotMatch(feed, /<title>(Draft audio|No size)<\/title>/);
+	assert.deepEqual(await (await podcastSettings()).json(), { audioBaseUrl: 'https://audio.relaxivity.app/' });
 });

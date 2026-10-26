@@ -86,7 +86,6 @@ export type PodcastsContent = {
 	"episodeNumber"?: number;
 	"seasonNumber"?: number;
 	"audio"?: string;
-	"bitrate"?: number;
 	"length"?: number;
 	"duration"?: string;
 	"author"?: string;
@@ -156,6 +155,7 @@ export type SettingsGeneralContent = {
 		"enabled": boolean;
 	};
 	"podcastFeed"?: {
+		"audioBaseUrl"?: string;
 		"enabled": boolean;
 		"limit": number;
 		"title"?: string;

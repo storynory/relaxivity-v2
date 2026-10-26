@@ -7,7 +7,6 @@ date: 2026-10-18T14:44:00
 episodeNumber: null
 seasonNumber: null
 audio: https://traffic.libsyn.com/relaxivity/birth-of-buddha-relaxivity.mp3
-bitrate: 128
 length: 13441625
 duration: '00:19:51'
 author: bertie

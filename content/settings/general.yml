@@ -18,6 +18,7 @@ rss:
 sitemap:
   enabled: true
 podcastFeed:
+  audioBaseUrl: https://audio.relaxivity.app/
   enabled: true
   limit: 20
   title: ''

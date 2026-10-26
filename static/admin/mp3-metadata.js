@@ -46,7 +46,7 @@ function formatDuration(seconds) {
 
 async function audioLength(url) {
   // This works only when the host grants browser CORS access to HEAD.
-  const response = await fetch(url, { method: 'HEAD' });
+  const response = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(10000) });
   if (!response.ok) return null;
   const header = response.headers.get('content-length');
   if (!header || !/^\d+$/.test(header)) return null;
@@ -59,34 +59,41 @@ CMS.registerEventListener({
   handler: async ({ entry }) => {
     if (entry.get('collection') !== 'podcasts') return;
     const data = entry.get('data');
-    const url = data.get('audio');
-    if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return;
+    const path = data.get('audio');
+    if (typeof path !== 'string' || !path.trim()) return;
+    let url = path.trim();
+    if (!/^https?:\/\//i.test(url)) {
+      try {
+        // This static route uses the existing podcast settings reader at build time.
+        const response = await fetch('/admin/podcast-settings.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+        if (!response.ok) throw new Error('Podcast settings unavailable');
+        const { audioBaseUrl } = await response.json();
+        if (typeof audioBaseUrl !== 'string' || !/^https?:\/\//i.test(audioBaseUrl.trim())) throw new Error('Audio base URL missing');
+        url = new URL(url.replace(/^\/+/, ''), `${audioBaseUrl.trim().replace(/\/+$/, '')}/`).href;
+        if (!/^https?:\/\//i.test(url)) return;
+      } catch (error) {
+        console.warn('Could not resolve audio path; keeping existing metadata.', error);
+        return;
+      }
+    }
 
     let updated = data;
-    let seconds = null;
     try {
-      seconds = await audioDuration(url);
+      const seconds = await audioDuration(url);
       updated = updated.set('duration', formatDuration(seconds));
     } catch (error) {
       console.warn('Could not detect audio duration; keeping existing value.', error);
     }
 
     // Preserve an existing byte count (including manually corrected values).
-    // When empty, prefer the exact Content-Length, otherwise estimate at the
-    // episode bitrate (128 kbps by default). VBR estimates can be inaccurate.
+    // When empty, retrieve the exact Content-Length; never estimate a size.
     const existing = Number(data.get('length'));
     if (!Number.isSafeInteger(existing) || existing <= 0) {
       let size = null;
       try {
         size = await audioLength(url);
-      } catch {
-        // Typical for Libsyn: the audio plays but cross-origin HEAD is blocked.
-      }
-      if (size === null && seconds !== null) {
-        const configured = Number(data.get('bitrate'));
-        const bitrate = Number.isFinite(configured) && configured > 0 ? configured : 128;
-        size = Math.round(seconds * bitrate * 1000 / 8);
-        console.info('Estimated MP3 byte length using', bitrate, 'kbps:', size);
+      } catch (error) {
+        console.warn('Could not retrieve audio file size; keeping existing value.', error);
       }
       if (size !== null) updated = updated.set('length', size);
     }

@@ -3,10 +3,12 @@
 	import { relationLabel, textField } from './fields.ts';
 	import Picture from '#lib/components/Picture.svelte';
 	import AudioPlayer from '#lib/components/AudioPlayer.svelte';
+	import { page } from '$app/state';
+	import { audioUrl } from '#lib/audio/url.ts';
 
 	let { data }: { data: DetailTemplateData } = $props();
 	const item = $derived(data.item);
-	const audio = $derived(textField(item, 'audio'));
+	const audio = $derived(audioUrl(textField(item, 'audio'), page.data.audioBaseUrl));
 	const duration = $derived(textField(item, 'duration'));
 	const date = $derived(textField(item, 'date'));
 	const artwork = $derived(textField(item, 'featuredImage'));

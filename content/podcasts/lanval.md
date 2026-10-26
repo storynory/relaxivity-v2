@@ -6,9 +6,8 @@ description: An ancient Story from the court of King Arthur
 date: 2026-10-18T14:59:00
 episodeNumber: null
 seasonNumber: null
-audio: https://traffic.libsyn.com/relaxivity/lanval-relaxivity.mp3
-bitrate: 128
-length: 30926829
+audio: lanval-relaxivity.mp3
+length: 30358588
 duration: '00:31:37'
 author: bertie
 narrator: jana
