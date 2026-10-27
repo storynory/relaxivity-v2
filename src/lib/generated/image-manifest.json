@@ -11,15 +11,17 @@
     "fallback": "/optimized/buddha-tree-videoart.600.jpg"
   },
   "/uploads/buddha-videoart.webp": {
-    "width": 600,
-    "height": 337,
+    "width": 960,
+    "height": 540,
     "sizes": [
-      320
+      320,
+      640,
+      960
     ],
     "formats": [
       "webp"
     ],
-    "fallback": "/optimized/buddha-videoart.600.jpg"
+    "fallback": "/optimized/buddha-videoart.640.jpg"
   },
   "/uploads/dragon-horse.png": {
     "width": 1312,
@@ -35,15 +37,17 @@
     "fallback": "/optimized/dragon-horse.640.jpg"
   },
   "/uploads/green-willow-videoart.webp": {
-    "width": 600,
-    "height": 337,
+    "width": 960,
+    "height": 540,
     "sizes": [
-      320
+      320,
+      640,
+      960
     ],
     "formats": [
       "webp"
     ],
-    "fallback": "/optimized/green-willow-videoart.600.jpg"
+    "fallback": "/optimized/green-willow-videoart.640.jpg"
   },
   "/uploads/icarus-1946.webp": {
     "width": 618,
@@ -55,6 +59,19 @@
       "webp"
     ],
     "fallback": "/optimized/icarus-1946.618.jpg"
+  },
+  "/uploads/lanval-romance-fairy-queen.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/lanval-romance-fairy-queen.640.jpg"
   },
   "/uploads/lanval-videoart.webp": {
     "width": 600,
@@ -144,5 +161,18 @@
       "webp"
     ],
     "fallback": "/optimized/vlcsnap-11937.640.jpg"
+  },
+  "/uploads/willow-wood-cut.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/willow-wood-cut.640.jpg"
   }
 }
