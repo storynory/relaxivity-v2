@@ -88,6 +88,10 @@ export type PodcastsContent = {
 	"audio"?: string;
 	"length"?: number;
 	"duration"?: string;
+	"sampleAudio"?: string;
+	"sampleLength"?: number;
+	"sampleDuration"?: string;
+	"permanentlyFree"?: boolean;
 	"author"?: string;
 	"narrator"?: string;
 	"presenter"?: string;
@@ -128,6 +132,7 @@ export type SettingsGeneralContent = {
 	"tagline"?: string;
 	"siteUrl"?: string;
 	"description"?: string;
+	"supercastUrl"?: string;
 	"siteLogo"?: string;
 	"favicon"?: string;
 	"defaultImage"?: string;
