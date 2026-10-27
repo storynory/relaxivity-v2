@@ -13,6 +13,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	const home = collection === 'pages' ? await homePageSlug() : null;
 	const items = await getAll(collection, (records) => records.filter((record) =>
-		published(record.data) && !(home && record.meta.slug === home)));
+		published(record.data, collection) && !(home && record.meta.slug === home)));
 	return { collection, listTemplate: collections[collection].listTemplate, items: items as Record<string, unknown>[] };
 };

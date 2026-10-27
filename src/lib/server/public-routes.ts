@@ -1,3 +1,4 @@
+import { isPublishedEpisode } from '#lib/audio/availability.ts';
 import { collections } from '#lib/generated/collections.ts';
 import type { FolderCollectionName } from '#lib/server/content.ts';
 import { homePageSlug } from '#lib/server/home.ts';
@@ -14,8 +15,8 @@ export function publicCollection(name: string): FolderCollectionName | null {
 	return publicCollections().find((item) => item === name) ?? null;
 }
 
-export function published(data: Record<string, unknown>): boolean {
-	return data.draft !== true;
+export function published(data: Record<string, unknown>, collection?: string): boolean {
+	return collection === 'podcasts' ? isPublishedEpisode(data) : data.draft !== true;
 }
 
 export async function publicEntries(): Promise<{ collection: string; slug: string }[]> {
@@ -23,7 +24,7 @@ export async function publicEntries(): Promise<{ collection: string; slug: strin
 	const items = await Promise.all(
 		publicCollections().map(async (collection) =>
 			(await readAll(collection))
-				.filter((item) => published(item.data) && item.meta.slug && !(collection === 'pages' && item.meta.slug === home))
+				.filter((item) => published(item.data, collection) && item.meta.slug && !(collection === 'pages' && item.meta.slug === home))
 				.map((item) => ({ collection, slug: item.meta.slug! }))
 		)
 	);

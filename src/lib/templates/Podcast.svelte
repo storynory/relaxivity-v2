@@ -2,14 +2,14 @@
 	import type { DetailTemplateData } from './types.ts';
 	import { relationLabel, textField } from './fields.ts';
 	import Picture from '#lib/components/Picture.svelte';
-	import AudioPlayer from '#lib/components/AudioPlayer.svelte';
+	import EpisodeAudio from '#lib/components/EpisodeAudio.svelte';
 	import { page } from '$app/state';
-	import { audioUrl } from '#lib/audio/url.ts';
+	import { publicAudio } from '#lib/audio/availability.ts';
 
 	let { data }: { data: DetailTemplateData } = $props();
 	const item = $derived(data.item);
-	const audio = $derived(audioUrl(textField(item, 'audio'), page.data.audioBaseUrl));
-	const duration = $derived(textField(item, 'duration'));
+	const audio = $derived(publicAudio(item, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime));
+	const duration = $derived(audio.duration);
 	const date = $derived(textField(item, 'date'));
 	const artwork = $derived(textField(item, 'featuredImage'));
 	const artworkAlt = $derived(textField(item, 'featuredImageAlt'));
@@ -61,11 +61,9 @@
 					</div>
 				{/if}
 			</div>
-			{#if audio}
-				<div class="player">
-					<AudioPlayer src={audio} title={data.title} />
-				</div>
-			{/if}
+			<div class="player">
+				<EpisodeAudio {audio} title={data.title} href={page.url.pathname} {artwork} />
+			</div>
 		</header>
 
 		{#if html || description.trim() !== introduction || credits.length}

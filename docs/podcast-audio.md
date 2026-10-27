@@ -35,9 +35,26 @@ be edited manually if detection fails. Each failed duration attempt can take
 
 **Keep Full Story Permanently Free** (`permanentlyFree`) is optional and defaults
 to false in the CMS. **Site Settings → General Settings → Supercast Subscription
-URL** (`supercastUrl`) is also optional. These fields only store editorial
-configuration in this change; availability rules and subscription buttons are
-not implemented. The persistent player and RSS continue to use the full audio.
+URL** (`supercastUrl`) is also optional. The latest 12 published episodes play
+in full on the website and appear in RSS.
+Drafts, invalid dates and future publication times are excluded; ties use the
+filename slug in ascending order. Permanently free episodes continue to play
+in full on the website after leaving the rolling window, but leave RSS.
+The configured podcast feed limit does not override this rolling window.
+An episode with invalid enclosure metadata is omitted without backfilling
+from the archive. RSS always uses complete recordings and their byte counts.
+
+Older stories use only `sampleAudio`, `sampleDuration` and `sampleLength` in
+public playback. Missing samples display an unavailable message and never
+fall back to the full recording. The listing, story page and persistent player
+identify samples; archive prompts use a valid HTTP(S) `supercastUrl`, or display
+the coming-soon placeholder when it is absent or invalid.
+
+The site is statically prerendered: rebuild and deploy at scheduled publication
+times and whenever the free window changes. Existing browser sessions keep
+playing their selected track across navigation. This publishing rule does not
+secure stored URLs or revoke an already playing recording. Remove retired full
+MP3s from public R2 separately; this implementation does not alter R2 objects.
 
 ## Cloudflare CORS
 

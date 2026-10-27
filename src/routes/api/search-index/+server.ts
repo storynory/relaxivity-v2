@@ -23,7 +23,7 @@ export const GET: RequestHandler = async () => {
 	const home = await homePageSlug();
 	const groups = await Promise.all(publicCollections().map(async (collection) => {
 		const items = await getAll(collection, (records) =>
-			records.filter((record) => published(record.data))
+			records.filter((record) => published(record.data, collection))
 		);
 		return items.map((item) => {
 			const record = item as unknown as Data;

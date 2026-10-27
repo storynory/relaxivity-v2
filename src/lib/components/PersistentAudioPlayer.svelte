@@ -36,6 +36,7 @@
 			<button type="button" onclick={() => playback.jump(10)} aria-label="Go forward 10 seconds">10 ↷</button>
 		</div>
 		<div class="episode">
+			{#if $playback.track.artwork}<img class="track-artwork" src={$playback.track.artwork} alt="" />{/if}
 			<a href={$playback.track.href}>{$playback.track.title}</a>
 			<div class="timeline">
 				<input type="range" aria-label="Playback position" min="0" max={$playback.duration || 1} step="0.1"
@@ -81,6 +82,7 @@
 	button:hover { color: var(--prime); background: var(--text); }
 	.close { font-size: 1.6rem; border-color: transparent; }
 	.episode { min-width: 0; }
+	.track-artwork { float: left; width: 48px; height: 48px; object-fit: cover; margin-right: 0.75rem; }
 	.episode a { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 	.timeline { display: flex; align-items: center; gap: 0.75rem; }
 	input { flex: 1; min-width: 0; height: 24px; margin: 0; accent-color: var(--accent); }

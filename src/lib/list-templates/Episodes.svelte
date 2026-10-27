@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { ListingData } from './types.ts';
 	import { relationLabel, textField } from '#lib/templates/fields.ts';
+	import { page } from '$app/state';
+	import { compareEpisodes, publicAudio } from '#lib/audio/availability.ts';
+	import EpisodeAudio from '#lib/components/EpisodeAudio.svelte';
 	import Picture from '#lib/components/Picture.svelte';
 
 	let { data }: { data: ListingData } = $props();
-	const episodes = $derived([...data.items].sort((a, b) =>
-		textField(b, 'date').localeCompare(textField(a, 'date'))
-	));
+	const episodes = $derived([...data.items].sort(compareEpisodes));
 </script>
 
 <main>
@@ -15,6 +16,7 @@
 		<p>No published episodes yet.</p>
 	{:else}
 		{#each episodes as episode (String(episode.slug))}
+			{@const audio = publicAudio(episode, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime)}
 			<article>
 				{#if textField(episode, 'featuredImage')}
 					<Picture src={textField(episode, 'featuredImage')} alt={textField(episode, 'featuredImageAlt') || textField(episode, 'title')} sizes="(min-width: 760px) 200px, 100vw" />
@@ -23,10 +25,11 @@
 					<h2><a href={`/${data.collection}/${encodeURIComponent(String(episode.slug))}/`}>{textField(episode, 'title') || String(episode.slug)}</a></h2>
 					<p class="meta">
 						{#if textField(episode, 'date')}<time datetime={textField(episode, 'date')}>{textField(episode, 'date').slice(0, 10)}</time>{/if}
-						{#if textField(episode, 'duration')}<span>{textField(episode, 'duration')}</span>{/if}
+						{#if audio.duration}<span>{audio.duration}</span>{/if}
 						{#if relationLabel(episode.narrator, 'name')}<span>Narrated by {relationLabel(episode.narrator, 'name')}</span>{/if}
 					</p>
 					{#if textField(episode, 'excerpt') || textField(episode, 'description')}<p>{textField(episode, 'excerpt') || textField(episode, 'description')}</p>{/if}
+					<EpisodeAudio {audio} title={textField(episode, 'title')} href={`/${data.collection}/${encodeURIComponent(String(episode.slug))}/`} artwork={textField(episode, 'featuredImage')} />
 				</div>
 			</article>
 		{/each}
