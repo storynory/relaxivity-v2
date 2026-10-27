@@ -1,4 +1,4 @@
-// Sveltia preSave hook: detect MP3 metadata from the episode's audio URL.
+// Sveltia preSave hook: detect independent full-recording and sample MP3 metadata.
 // Works with remote media; manual values are preserved on failure.
 function audioDurationOnce(url, timeoutMs = 25000) {
   return new Promise((resolve, reject) => {
@@ -56,48 +56,72 @@ async function audioLength(url) {
   return Number.isSafeInteger(size) && size > 0 ? size : null;
 }
 
+function hasDuration(value) {
+  return typeof value === 'string' && /^(?:\d{2,}:[0-5]\d|\d{2,}):[0-5]\d$/.test(value.trim()) &&
+    value.trim().split(':').some((part) => Number(part) > 0);
+}
+
 CMS.registerEventListener({
   name: 'preSave',
   handler: async ({ entry }) => {
     if (entry.get('collection') !== 'podcasts') return;
     const data = entry.get('data');
-    const path = data.get('audio');
-    if (typeof path !== 'string' || !path.trim()) return;
-    let url = path.trim();
-    if (!/^https?:\/\//i.test(url)) {
-      try {
+    let settings;
+    async function resolveUrl(path) {
+      let url = path.trim();
+      if (!/^https?:\/\//i.test(url)) {
         // This static route uses the existing podcast settings reader at build time.
-        const response = await fetch('/admin/podcast-settings.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
-        if (!response.ok) throw new Error('Podcast settings unavailable');
-        const { audioBaseUrl } = await response.json();
+        // Share one settings request between the two relative audio paths.
+        settings ??= fetch('/admin/podcast-settings.json', { cache: 'no-store', signal: AbortSignal.timeout(10000) }).then((response) => {
+          if (!response.ok) throw new Error('Podcast settings unavailable');
+          return response.json();
+        });
+        const { audioBaseUrl } = await settings;
         if (typeof audioBaseUrl !== 'string' || !/^https?:\/\//i.test(audioBaseUrl.trim())) throw new Error('Audio base URL missing');
         url = new URL(url.replace(/^\/+/, ''), `${audioBaseUrl.trim().replace(/\/+$/, '')}/`).href;
-        if (!/^https?:\/\//i.test(url)) return;
-      } catch (error) {
-        console.warn('Could not resolve audio path; keeping existing metadata.', error);
-        return;
       }
+      if (!/^https?:\/\//i.test(url)) throw new Error('Invalid audio URL');
+      return url;
     }
 
     let updated = data;
-    try {
-      const seconds = await audioDuration(url);
-      updated = updated.set('duration', formatDuration(seconds));
-    } catch (error) {
-      console.warn('Could not detect audio duration; keeping existing value.', error);
-    }
+    for (const [audioField, lengthField, durationField] of [
+      ['audio', 'length', 'duration'],
+      ['sampleAudio', 'sampleLength', 'sampleDuration']
+    ]) {
+      const path = data.get(audioField);
+      if (typeof path !== 'string' || !path.trim()) continue;
+      const existing = Number(data.get(lengthField));
+      const needsLength = !Number.isSafeInteger(existing) || existing <= 0;
+      const needsDuration = !hasDuration(data.get(durationField));
+      if (!needsLength && !needsDuration) continue;
 
-    // Preserve an existing byte count (including manually corrected values).
-    // When empty, retrieve the exact Content-Length; never estimate a size.
-    const existing = Number(data.get('length'));
-    if (!Number.isSafeInteger(existing) || existing <= 0) {
-      let size = null;
+      let url;
       try {
-        size = await audioLength(url);
+        url = await resolveUrl(path);
       } catch (error) {
-        console.warn('Could not retrieve audio file size; keeping existing value.', error);
+        console.warn(`Could not resolve ${audioField}; keeping existing metadata.`, error);
+        continue;
       }
-      if (size !== null) updated = updated.set('length', size);
+
+      if (needsDuration) {
+        try {
+          const seconds = await audioDuration(url);
+          updated = updated.set(durationField, formatDuration(seconds));
+        } catch (error) {
+          console.warn(`Could not detect ${durationField}; keeping existing value.`, error);
+        }
+      }
+
+      // Preserve valid manual values; retrieve exact Content-Length, never estimates.
+      if (needsLength) {
+        try {
+          const size = await audioLength(url);
+          if (size !== null) updated = updated.set(lengthField, size);
+        } catch (error) {
+          console.warn(`Could not retrieve ${lengthField}; keeping existing value.`, error);
+        }
+      }
     }
     return updated;
   }

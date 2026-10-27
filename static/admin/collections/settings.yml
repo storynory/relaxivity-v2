@@ -31,6 +31,12 @@ collections:
             widget: text
             required: false
 
+          - name: supercastUrl
+            label: Supercast Subscription URL
+            widget: string
+            required: false
+            hint: Link to the Relaxivity paid subscription. Leave empty until configured.
+
           - name: siteLogo
             label: Site Logo
             widget: image

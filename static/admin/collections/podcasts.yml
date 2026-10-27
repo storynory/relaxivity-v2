@@ -68,24 +68,51 @@ collections:
         min: 1
 
       - name: audio
-        label: Audio path
+        label: Full Story Recording — R2 Path or URL
         widget: string
         required: false
-        hint: Path relative to the podcast Audio base URL, such as episodes/story.mp3. Existing full HTTPS URLs also work. Clear Audio File Length when replacing a file to retrieve its new size.
+        hint: Path relative to the podcast Audio base URL, such as episodes/story.mp3. Full HTTPS URLs also work. Clear Full Story File Size and Full Story Duration when replacing the recording so its metadata can be refreshed.
 
       - name: length
-        label: Audio File Length (bytes)
+        label: Full Story File Size (bytes)
         widget: number
         value_type: int
         min: 0
         required: false
-        hint: Exact size in bytes retrieved from the audio host. May be entered or corrected manually if unavailable.
+        hint: Exact size of the complete recording in bytes, retrieved from the audio host. Clear this when replacing the recording so the metadata can be refreshed. May be entered or corrected manually if unavailable.
 
       - name: duration
-        label: Running Time
+        label: Full Story Duration
         widget: string
         required: false
-        hint: Use HH:MM:SS or MM:SS, such as 00:12:35.
+        hint: Running time of the complete recording in MM:SS or HH:MM:SS. Detected automatically when empty or invalid; may be entered manually. Clear this when replacing the recording.
+
+      - name: sampleAudio
+        label: Short Audio Sample — R2 Path or URL
+        widget: string
+        required: false
+        hint: Path relative to the podcast Audio base URL, such as samples/lanval-sample-v4n8r2tz.mp3. Full HTTPS URLs also work. This is a short public preview, not the complete story. Clear Sample File Size and Sample Duration when replacing the sample so its metadata can be refreshed.
+
+      - name: sampleLength
+        label: Sample File Size (bytes)
+        widget: number
+        value_type: int
+        min: 0
+        required: false
+        hint: Exact size of the sample MP3. Clear this when replacing the sample so the metadata can be refreshed.
+
+      - name: sampleDuration
+        label: Sample Duration
+        widget: string
+        required: false
+        hint: Running time of the sample in MM:SS or HH:MM:SS. Detected automatically when empty or invalid; may be entered manually. Clear this when replacing the sample.
+
+      - name: permanentlyFree
+        label: Keep Full Story Permanently Free
+        widget: boolean
+        required: false
+        default: false
+        hint: Keep the complete recording publicly available on the website after it leaves the latest 12 free podcast episodes.
 
       - name: author
         label: Writer
