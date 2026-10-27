@@ -6,14 +6,14 @@ description: A mellow and sad story of a Samurai warrior who falls in love.
 date: 2026-10-18T14:51:00
 episodeNumber: null
 seasonNumber: null
-audio: https://traffic.libsyn.com/relaxivity/green-willow-mix-relaxivity.mp3
-length: 13441625
+audio: green-willow-mix-relaxivity.mp3
+length: 20904757
 duration: '00:12:52'
 author: bertie
 narrator: jana
 presenter: ''
 producer: bertie
-featuredImage: /uploads/green-willow-videoart.webp
+featuredImage: /uploads/willow-wood-cut.jpg
 featuredImageAlt: A Japanese Willow Tree
 category: japan
 tags: []

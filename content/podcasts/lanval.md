@@ -13,7 +13,7 @@ author: bertie
 narrator: jana
 presenter: ''
 producer: bertie
-featuredImage: /uploads/lanval-videoart.webp
+featuredImage: /uploads/lanval-romance-fairy-queen.jpg
 featuredImageAlt: Lanval and fairy queen
 category: england
 tags:

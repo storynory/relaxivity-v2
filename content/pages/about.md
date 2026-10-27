@@ -3,7 +3,6 @@ title: About
 excerpt: We do a lot around here.
 layout: standard
 blocks:
-  - china
   - about-panel
 description: Welcome to our new website.
 ---
