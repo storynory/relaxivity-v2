@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	if (!collection) error(404, 'Collection not found');
 	if (collection === 'pages' && params.slug === await homePageSlug()) error(404, 'Visit the homepage at /');
 	const item = await getOne(collection, params.slug);
-	if (!item || !published(item as unknown as Record<string, unknown>)) {
+	if (!item || !published(item as unknown as Record<string, unknown>, collection)) {
 		error(404, 'Content not found');
 	}
 	const record = item as unknown as Record<string, unknown>;

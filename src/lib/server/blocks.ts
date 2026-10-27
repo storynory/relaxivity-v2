@@ -37,8 +37,8 @@ function slugOf(value: unknown): string {
 	return '';
 }
 
-function matches(record: Data, block: Data): boolean {
-	if (!published(record)) return false;
+function matches(record: Data, block: Data, collection: string): boolean {
+	if (!published(record, collection)) return false;
 	const category = slugOf(block.category);
 	if (category && slugOf(record.category) !== category) return false;
 	const tags = Array.isArray(block.tags) ? block.tags.map(slugOf).filter(Boolean) : [];
@@ -81,7 +81,7 @@ export async function buildBlock(slug: string): Promise<RenderedBlock | null> {
 			const selectedSlug = value(choice, 'slug');
 			if (!collection || !selectedSlug) continue;
 			const item = await getOne(collection, selectedSlug);
-			if (item && published(item as unknown as Data)) {
+			if (item && published(item as unknown as Data, collection)) {
 				records.push(toItem(item as unknown as Data, collection));
 			}
 			if (records.length >= limit) break;
@@ -90,7 +90,7 @@ export async function buildBlock(slug: string): Promise<RenderedBlock | null> {
 		const collection = publicCollection(value(settings, 'collection'));
 		if (collection) {
 			const all = await getAll(collection, (items) => items
-				.filter((item) => matches(item.data, settings))
+				.filter((item) => matches(item.data, settings, collection))
 				.filter((item) => type !== 'featured' || item.data.featured === true)
 				.sort((a, b) => value(b.data, 'date').localeCompare(value(a.data, 'date')))
 				.slice(0, limit));

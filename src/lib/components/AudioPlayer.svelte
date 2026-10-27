@@ -2,12 +2,14 @@
 	import { getContext } from 'svelte';
 	import { page } from '$app/state';
 	import { formatTime, playbackKey, type Playback } from '#lib/audio/playback.ts';
-	let { src, title = 'Audio' }: { src: string; title?: string } = $props();
+	let { src, title = 'Audio', href, artwork = '', duration = '' }: {
+		src: string; title?: string; href?: string; artwork?: string; duration?: string;
+	} = $props();
 	const playback = getContext<Playback>(playbackKey);
 	const active = $derived($playback.track?.src === src);
 	function toggle(event: MouseEvent) {
 		if (active && $playback.playing) playback.pause();
-		else playback.start({ src, title, href: page.url.pathname }, event.currentTarget as HTMLButtonElement);
+		else playback.start({ src, title, href: href ?? page.url.pathname, artwork, duration }, event.currentTarget as HTMLButtonElement);
 	}
 </script>
 

@@ -67,3 +67,30 @@ test('failed playback shows a recoverable error and controllers have independent
 	assert.equal(get(createPlayback()).track, null);
 	assert.equal(get(createPlayback()).visible, false);
 });
+
+test('full and sample switches use their own source and metadata; navigation does not reset playback', async () => {
+	const { playback, audio, sourceChanges } = setup();
+	audio.duration = NaN;
+	const full = { ...first, duration: '01:00:00', artwork: '/story.webp' };
+	const sample = { ...full, src: '/samples/one.mp3', title: 'One — Audio Sample', duration: '00:01:30' };
+	await playback.start(full);
+	assert.equal(get(playback).duration, 3600);
+	await playback.start(sample);
+	assert.equal(audio.src, sample.src);
+	assert.equal(get(playback).duration, 90);
+	assert.equal(get(playback).track?.title, 'One — Audio Sample');
+	assert.equal(get(playback).track?.artwork, '/story.webp');
+	// A route consumer subscribes/unsubscribes while the layout controller stays mounted.
+	audio.duration = 90;
+	playback.seek(25);
+	const unsubscribe = playback.subscribe(() => {});
+	unsubscribe();
+	assert.equal(get(playback).playing, true);
+	assert.equal(get(playback).current, 25);
+	await playback.start(sample);
+	assert.equal(audio.currentTime, 25);
+	assert.equal(sourceChanges(), 2);
+	await playback.start(full);
+	assert.equal(audio.src, full.src);
+	assert.equal(get(playback).current, 0);
+});

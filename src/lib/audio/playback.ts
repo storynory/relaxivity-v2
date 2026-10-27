@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 
 export const playbackKey = Symbol('playback');
 
-export type Track = { src: string; title: string; href: string };
+export type Track = { src: string; title: string; href: string; artwork?: string; duration?: string };
 type PlaybackState = {
 	track: Track | null;
 	visible: boolean;
@@ -52,7 +52,7 @@ export function createPlayback() {
 			origin = trigger;
 			if (state.track?.src !== track.src) {
 				pause();
-				update({ track, current: 0, duration: 0, status: '' });
+				update({ track, current: 0, duration: durationSeconds(track.duration), status: '' });
 				audio.src = track.src;
 			} else {
 				update({ track });
@@ -77,7 +77,7 @@ export function createPlayback() {
 			update({
 				playing: !audio.paused && !audio.ended,
 				current: Number.isFinite(audio.currentTime) ? audio.currentTime : 0,
-				duration: Number.isFinite(audio.duration) ? audio.duration : 0
+				duration: Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : durationSeconds(state.track?.duration)
 			});
 		},
 		fail() { update({ playing: false, status: 'Audio unavailable. Please try again.' }); }
@@ -93,4 +93,9 @@ export function formatTime(seconds: number) {
 	return minutes >= 60
 		? `${Math.floor(minutes / 60)}:${(minutes % 60).toString().padStart(2, '0')}:${secs}`
 		: `${minutes}:${secs}`;
+}
+
+function durationSeconds(value?: string): number {
+	if (!value || !/^\d{1,3}:\d{2}(?::\d{2})?$/.test(value)) return 0;
+	return value.split(':').reduce((seconds, part) => seconds * 60 + Number(part), 0);
 }

@@ -1,5 +1,6 @@
 import type { FolderCollectionName } from '#lib/server/content.ts';
 import { readAll, readDoc } from '#lib/content/read.ts';
+import { compareEpisodes } from '#lib/audio/availability.ts';
 import { published } from '#lib/server/public-routes.ts';
 
 export const xml = (value: unknown): string =>
@@ -22,8 +23,8 @@ export async function feedData(collection: FolderCollectionName, requestOrigin: 
 	const siteUrl = typeof settings.siteUrl === 'string' ? settings.siteUrl.trim() : '';
 	const base = new URL(siteUrl || requestOrigin);
 	const records = (await readAll(collection))
-		.filter((record) => published(record.data) && record.meta.slug && publicationDate(record.data.date))
-		.sort((a, b) => new Date(String(b.data.date)).getTime() - new Date(String(a.data.date)).getTime());
+		.filter((record) => published(record.data, collection) && record.meta.slug && publicationDate(record.data.date))
+		.sort((a, b) => compareEpisodes({ ...a.data, slug: a.meta.slug }, { ...b.data, slug: b.meta.slug }));
 	return { settings, base, records };
 }
 

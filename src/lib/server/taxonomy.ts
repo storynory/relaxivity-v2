@@ -43,7 +43,7 @@ export async function archive(kind: TaxonomyKind, slug: string) {
   });
   const content = await Promise.all(eligible.map(async (name) => {
     const items = await getAll(name, (records) => records.filter(({ data }) => {
-      if (!published(data)) return false;
+      if (!published(data, name)) return false;
       return kind === 'category'
         ? included.has(slugOf(data.category))
         : Array.isArray(data.tags) && data.tags.some((value) => included.has(slugOf(value)));

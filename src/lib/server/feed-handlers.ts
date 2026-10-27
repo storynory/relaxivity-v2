@@ -1,4 +1,5 @@
 import { collections } from '#lib/generated/collections.ts';
+import { latestFreeEpisodes } from '#lib/audio/availability.ts';
 import { audioUrl } from '#lib/audio/url.ts';
 import { renderMarkdown } from '#lib/content/render.ts';
 import type { FolderCollectionName } from '#lib/server/content.ts';
@@ -41,7 +42,6 @@ export const podcastFeed = async (collection: FolderCollectionName, origin: stri
 		audioBaseUrl?: string;
 	} | null;
 	if (options?.enabled === false) return new Response('Podcast feed disabled', { status: 404 });
-	const limit = Number.isInteger(options?.limit) && (options?.limit ?? 0) > 0 ? options!.limit! : 20;
 	const title = options?.title || String(settings.siteName ?? 'Podcast');
 	const description = options?.description || String(settings.description ?? settings.tagline ?? '');
 	const language = String(settings.language ?? 'en-GB');
@@ -60,12 +60,13 @@ export const podcastFeed = async (collection: FolderCollectionName, origin: stri
 		channel.push(`<itunes:image href="${xml(image)}"/>`);
 		channel.push(`<image><url>${xml(image)}</url><title>${xml(title)}</title><link>${xml(absoluteUrl('/', base))}</link></image>`);
 	}
+	const freeSlugs = new Set(latestFreeEpisodes(records.map(({ meta, data }) => ({ ...data, slug: meta.slug }))).map(({ slug }) => slug));
 	const items = records
+		.filter(({ meta }) => freeSlugs.has(meta.slug))
 		.filter(({ data }) => {
 			if (!/^https:\/\//i.test(audioUrl(data.audio, options?.audioBaseUrl))) return false;
 			return typeof data.length === 'number' && Number.isSafeInteger(data.length) && data.length > 0;
 		})
-		.slice(0, limit)
 		.map(({ meta, data }) => {
 			const link = absoluteUrl(`/${collection}/${encodeURIComponent(meta.slug!)}/`, base);
 			const description = typeof data.description === 'string' ? data.description : '';

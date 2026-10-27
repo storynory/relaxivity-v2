@@ -34,7 +34,7 @@ await write('posts', 'newer', { title: 'Newer', date: '2026-02-01', category: 't
 await write('posts', 'draft', { title: 'Draft', date: '2026-03-01', draft: true, category: 'topic', tags: ['one', 'two'], featured: true });
 await write('posts', 'undated', { title: 'Undated', category: 'topic', tags: ['two'], featured: true });
 await write('posts', 'dangling', { title: 'Dangling', category: 'missing', tags: ['missing'] });
-await write('podcasts', 'episode', { title: 'Episode', narrator: 'reader' }, 'Episode body');
+await write('podcasts', 'episode', { title: 'Episode', date: '2026-01-01', narrator: 'reader' }, 'Episode body');
 await write('pages', 'home', { title: 'Home' });
 await write('pages', 'about', { title: 'About' });
 await write('pages', 'draft', { title: 'Draft', draft: true });
@@ -134,4 +134,38 @@ test('podcast RSS resolves R2 paths and retains full URLs, byte lengths and publ
 	assert.match(feed, /<itunes:duration>01:30<\/itunes:duration>/);
 	assert.doesNotMatch(feed, /<title>(Draft audio|No size)<\/title>/);
 	assert.deepEqual(await (await podcastSettings()).json(), { audioBaseUrl: 'https://audio.relaxivity.app/' });
+});
+
+test('website and RSS share the rolling twelve, without backfilling invalid enclosures or permanent archive stories', async () => {
+	const { load: detail } = await import('../../routes/[collection]/[slug]/+page.server.ts');
+	const { publicAudio } = await import('../audio/availability.ts');
+	const { publicEntries } = await import('./public-routes.ts');
+	for (let i = 1; i <= 14; i++) {
+		await write('podcasts', `rolling-${i}`, {
+			title: `Rolling ${i}`, date: `2026-09-${String(i).padStart(2, '0')}`, audio: `full-${i}.mp3`,
+			length: i === 14 ? 0 : 10000, duration: '01:00:00', sampleAudio: `sample-${i}.mp3`,
+			sampleLength: 100, sampleDuration: '00:01:00', permanentlyFree: i === 1
+		});
+	}
+	await write('podcasts', 'future', { title: 'Future', date: '2999-01-01', audio: 'future.mp3', length: 12345 });
+	const layout = (await loadLayout({} as Parameters<typeof loadLayout>[0]))!;
+	assert.equal(layout.supercastUrl, '');
+	assert.equal(layout.freeEpisodeSlugs.length, 12);
+	assert.ok(!layout.freeEpisodeSlugs.includes('rolling-1'));
+	const listing = await load({ params: { collection: 'podcasts' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };
+	assert.ok(!listing.items.some(({ slug }) => slug === 'future'));
+	assert.ok(!(await publicEntries()).some(({ slug }) => slug === 'future'));
+	await assert.rejects(async () => detail({ params: { collection: 'podcasts', slug: 'future' } } as Parameters<typeof detail>[0]), { status: 404 });
+	const archived = await detail({ params: { collection: 'podcasts', slug: 'rolling-2' } } as Parameters<typeof detail>[0]) as { item: Record<string, unknown> };
+	const selection = publicAudio(archived.item, layout.freeEpisodeSlugs, layout.audioBaseUrl, layout.audioPublicationTime);
+	assert.equal(selection.src, 'https://audio.relaxivity.app/sample-2.mp3');
+	assert.equal(selection.duration, '00:01:00');
+	assert.equal(selection.length, 100);
+	const permanent = listing.items.find(({ slug }) => slug === 'rolling-1')!;
+	assert.equal(publicAudio(permanent, layout.freeEpisodeSlugs, layout.audioBaseUrl, layout.audioPublicationTime).playbackType, 'full');
+	const feed = await (await podcastFeed('podcasts', 'https://example.com')).text();
+	assert.equal((feed.match(/<item>/g) ?? []).length, 11);
+	assert.doesNotMatch(feed, /sample-|full-[12]\.mp3|future\.mp3|full-14\.mp3|<title>R2<\/title>/);
+	assert.match(feed, /full-3\.mp3" length="10000"/);
+	assert.match(feed, /<itunes:duration>01:00:00<\/itunes:duration>/);
 });

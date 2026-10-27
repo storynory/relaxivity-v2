@@ -1,7 +1,8 @@
 import { collections } from '#lib/generated/collections.ts';
 import { publicCollections } from '#lib/server/public-routes.ts';
 import { getOne } from '#lib/server/content.ts';
-import { readDoc } from '#lib/content/read.ts';
+import { latestFreeEpisodes, subscriptionUrl } from '#lib/audio/availability.ts';
+import { readAll, readDoc } from '#lib/content/read.ts';
 import type { LayoutServerLoad } from './$types';
 
 const defaults = {
@@ -49,7 +50,14 @@ export const load: LayoutServerLoad = async () => {
 	const preset = await getOne('typography', typographySlug);
 	if (!preset) throw new Error(`Typography preset "${typographySlug}" was not found in content/typography`);
 
+	const audioPublicationTime = Date.now();
+	const freeEpisodeSlugs = latestFreeEpisodes((await readAll('podcasts')).map(({ data, meta }) =>
+		({ ...data, slug: meta.slug })), audioPublicationTime).map(({ slug }) => slug!);
+
 	return {
+		freeEpisodeSlugs,
+		audioPublicationTime,
+		supercastUrl: subscriptionUrl(settings.supercastUrl),
 		typography: {
 			bodyFont: fontStack(preset.bodyFont, defaultTypography.bodyFont),
 			headingFont: fontStack(preset.headingFont, defaultTypography.headingFont),
