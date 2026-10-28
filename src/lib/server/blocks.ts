@@ -1,5 +1,7 @@
 import { getAll, getOne } from '#lib/server/content.ts';
 import { published, publicCollection } from '#lib/server/public-routes.ts';
+import { renderMarkdown } from '#lib/content/render.ts';
+import { compareEpisodes } from '#lib/audio/availability.ts';
 
 // Blocks contain presentation settings; content remains in its own collection.
 export type BlockItem = {
@@ -16,6 +18,7 @@ export type RenderedBlock = {
 	type: string;
 	heading: string;
 	introduction: string;
+	introductionHtml: string;
 	image: string;
 	imageAlt: string;
 	imagePosition: string;
@@ -92,7 +95,9 @@ export async function buildBlock(slug: string): Promise<RenderedBlock | null> {
 			const all = await getAll(collection, (items) => items
 				.filter((item) => matches(item.data, settings, collection))
 				.filter((item) => type !== 'featured' || item.data.featured === true)
-				.sort((a, b) => value(b.data, 'date').localeCompare(value(a.data, 'date')))
+				.sort((a, b) => collection === 'podcasts'
+					? compareEpisodes({ ...a.data, slug: a.meta.slug }, { ...b.data, slug: b.meta.slug })
+					: value(b.data, 'date').localeCompare(value(a.data, 'date')))
 				.slice(0, limit));
 			records = all.map((item) => toItem(item as unknown as Data, collection));
 		}
@@ -102,6 +107,7 @@ export async function buildBlock(slug: string): Promise<RenderedBlock | null> {
 		type,
 		heading: value(settings, 'heading') || value(settings, 'title'),
 		introduction: value(settings, 'introduction'),
+		introductionHtml: await renderMarkdown(value(settings, 'introduction')),
 		image: value(settings, 'image'),
 		imageAlt: value(settings, 'imageAlt'),
 		imagePosition: value(settings, 'imagePosition'),

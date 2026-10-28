@@ -24,7 +24,7 @@ collections:
         required: false
       - name: introduction
         label: Introduction
-        widget: text
+        widget: richtext
         required: false
       - name: image
         label: Image (Hero / Panel)

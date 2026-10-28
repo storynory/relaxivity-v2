@@ -96,6 +96,38 @@ test('selected blocks retain explicit ordering, legacy references, publication c
 	assert.deepEqual((await buildBlock('selected'))?.items.map((item) => item.slug), ['older']);
 });
 
+test('episode blocks sort YAML timestamps and string dates newest first before limiting', async () => {
+	for (const [slug, date] of [
+		['order-a-oldest', '2025-01-01T10:00:00'],
+		['order-z-newest', '2025-03-01T10:00:00'],
+		['order-m-middle', '"2025-02-01T10:00:00"']
+	]) {
+		await fs.writeFile(path.join(root, 'content/podcasts', `${slug}.md`),
+			`---\ntitle: ${slug}\ndate: ${date}\nfeatured: true\ncategory: topic\n---\n`);
+	}
+	for (const type of ['latest', 'featured']) {
+		await write('blocks', `episode-order-${type}`, {
+			title: 'Episodes', type, collection: 'podcasts', category: 'topic', limit: 2
+		});
+		assert.deepEqual((await buildBlock(`episode-order-${type}`))?.items.map((item) => item.slug),
+			['order-z-newest', 'order-m-middle']);
+	}
+});
+
+test('block introductions render rich text, plain text and missing values', async () => {
+	for (const type of ['panel', 'hero', 'latest']) {
+		await write('blocks', `intro-${type}`, {
+			title: 'Introduction', type,
+			introduction: 'Read [our stories](/posts/).\n\n**Welcome**'
+		});
+		assert.equal((await buildBlock(`intro-${type}`))?.introductionHtml,
+			'<p>Read <a href="/posts/">our stories</a>.</p>\n<p><strong>Welcome</strong></p>\n');
+	}
+	await write('blocks', 'intro-plain', { title: 'Plain', type: 'panel', introduction: 'Welcome' });
+	assert.equal((await buildBlock('intro-plain'))?.introductionHtml, '<p>Welcome</p>\n');
+	assert.equal((await buildBlock('selected'))?.introductionHtml, '');
+});
+
 test('listings exclude drafts and the homepage while retaining resolved narrator data', async () => {
 	// The route only reads params; SvelteKit supplies the remaining event fields in production.
 	const pages = await load({ params: { collection: 'pages' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };

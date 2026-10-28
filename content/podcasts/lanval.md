@@ -9,6 +9,10 @@ seasonNumber: null
 audio: lanval-relaxivity.mp3
 length: 30926829
 duration: '00:31:37'
+sampleAudio: samples/lanval-sample.mp3
+sampleLength: 6568981
+sampleDuration: '00:04:11'
+permanentlyFree: false
 author: bertie
 narrator: jana
 presenter: ''

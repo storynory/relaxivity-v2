@@ -9,7 +9,7 @@
 		<div class="panel-layout" class:image-left={block.imagePosition === 'left'}>
 			<div class="panel-text">
 				{#if block.heading}<h2>{block.heading}</h2>{/if}
-				{#if block.introduction}<p class="intro">{block.introduction}</p>{/if}
+				{#if block.introductionHtml}<div class="intro">{@html block.introductionHtml}</div>{/if}
 				{#if block.buttonText && block.buttonUrl}
 					<p><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
 				{/if}
@@ -22,7 +22,7 @@
 		</div>
 	{:else}
 	{#if block.heading}<h2>{block.heading}</h2>{/if}
-	{#if block.introduction}<p class="intro">{block.introduction}</p>{/if}
+	{#if block.introductionHtml}<div class="intro">{@html block.introductionHtml}</div>{/if}
 	{#if block.type === 'hero'}
 		{#if block.image}
 			<Picture src={block.image} alt={block.imageAlt} sizes="(min-width: 900px) 900px, 100vw" priority="high" />

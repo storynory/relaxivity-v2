@@ -4,15 +4,17 @@ import { renderMarkdown } from '#lib/content/render.ts';
 import { resolveRelations } from '#lib/content/relations.ts';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
-// Prerender published posts only. Draft previews remain available in local development,
-// but are deliberately not included in the publicly deployed static site.
 export const entries: EntryGenerator = async () => {
 	const posts = await readAll('posts');
-	return posts
+
+	const slugs = posts
 		.filter((post) => post.data.draft !== true && post.meta.slug)
 		.map((post) => ({ slug: post.meta.slug! }));
-};
 
+	console.log('Preview entries:', slugs);
+
+	return slugs;
+};
 export const load: PageServerLoad = async ({ params }) => {
 	const post = await readOne('posts', params.slug);
 

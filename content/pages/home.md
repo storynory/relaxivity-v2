@@ -4,8 +4,5 @@ excerpt: Relaxivity brings you luxurious audio of ancient myths, fables and fant
 seo: null
 layout: wide
 blocks:
-  - welcome-hero
-  - about-panel
   - latest-stories
-  - posts
 ---

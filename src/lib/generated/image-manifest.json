@@ -1,4 +1,17 @@
 {
+  "/uploads/buddha-horse.jpg": {
+    "width": 1184,
+    "height": 1024,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/buddha-horse.640.jpg"
+  },
   "/uploads/buddha-tree-videoart.webp": {
     "width": 600,
     "height": 337,
@@ -9,6 +22,19 @@
       "webp"
     ],
     "fallback": "/optimized/buddha-tree-videoart.600.jpg"
+  },
+  "/uploads/buddha-tree.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/buddha-tree.640.jpg"
   },
   "/uploads/buddha-videoart.webp": {
     "width": 960,
@@ -23,9 +49,9 @@
     ],
     "fallback": "/optimized/buddha-videoart.640.jpg"
   },
-  "/uploads/dragon-horse.png": {
-    "width": 1312,
-    "height": 912,
+  "/uploads/buddha-worship-temple.jpg": {
+    "width": 2360,
+    "height": 1640,
     "sizes": [
       320,
       640,
@@ -34,7 +60,20 @@
     "formats": [
       "webp"
     ],
-    "fallback": "/optimized/dragon-horse.640.jpg"
+    "fallback": "/optimized/buddha-worship-temple.640.jpg"
+  },
+  "/uploads/cleopatra-coverart1.jpg": {
+    "width": 1024,
+    "height": 1024,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/cleopatra-coverart1.640.jpg"
   },
   "/uploads/green-willow-videoart.webp": {
     "width": 960,
@@ -97,19 +136,6 @@
     ],
     "fallback": "/optimized/mattise.640.jpg"
   },
-  "/uploads/monkey-robber-1180x675.jpg.webp": {
-    "width": 1180,
-    "height": 675,
-    "sizes": [
-      320,
-      640,
-      960
-    ],
-    "formats": [
-      "webp"
-    ],
-    "fallback": "/optimized/monkey-robber-1180x675.jpg.640.jpg"
-  },
   "/uploads/music-cropped.png": {
     "width": 988,
     "height": 667,
@@ -148,6 +174,19 @@
       "webp"
     ],
     "fallback": "/optimized/relaxivity3.640.jpg"
+  },
+  "/uploads/sappho-coverart.jpg": {
+    "width": 2000,
+    "height": 2000,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/sappho-coverart.640.jpg"
   },
   "/uploads/vlcsnap-11937.jpg": {
     "width": 1024,
