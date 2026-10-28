@@ -54,7 +54,7 @@
 		<p class="container" role="status">Browser storage is unavailable. Your favourites will be kept for this visit only.</p>
 	{/if}
 	{@render children()}
-	<PersistentAudioPlayer bind:height={playerHeight} />
+	<PersistentAudioPlayer bind:height={playerHeight} publisher={data.siteName} />
 </div>
 
 <style>

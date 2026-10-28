@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import { formatTime, playbackKey, type Playback } from '#lib/audio/playback.ts';
-	let { height = $bindable(0) }: { height?: number } = $props();
+	import { attachMediaSession } from '#lib/audio/media-session.ts';
+	let { height = $bindable(0), publisher = '' }: { height?: number; publisher?: string } = $props();
 	const playback = getContext<Playback>(playbackKey);
 	let audio: HTMLAudioElement;
-	onMount(() => playback.attach(audio));
+	onMount(() => {
+		const detachPlayback = playback.attach(audio);
+		const detachMediaSession = attachMediaSession(playback, audio, publisher);
+		return () => { detachMediaSession(); detachPlayback(); };
+	});
 	function dismiss() {
 		const origin = playback.dismiss();
 		const target = origin ?? document.querySelector<HTMLElement>('main');
@@ -20,6 +25,8 @@
 	onloadedmetadata={() => playback.sync()}
 	ondurationchange={() => playback.sync()}
 	ontimeupdate={() => playback.sync()}
+	onseeked={() => playback.sync()}
+	onratechange={() => playback.sync()}
 	onplay={() => playback.sync()}
 	onpause={() => playback.sync()}
 	onended={() => playback.ended()}

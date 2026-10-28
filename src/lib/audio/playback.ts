@@ -97,6 +97,7 @@ export function createPlayback() {
 			if (state.autoAdvance && state.queueIndex >= 0) return this.next();
 		},
 		toggle() { if (audio?.paused) return play(); pause(); },
+		play,
 		pause,
 		dismiss() {
 			pause();
