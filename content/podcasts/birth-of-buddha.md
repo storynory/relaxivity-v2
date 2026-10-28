@@ -9,20 +9,27 @@ seasonNumber: null
 audio: birth-of-buddha-relaxivity.mp3
 length: 30697239
 duration: '00:19:51'
+sampleAudio: ''
+sampleLength: null
+sampleDuration: ''
+permanentlyFree: false
 author: bertie
 narrator: jana
-presenter: ''
-producer: ''
+presenter: bertie
+producer: jana
 featuredImage: /uploads/buddha-videoart.webp
 featuredImageAlt: Buddha lying down
 category: india
-tags: []
+tags:
+  - buddha
 showOnHome: true
 featured: true
 seo: null
 ---
 
 Hello, this is Jana, and welcome to Relaxivity. In this episode, I will tell you the story of the birth of Buddha. But first, what is the difference between a Buddha and the Buddha?
+
+![Buddha and worshippers ](/uploads/buddha-worship-temple.jpg)
 
 “Buddha” is an ancient Sanskrit word that means “a person who is awake.” A buddha is awake to the true nature of reality, and free from the fog of daily illusions, such as hate, greed, and folly. To become a Buddha, you must reach Nirvana, a transcendent state where there is no sense of self. It is a place of happiness and peace.
 

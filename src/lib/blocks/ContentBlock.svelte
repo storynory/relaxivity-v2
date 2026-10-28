@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { RenderedBlock } from '#lib/server/blocks.ts';
 	import Picture from '#lib/components/Picture.svelte';
+	import FavouriteButton from '#lib/components/FavouriteButton.svelte';
 	let { block }: { block: RenderedBlock } = $props();
 </script>
 
@@ -43,6 +44,7 @@
 					{/if}
 					<h3><a href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}>{item.title}</a></h3>
 					{#if item.excerpt}<p>{item.excerpt}</p>{/if}
+					{#if item.collection === 'podcasts'}<FavouriteButton slug={item.slug} title={item.title} />{/if}
 				</article>
 			{/each}
 		</div>

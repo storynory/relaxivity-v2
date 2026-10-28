@@ -2,15 +2,26 @@
 	import favicon from '#lib/assets/favicon.svg';
 	import SiteHeader from '#lib/components/SiteHeader.svelte';
 	import PersistentAudioPlayer from '#lib/components/PersistentAudioPlayer.svelte';
-	import { setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { createPlayback, playbackKey } from '#lib/audio/playback.ts';
+	import { createFavourites, favouritesKey, favouritesStorageKey } from '#lib/audio/favourites.ts';
 	import '../styles/base.css';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
 	const playback = createPlayback();
 	setContext(playbackKey, playback);
+	const favourites = createFavourites();
+	setContext(favouritesKey, favourites);
 	let playerHeight = $state(0);
+	onMount(() => {
+		favourites.load();
+		const syncFavourites = (event: StorageEvent) => {
+			if (event.key === favouritesStorageKey || event.key === null) favourites.load();
+		};
+		window.addEventListener('storage', syncFavourites);
+		return () => window.removeEventListener('storage', syncFavourites);
+	});
 </script>
 
 <svelte:head>
@@ -39,6 +50,9 @@
 	style:--reading-link={data.colours.readingLink}
 >
 	<SiteHeader siteName={data.siteName} siteLogo={data.siteLogo} items={data.navigation} />
+	{#if $favourites.ready && !$favourites.persistent}
+		<p class="container" role="status">Browser storage is unavailable. Your favourites will be kept for this visit only.</p>
+	{/if}
 	{@render children()}
 	<PersistentAudioPlayer bind:height={playerHeight} />
 </div>

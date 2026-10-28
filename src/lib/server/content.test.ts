@@ -201,3 +201,20 @@ test('website and RSS share the rolling twelve, without backfilling invalid encl
 	assert.match(feed, /full-3\.mp3" length="10000"/);
 	assert.match(feed, /<itunes:duration>01:00:00<\/itunes:duration>/);
 });
+
+test('favourites catalogue excludes unpublished episodes and uses the current full/sample selection', async () => {
+	const { load: favourites } = await import('../../routes/favourites/+page.server.ts');
+	const layout = (await loadLayout({} as Parameters<typeof loadLayout>[0]))!;
+	const data = await favourites({ parent: async () => layout } as Parameters<typeof favourites>[0]) as {
+		episodes: { slug: string; href: string; title: string; audio: { src: string; playbackType: string } }[];
+	};
+	assert.ok(!data.episodes.some(({ slug }) => ['future', 'draft-audio'].includes(slug)));
+	const archived = data.episodes.find(({ slug }) => slug === 'rolling-2')!;
+	assert.equal(archived.audio.playbackType, 'sample');
+	assert.equal(archived.audio.src, 'https://audio.relaxivity.app/sample-2.mp3');
+	assert.equal(archived.href, '/podcasts/rolling-2/');
+	assert.equal(data.episodes.find(({ slug }) => slug === 'rolling-1')?.audio.playbackType, 'full');
+	assert.ok(!('body' in archived));
+	assert.ok(!('html' in archived));
+	assert.doesNotMatch(JSON.stringify(archived), /full-2\.mp3/);
+});

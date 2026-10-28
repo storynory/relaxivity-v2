@@ -20,3 +20,7 @@ items:
     url: /search/
     newTab: false
     children: []
+  - label: Favourites
+    url: /favourites/
+    newTab: false
+    children: []

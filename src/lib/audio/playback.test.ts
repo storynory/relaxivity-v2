@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { get } from 'svelte/store';
-import { createPlayback } from './playback.ts';
+import { autoAdvanceStorageKey, createPlayback } from './playback.ts';
 
 function setup() {
 	const playback = createPlayback();
@@ -11,7 +11,7 @@ function setup() {
 		get src() { return source; },
 		set src(value: string) { source = value; sourceChanges++; this.currentTime = 0; },
 		currentTime: 0, duration: 120, paused: true, ended: false,
-		async play() { this.paused = false; playback.sync(); },
+		async play() { this.paused = false; this.ended = false; playback.sync(); },
 		pause() { this.paused = true; playback.sync(); }
 	};
 	playback.attach(audio as unknown as HTMLAudioElement);
@@ -93,4 +93,100 @@ test('full and sample switches use their own source and metadata; navigation doe
 	await playback.start(full);
 	assert.equal(audio.src, full.src);
 	assert.equal(get(playback).current, 0);
+});
+
+test('queues advance in order on end, stop at the last track, and never loop', async () => {
+	const { playback, audio, sourceChanges } = setup();
+	await playback.startQueue([first, second], 0, undefined, 'Favourites');
+	assert.equal(get(playback).autoAdvance, true);
+	assert.equal(get(playback).queueName, 'Favourites');
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(audio.src, second.src);
+	assert.equal(get(playback).queueIndex, 1);
+	assert.equal(get(playback).playing, true);
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(get(playback).playing, false);
+	assert.equal(sourceChanges(), 2);
+});
+
+test('automatic next can be disabled while manual next and previous still work', async () => {
+	const { playback, audio } = setup();
+	await playback.startQueue([first, second]);
+	playback.setAutoAdvance(false);
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(get(playback).track?.src, first.src);
+	assert.equal(get(playback).playing, false);
+	await playback.next();
+	assert.equal(get(playback).track?.src, second.src);
+	await playback.previous();
+	assert.equal(get(playback).queueIndex, 0);
+	await playback.previous();
+	assert.equal(get(playback).queueIndex, 0);
+});
+
+test('queue snapshots ignore later playlist edits, skip missing audio and support starting partway through', async () => {
+	const { playback, audio } = setup();
+	const playlist = [{ ...first }, { ...second }, { ...first, src: '' }];
+	await playback.startQueue(playlist);
+	playlist[1].title = 'Changed';
+	playlist.reverse();
+	assert.equal(get(playback).queue[1].title, 'Two');
+	await playback.next();
+	assert.equal(audio.src, second.src);
+	assert.equal(get(playback).queue.length, 2);
+	await playback.startQueue([{ ...first, src: '' }, first, second], 2);
+	assert.equal(get(playback).queueIndex, 1);
+	assert.equal(get(playback).track?.src, second.src);
+	await playback.startQueue([]);
+	assert.equal(get(playback).track?.src, second.src);
+});
+
+test('single-story playback clears the queue; dismissing never advances it', async () => {
+	const { playback, audio } = setup();
+	await playback.startQueue([first, second]);
+	playback.seek(30);
+	playback.dismiss();
+	assert.equal(audio.paused, true);
+	assert.equal(get(playback).queueIndex, 0);
+	assert.equal(audio.currentTime, 30);
+	await playback.start(first);
+	assert.equal(get(playback).queue.length, 0);
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(audio.src, first.src);
+});
+
+test('a failed automatic next stops with a recoverable status instead of looping', async () => {
+	const { playback, audio } = setup();
+	await playback.startQueue([first, second]);
+	audio.play = async () => { throw new Error('Playback blocked'); };
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(get(playback).queueIndex, 1);
+	assert.equal(get(playback).playing, false);
+	assert.match(get(playback).status, /Unable to play/);
+});
+
+test('automatic next preference persists, without restoring playback on reload', () => {
+	const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+	const values = new Map<string, string>();
+	Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: {
+		getItem: (key: string) => values.get(key) ?? null,
+		setItem: (key: string, value: string) => values.set(key, value)
+	} });
+	try {
+		const { playback } = setup();
+		playback.setAutoAdvance(false);
+		assert.equal(values.get(autoAdvanceStorageKey), 'false');
+		const reloaded = setup().playback;
+		assert.equal(get(reloaded).autoAdvance, false);
+		assert.equal(get(reloaded).track, null);
+		assert.equal(get(reloaded).queue.length, 0);
+	} finally {
+		if (descriptor) Object.defineProperty(globalThis, 'localStorage', descriptor);
+		else Reflect.deleteProperty(globalThis, 'localStorage');
+	}
 });

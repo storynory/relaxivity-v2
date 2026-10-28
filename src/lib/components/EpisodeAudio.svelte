@@ -2,13 +2,15 @@
 	import { page } from '$app/state';
 	import type { publicAudio } from '#lib/audio/availability.ts';
 	import AudioPlayer from './AudioPlayer.svelte';
+	import FavouriteButton from './FavouriteButton.svelte';
 
-	let { audio, title, href, artwork = '' }: {
-		audio: ReturnType<typeof publicAudio>; title: string; href: string; artwork?: string;
+	let { audio, title, href, slug, artwork = '' }: {
+		audio: ReturnType<typeof publicAudio>; title: string; href: string; slug: string; artwork?: string;
 	} = $props();
 </script>
 
 <div class="episode-audio">
+	<FavouriteButton {slug} {title} />
 	<p><strong>{audio.canPlayFullAudio ? 'Full Story · Free' : 'Audio Sample'}</strong></p>
 	{#if audio.src}
 		<AudioPlayer src={audio.src} title={audio.playbackType === 'sample' ? `${title} — Audio Sample` : title}

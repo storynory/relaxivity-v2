@@ -29,7 +29,7 @@
 						{#if relationLabel(episode.narrator, 'name')}<span>Narrated by {relationLabel(episode.narrator, 'name')}</span>{/if}
 					</p>
 					{#if textField(episode, 'excerpt') || textField(episode, 'description')}<p>{textField(episode, 'excerpt') || textField(episode, 'description')}</p>{/if}
-					<EpisodeAudio {audio} title={textField(episode, 'title')} href={`/${data.collection}/${encodeURIComponent(String(episode.slug))}/`} artwork={textField(episode, 'featuredImage')} />
+					<EpisodeAudio {audio} slug={String(episode.slug)} title={textField(episode, 'title')} href={`/${data.collection}/${encodeURIComponent(String(episode.slug))}/`} artwork={textField(episode, 'featuredImage')} />
 				</div>
 			</article>
 		{/each}

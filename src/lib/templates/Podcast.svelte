@@ -62,7 +62,7 @@
 				{/if}
 			</div>
 			<div class="player">
-				<EpisodeAudio {audio} title={data.title} href={page.url.pathname} {artwork} />
+				<EpisodeAudio {audio} slug={String(item.slug)} title={data.title} href={page.url.pathname} {artwork} />
 			</div>
 		</header>
 

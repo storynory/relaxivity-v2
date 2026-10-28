@@ -102,8 +102,12 @@
 									onclick={closeMenu}
 								>
 									{#if item.label.toLowerCase() === 'search'}
-										<svg aria-hidden="true" class="icon search-icon">
+										<svg aria-hidden="true" class="icon nav-icon">
 											<use href="/icons.svg#search" />
+										</svg>
+									{:else if item.url === '/favourites/'}
+										<svg aria-hidden="true" class="icon nav-icon">
+											<use href="/icons.svg#heart" />
 										</svg>
 									{/if}
 
@@ -295,7 +299,7 @@
 		flex-shrink: 0;
 	}
 
-	.search-icon {
+	.nav-icon {
 		width: 1.1rem;
 		height: 1.1rem;
 	}
