@@ -15,6 +15,10 @@
 	const artworkAlt = $derived(textField(item, 'featuredImageAlt'));
 	const number = $derived(textField(item, 'episodeNumber'));
 	const season = $derived(textField(item, 'seasonNumber'));
+	const category = $derived({ title: relationLabel(item.category, 'title'), slug: relationLabel(item.category, 'slug') });
+	const tags = $derived((Array.isArray(item.tags) ? item.tags : [])
+		.map((tag) => ({ title: relationLabel(tag, 'title'), slug: relationLabel(tag, 'slug') }))
+		.filter((tag) => tag.title && tag.slug));
 	const credits = $derived(
 		[
 			{ role: 'Written by', person: item.author },
@@ -49,6 +53,18 @@
 					<h1>{data.title}</h1>
 					{#if introduction}<p class="introduction">{introduction}</p>{/if}
 					{#if date}<time datetime={date}>{date.slice(0, 10)}</time>{/if}
+					{#if (category.title && category.slug) || tags.length}
+						<nav class="taxonomy" aria-label="Related stories">
+							{#if category.title && category.slug}
+								<div><span>Category</span><a href={`/category/${encodeURIComponent(category.slug)}/`}>{category.title}</a></div>
+							{/if}
+							{#if tags.length}
+								<div><span>Tags</span>
+									{#each tags as tag (tag.slug)}<a href={`/tag/${encodeURIComponent(tag.slug)}/`}>{tag.title}</a>{/each}
+								</div>
+							{/if}
+						</nav>
+					{/if}
 				</div>
 				{#if artwork}
 					<div class="artwork">
@@ -141,6 +157,10 @@
 		margin-block: 0 1.25em;
 	}
 	time { font-size: 0.85em; }
+	.taxonomy, .taxonomy > div { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+	.taxonomy { margin-top: 1.25rem; gap: 0.75rem 1.25rem; }
+	.taxonomy span { font-size: 0.8em; }
+	.taxonomy a { font-size: 0.85em; padding: 0.25em 0.65em; border: 1px solid currentColor; border-radius: var(--radius); }
 	.artwork {
 		min-width: 0;
 		padding: clamp(0.5rem, 1.5vw, 0.9rem);

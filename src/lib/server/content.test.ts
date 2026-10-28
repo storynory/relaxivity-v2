@@ -206,15 +206,50 @@ test('favourites catalogue excludes unpublished episodes and uses the current fu
 	const { load: favourites } = await import('../../routes/favourites/+page.server.ts');
 	const layout = (await loadLayout({} as Parameters<typeof loadLayout>[0]))!;
 	const data = await favourites({ parent: async () => layout } as Parameters<typeof favourites>[0]) as {
-		episodes: { slug: string; href: string; title: string; audio: { src: string; playbackType: string } }[];
+		episodes: { slug: string; href: string; title: string; date: string; audio: { src: string; playbackType: string } }[];
 	};
 	assert.ok(!data.episodes.some(({ slug }) => ['future', 'draft-audio'].includes(slug)));
 	const archived = data.episodes.find(({ slug }) => slug === 'rolling-2')!;
 	assert.equal(archived.audio.playbackType, 'sample');
 	assert.equal(archived.audio.src, 'https://audio.relaxivity.app/sample-2.mp3');
 	assert.equal(archived.href, '/podcasts/rolling-2/');
+	assert.equal(archived.date, '2026-09-02');
 	assert.equal(data.episodes.find(({ slug }) => slug === 'rolling-1')?.audio.playbackType, 'full');
 	assert.ok(!('body' in archived));
 	assert.ok(!('html' in archived));
 	assert.doesNotMatch(JSON.stringify(archived), /full-2\.mp3/);
+});
+
+test('taxonomy archives retain episode metadata, descendant categories and mixed content in newest-first order', async () => {
+	const { archive } = await import('./taxonomy.ts');
+	const { publicAudio } = await import('../audio/availability.ts');
+	await write('categories', 'playlist-parent', { title: 'Parent' });
+	await write('categories', 'playlist-child', { title: 'Child', parent: 'playlist-parent' });
+	await write('tags', 'playlist-tag', { title: 'Playlist tag' });
+	const common = { category: 'playlist-child', tags: ['playlist-tag'], narrator: 'reader' };
+	await write('podcasts', 'taxonomy-z-new', {
+		...common, title: 'Newest', date: '2025-03-01T10:00:00', audio: 'new.mp3',
+		permanentlyFree: true, featuredImage: '/new.jpg', duration: '00:10:00'
+	});
+	// Real CMS YAML timestamps are parsed as Date objects, unlike quoted string dates.
+	await fs.writeFile(path.join(root, 'content/podcasts/taxonomy-a-old.md'),
+		'---\ntitle: Oldest\ndate: 2025-01-01T10:00:00\ncategory: playlist-child\ntags: [playlist-tag]\nnarrator: reader\naudio: old.mp3\nsampleAudio: old-sample.mp3\nsampleDuration: "00:01:00"\nfeaturedImage: /old.jpg\n---\nTranscript');
+	await write('posts', 'taxonomy-post', { ...common, title: 'Post', date: '2025-02-01T10:00:00' });
+	await write('podcasts', 'taxonomy-draft', { ...common, title: 'Draft', date: '2025-04-01', draft: true });
+	await write('podcasts', 'taxonomy-future', { ...common, title: 'Future', date: '2999-01-01' });
+	for (const [kind, slug] of [['category', 'playlist-parent'], ['tag', 'playlist-tag']] as const) {
+		const data = (await archive(kind, slug))!;
+		assert.deepEqual(data.items.map((item) => item.title), ['Newest', 'Post', 'Oldest']);
+		const oldest = data.items[2];
+		assert.equal(oldest.date, '2025-01-01T10:00:00.000Z');
+		assert.equal(oldest.featuredImage, '/old.jpg');
+		assert.equal((oldest.narrator as { name: string }).name, 'Reader');
+		assert.ok(!('html' in oldest));
+		const layout = (await loadLayout({} as Parameters<typeof loadLayout>[0]))!;
+		const audio = publicAudio(oldest, layout.freeEpisodeSlugs, layout.audioBaseUrl, layout.audioPublicationTime);
+		assert.equal(audio.playbackType, 'sample');
+		assert.equal(audio.duration, '00:01:00');
+		assert.match(audio.src, /old-sample\.mp3$/);
+	}
+	assert.equal(await archive('tag', 'missing'), null);
 });

@@ -14,6 +14,7 @@ type PlaybackState = {
 	queue: Track[];
 	queueIndex: number;
 	queueName: string;
+	contextId: string;
 	autoAdvance: boolean;
 };
 
@@ -21,7 +22,7 @@ type PlaybackState = {
 export function createPlayback() {
 	let state: PlaybackState = {
 		track: null, visible: false, playing: false, current: 0, duration: 0, status: '',
-		queue: [], queueIndex: -1, queueName: '', autoAdvance: true
+		queue: [], queueIndex: -1, queueName: '', contextId: '', autoAdvance: true
 	};
 	const store = writable(state);
 	let audio: HTMLAudioElement | undefined;
@@ -73,20 +74,28 @@ export function createPlayback() {
 			} catch { /* The preference can still be changed for this visit. */ }
 			return () => { pause(); audio = undefined; };
 		},
-		start(track: Track, trigger?: HTMLElement) {
+		start(track: Track, trigger?: HTMLElement, contextId = '') {
 			if (!audio) return;
-			update({ queue: [], queueIndex: -1, queueName: '' });
+			update({ queue: [], queueIndex: -1, queueName: '', contextId });
 			return startTrack(track, trigger);
 		},
-		// Any ordered set of playable tracks can use this, including future category playlists.
-		startQueue(tracks: Track[], index = 0, trigger?: HTMLElement, name = 'Playlist') {
+		// Favourites, taxonomy and collection listings share this ordered-track API.
+		startQueue(tracks: Track[], index = 0, trigger?: HTMLElement, name = 'Playlist', contextId = '') {
 			if (!audio || !tracks[index]?.src) return;
 			const queue = tracks.filter((track) => !!track.src).map((track) => ({ ...track }));
 			const queueIndex = tracks.slice(0, index).filter((track) => !!track.src).length;
-			update({ queue, queueIndex, queueName: name });
+			update({ queue, queueIndex, queueName: name, contextId });
 			return startTrack(queue[queueIndex], trigger);
 		},
 		next() { return moveQueue(state.queueIndex + 1); },
+		reorderQueue(tracks: Track[], contextId: string) {
+			if (!state.track || !state.queue.length || state.contextId !== contextId) return;
+			const queue = tracks.filter((track) => !!track.src).map((track) => ({ ...track }));
+			let queueIndex = queue.findIndex((track) => track.src === state.track!.src && track.href === state.track!.href);
+			// A removed favourite can finish before continuing through the newly ordered list.
+			if (queueIndex < 0) { queue.unshift({ ...state.track }); queueIndex = 0; }
+			update({ queue, queueIndex });
+		},
 		previous() { return moveQueue(state.queueIndex - 1); },
 		setAutoAdvance(enabled: boolean) {
 			update({ autoAdvance: enabled });

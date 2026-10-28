@@ -2,19 +2,19 @@
 	import { getContext } from 'svelte';
 	import { page } from '$app/state';
 	import { formatTime, playbackKey, type Playback, type Track } from '#lib/audio/playback.ts';
-	let { src, title = 'Audio', href, artwork = '', duration = '', queue = [] }: {
-		src: string; title?: string; href?: string; artwork?: string; duration?: string; queue?: Track[];
+	let { src, title = 'Audio', href, artwork = '', duration = '', queue = [], contextId = '' }: {
+		src: string; title?: string; href?: string; artwork?: string; duration?: string; queue?: Track[]; contextId?: string;
 	} = $props();
 	const playback = getContext<Playback>(playbackKey);
-	const active = $derived($playback.track?.src === src);
+	const active = $derived($playback.track?.src === src && $playback.contextId === contextId);
 	function toggle(event: MouseEvent) {
 		if (active && $playback.playing) playback.pause();
 		else {
 			const track = { src, title, href: href ?? page.url.pathname, artwork, duration };
 			const index = queue.findIndex((item) => item.src === src && item.href === track.href);
 			const trigger = event.currentTarget as HTMLButtonElement;
-			if ($playback.autoAdvance && index >= 0) playback.startQueue(queue, index, trigger);
-			else playback.start(track, trigger);
+			if ($playback.autoAdvance && index >= 0) playback.startQueue(queue, index, trigger, 'Playlist', contextId);
+			else playback.start(track, trigger, contextId);
 		}
 	}
 </script>

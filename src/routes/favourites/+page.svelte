@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { getContext, tick } from 'svelte';
 	import { favouritesKey, type Favourites } from '#lib/audio/favourites.ts';
-	import type { Track } from '#lib/audio/playback.ts';
+	import { playbackKey, type Playback, type Track } from '#lib/audio/playback.ts';
+	import { orderStories, type StoryOrder } from '#lib/audio/story-order.ts';
+	import StoryOrderSelect from '#lib/components/StoryOrderSelect.svelte';
 	import AutoAdvanceSwitch from '#lib/components/AutoAdvanceSwitch.svelte';
 	import AudioPlayer from '#lib/components/AudioPlayer.svelte';
 	import FavouriteButton from '#lib/components/FavouriteButton.svelte';
@@ -10,8 +12,13 @@
 
 	let { data }: { data: PageData } = $props();
 	const favourites = getContext<Favourites>(favouritesKey);
+	const playback = getContext<Playback>(playbackKey);
+	let order = $state<StoryOrder>('manual');
 	const catalogue = $derived(new Map(data.episodes.map((episode) => [episode.slug, episode])));
-	const saved = $derived($favourites.slugs.map((slug) => ({ slug, episode: catalogue.get(slug) })));
+	const saved = $derived(orderStories($favourites.slugs.map((slug) => {
+		const episode = catalogue.get(slug);
+		return { slug, episode, date: episode?.date, title: episode?.title };
+	}), order));
 	const tracks: Track[] = $derived(saved.flatMap(({ episode }) => episode?.audio.src ? [{
 		src: episode.audio.src,
 		title: episode.audio.playbackType === 'sample' ? `${episode.title} — Audio Sample` : episode.title,
@@ -19,6 +26,10 @@
 		artwork: episode.artwork,
 		duration: episode.audio.duration
 	}] : []));
+	async function changeOrder() {
+		await tick();
+		playback.reorderQueue(tracks, '/favourites/');
+	}
 </script>
 
 <svelte:head>
@@ -36,6 +47,7 @@
 		<p><a href="/podcasts/">Browse stories</a></p>
 	{:else}
 		<div class="playlist-controls">
+			<StoryOrderSelect bind:value={order} manual onchange={changeOrder} />
 			<AutoAdvanceSwitch />
 		</div>
 		<ol>
@@ -52,7 +64,7 @@
 						</div>
 						<div class="actions">
 							{#if episode.audio.src}
-								<AudioPlayer src={episode.audio.src} queue={tracks}
+								<AudioPlayer src={episode.audio.src} queue={tracks} contextId="/favourites/"
 									title={episode.audio.playbackType === 'sample' ? `${episode.title} — Audio Sample` : episode.title}
 									href={episode.href} artwork={episode.artwork} duration={episode.audio.duration} />
 							{:else}<p>Audio is currently unavailable for this story. It will be skipped.</p>{/if}
@@ -62,12 +74,12 @@
 						<p>This saved story is no longer available.</p>
 						<FavouriteButton {slug} title="unavailable story" />
 					{/if}
-					<div class="reorder">
+					{#if order === 'manual'}<div class="reorder">
 						<button type="button" disabled={index === 0} aria-label={`Move ${episode?.title ?? 'unavailable story'} earlier`}
 							onclick={() => favourites.move(slug, -1)}>↑ Earlier</button>
 						<button type="button" disabled={index === saved.length - 1} aria-label={`Move ${episode?.title ?? 'unavailable story'} later`}
 							onclick={() => favourites.move(slug, 1)}>↓ Later</button>
-					</div>
+					</div>{/if}
 				</li>
 			{/each}
 		</ol>

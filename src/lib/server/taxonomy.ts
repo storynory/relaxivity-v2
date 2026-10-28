@@ -3,7 +3,7 @@ import { publicCollections, published } from '#lib/server/public-routes.ts';
 import { collections } from '#lib/generated/collections.ts';
 
 export type TaxonomyKind = 'category' | 'tag';
-export type ArchiveItem = { collection: string; slug: string; title: string; excerpt: string; date: string };
+export type ArchiveItem = Record<string, unknown> & { collection: string; slug: string; title: string; excerpt: string; date: string };
 
 const stringValue = (v: unknown) => typeof v === 'string' ? v : '';
 const slugOf = (v: unknown): string => typeof v === 'string' ? v : v && typeof v === 'object' && 'slug' in v ? stringValue(v.slug) : '';
@@ -49,13 +49,16 @@ export async function archive(kind: TaxonomyKind, slug: string) {
         : Array.isArray(data.tags) && data.tags.some((value) => included.has(slugOf(value)));
     }));
     return items.map((item): ArchiveItem => {
-      const record = item as unknown as Record<string, unknown>;
+      const record = { ...item } as Record<string, unknown>;
+      // Listings need episode metadata and relationships, but not the rendered body.
+      delete record.html;
       return {
+        ...record,
         collection: name,
         slug: item.slug,
         title: stringValue(record.title) || item.slug,
         excerpt: stringValue(record.excerpt) || stringValue(record.description),
-        date: stringValue(record.date)
+        date: record.date instanceof Date ? record.date.toISOString() : stringValue(record.date)
       };
     });
   }));
@@ -63,6 +66,7 @@ export async function archive(kind: TaxonomyKind, slug: string) {
     term: term as unknown as Record<string, unknown>,
     title: term.title,
     description: stringValue(term.description),
-    items: content.flat().sort((a, b) => b.date.localeCompare(a.date))
+    items: content.flat().sort((a, b) => b.date.localeCompare(a.date)
+      || a.collection.localeCompare(b.collection) || a.slug.localeCompare(b.slug))
   };
 }

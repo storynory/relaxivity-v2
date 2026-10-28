@@ -159,6 +159,55 @@ test('single-story playback clears the queue; dismissing never advances it', asy
 	assert.equal(audio.src, first.src);
 });
 
+test('selecting the same story from another list replaces the queue and retains playback position', async () => {
+	const { playback, audio, sourceChanges } = setup();
+	const third = { src: '/three.mp3', title: 'Three', href: '/podcasts/three/' };
+	await playback.startQueue([first, second], 0, undefined, 'Playlist', '/category/one/');
+	playback.seek(30);
+	await playback.startQueue([first, third], 0, undefined, 'Playlist', '/tag/two/');
+	assert.equal(get(playback).contextId, '/tag/two/');
+	assert.equal(sourceChanges(), 1);
+	assert.equal(audio.currentTime, 30);
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(audio.src, third.src);
+	assert.equal(get(playback).contextId, '/tag/two/');
+	await playback.start(first, undefined, '/category/three/');
+	assert.equal(get(playback).queue.length, 0);
+	assert.equal(get(playback).contextId, '/category/three/');
+});
+
+test('changing list order updates what plays next without restarting the current story or touching another list', async () => {
+	const { playback, audio, sourceChanges } = setup();
+	const third = { src: '/three.mp3', title: 'Three', href: '/podcasts/three/' };
+	await playback.startQueue([first, second, third], 1, undefined, 'Playlist', '/podcasts/');
+	playback.seek(42);
+	playback.reorderQueue([third, second, first], '/favourites/');
+	assert.equal(get(playback).queue[2].src, third.src);
+	playback.reorderQueue([third, second, first], '/podcasts/');
+	assert.equal(sourceChanges(), 1);
+	assert.equal(audio.currentTime, 42);
+	assert.equal(audio.paused, false);
+	assert.equal(get(playback).queueIndex, 1);
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(audio.src, first.src);
+});
+
+test('sorting never enables a queue for single-story playback, and a removed favourite can finish first', async () => {
+	const { playback, audio } = setup();
+	await playback.start(first, undefined, '/favourites/');
+	playback.reorderQueue([second, first], '/favourites/');
+	assert.equal(get(playback).queue.length, 0);
+	await playback.startQueue([first, second], 0, undefined, 'Playlist', '/favourites/');
+	playback.reorderQueue([second], '/favourites/');
+	assert.equal(audio.src, first.src);
+	assert.equal(get(playback).queueIndex, 0);
+	audio.ended = true; audio.paused = true;
+	await playback.ended();
+	assert.equal(audio.src, second.src);
+});
+
 test('a failed automatic next stops with a recoverable status instead of looping', async () => {
 	const { playback, audio } = setup();
 	await playback.startQueue([first, second]);
