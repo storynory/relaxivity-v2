@@ -9,6 +9,11 @@
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
+	const usesLora = $derived(
+		[data.typography.bodyFont, data.typography.headingFont].some((stack) =>
+			/^(['"]?)Lora\1\s*(?:,|$)/i.test(stack)
+		)
+	);
 	const playback = createPlayback();
 	setContext(playbackKey, playback);
 	const favourites = createFavourites();
@@ -26,6 +31,9 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	{#if usesLora}
+		<link rel="preload" href="/fonts/lora.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+	{/if}
 	{#each data.feeds as feed (feed.href)}
 		<link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />
 	{/each}

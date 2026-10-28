@@ -103,11 +103,6 @@
 {/if}
 
 <style>
-	input {
-		--text: var(--surface-text);
-		--accent: var(--surface-text);
-		color: var(--text);
-	}
 	form {
 		display: grid;
 		gap: 0.5rem;
@@ -121,11 +116,11 @@
 		border: 1px solid var(--prime);
 		border-radius: var(--radius);
 		font: inherit;
-		background: var(--second);
-		color: var(--text);
+		background: var(--reading-background);
+		color: var(--reading-text);
 	}
 	input:focus-visible {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--reading-link);
 		outline-offset: 2px;
 	}
 	ul {

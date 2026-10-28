@@ -3,7 +3,8 @@
 	src: url('/fonts/lora.woff2') format('woff2');
 	font-style: normal;
 	font-weight: 400 700;
-	font-display: swap;
+	/* Keep the first rendered font when loading is slow, avoiding text reflow. */
+	font-display: optional;
 }
 
 @font-face {
@@ -11,7 +12,7 @@
 	src: url('/fonts/lora-italic.woff2') format('woff2');
 	font-style: italic;
 	font-weight: 400 700;
-	font-display: swap;
+	font-display: optional;
 }
 
 /* A small global design vocabulary. The layout supplies colours from CMS settings. */
