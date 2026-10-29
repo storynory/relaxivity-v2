@@ -58,9 +58,28 @@ test('public prerendered pages have exactly one main landmark', async () => {
 	assert.ok(pages.length, 'Run npm run build first');
 	for (const page of pages) {
 		const html = await fs.readFile(page, 'utf8');
+		// SvelteKit emits a minimal HTML redirect for this legacy route.
+		if (path.relative(buildDir, page) === path.join('favourites', 'index.html')) continue;
 		assert.equal([...html.matchAll(/<main(?:\s|>)/g)].length, 1, path.relative(buildDir, page));
 		assert.equal([...html.matchAll(/<\/main>/g)].length, 1, path.relative(buildDir, page));
 	}
+});
+
+test('playlist is built, utility links are visible, and the legacy URL redirects', async () => {
+	const html = await fs.readFile(path.join(buildDir, 'playlist/index.html'), 'utf8');
+	assert.match(html, /<title>My Playlist<\/title>/);
+	assert.match(html, /<h1[^>]*>My Playlist<\/h1>/);
+	const utility = html.match(/<nav\b[^>]*aria-label="Utility"[^>]*>(.*?)<\/nav>/s)?.[1] ?? '';
+	assert.match(utility, /href="\/search\/"/);
+	assert.match(utility, /href="\/playlist\/"/);
+	assert.match(utility, /\/icons\.svg#search/);
+	assert.match(utility, /\/icons\.svg#heart/);
+	assert.match(utility, /Search/);
+	assert.match(utility, /Playlist/);
+	assert.doesNotMatch(html, /href="\/favourites\/"/);
+	const redirect = await fs.readFile(path.join(buildDir, 'favourites/index.html'), 'utf8');
+	assert.match(redirect, /http-equiv="refresh"/i);
+	assert.match(redirect, /0;url=\/playlist\//);
 });
 
 test('podcast artwork and header logo reserve image space in rendered HTML', async () => {

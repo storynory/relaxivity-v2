@@ -59,7 +59,7 @@
 >
 	<SiteHeader siteName={data.siteName} siteLogo={data.siteLogo} items={data.navigation} />
 	{#if $favourites.ready && !$favourites.persistent}
-		<p class="container" role="status">Browser storage is unavailable. Your favourites will be kept for this visit only.</p>
+		<p class="container" role="status">Browser storage is unavailable. Your playlist will be kept for this visit only.</p>
 	{/if}
 	{@render children()}
 	<PersistentAudioPlayer bind:height={playerHeight} publisher={data.siteName} />

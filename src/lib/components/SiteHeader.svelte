@@ -47,6 +47,18 @@
 <svelte:window onkeydown={dismiss} />
 
 <header>
+	<div class="utility-bar">
+		<nav class="container utility-links" aria-label="Utility">
+			<a href="/search/" onclick={closeMenu}>
+				<svg aria-hidden="true" class="icon nav-icon"><use href="/icons.svg#search" /></svg>
+				Search
+			</a>
+			<a href="/playlist/" onclick={closeMenu}>
+				<svg aria-hidden="true" class="icon nav-icon"><use href="/icons.svg#heart" /></svg>
+				Playlist
+			</a>
+		</nav>
+	</div>
 	<div class="container header-inner">
 		<a class="brand" href="/" onclick={closeMenu}>
 			{#if siteLogo}
@@ -101,16 +113,6 @@
 									rel={item.newTab ? 'noopener noreferrer' : undefined}
 									onclick={closeMenu}
 								>
-									{#if item.label.toLowerCase() === 'search'}
-										<svg aria-hidden="true" class="icon nav-icon">
-											<use href="/icons.svg#search" />
-										</svg>
-									{:else if item.url === '/favourites/'}
-										<svg aria-hidden="true" class="icon nav-icon">
-											<use href="/icons.svg#heart" />
-										</svg>
-									{/if}
-
 									{item.label}
 
 									{#if item.newTab}
@@ -170,6 +172,30 @@
 	header {
 		border-bottom: 1px solid var(--prime);
 	}
+
+	.utility-bar {
+		background: color-mix(in srgb, var(--text) 5%, var(--prime));
+		border-bottom: 1px solid color-mix(in srgb, var(--text) 12%, var(--prime));
+	}
+
+	.utility-links {
+		display: flex;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+		gap: 0 1.25rem;
+		font-size: 0.85em;
+	}
+
+	.utility-links a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		min-height: 44px;
+		color: var(--text);
+		text-decoration: none;
+	}
+
+	.utility-links a:hover { text-decoration: underline; }
 
 	.header-inner {
 		display: flex;
@@ -315,7 +341,11 @@
 	@media (max-width: 48rem) {
 		.header-inner {
 			flex-wrap: wrap;
+			padding-block: 0.75rem;
 		}
+
+		.brand { font-size: 1.25em; }
+		.logo-box { flex-basis: 3.25rem; width: 3.25rem; height: 3.25rem; }
 
 		.menu-toggle {
 			display: inline-flex;
@@ -333,12 +363,12 @@
 
 		/* Hidden from first render: no hydration layout jump */
 
-		nav {
+		#main-navigation {
 			display: none;
 			flex-basis: 100%;
 		}
 
-		nav.open {
+		#main-navigation.open {
 			display: block;
 		}
 

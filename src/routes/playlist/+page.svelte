@@ -13,6 +13,7 @@
 	let { data }: { data: PageData } = $props();
 	const favourites = getContext<Favourites>(favouritesKey);
 	const playback = getContext<Playback>(playbackKey);
+	// Keep the existing internal playback context when changing the public URL.
 	let order = $state<StoryOrder>('manual');
 	const catalogue = $derived(new Map(data.episodes.map((episode) => [episode.slug, episode])));
 	const saved = $derived(orderStories($favourites.slugs.map((slug) => {
@@ -33,17 +34,17 @@
 </script>
 
 <svelte:head>
-	<title>Favourites</title>
+	<title>My Playlist</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <main class="container-narrow">
-	<h1>Favourites</h1>
-	<p>Your personal story playlist, saved on this browser.</p>
+	<h1>My Playlist</h1>
+	<p>Your saved recordings, kept in this browser. Play any story with “Play next story automatically” on to continue through your playlist in the selected order. Turn it off to play just one story.</p>
 	{#if !$favourites.ready}
-		<p role="status">Loading your favourites…</p>
+		<p role="status">Loading your playlist…</p>
 	{:else if !saved.length}
-		<p>No favourites yet. Use the heart button on a story to save it here.</p>
+		<p>Your playlist is empty. Use the heart button on a story to save it here.</p>
 		<p><a href="/podcasts/">Browse stories</a></p>
 	{:else}
 		<div class="playlist-controls">

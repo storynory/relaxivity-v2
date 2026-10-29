@@ -202,8 +202,13 @@ test('website and RSS share the rolling twelve, without backfilling invalid encl
 	assert.match(feed, /<itunes:duration>01:00:00<\/itunes:duration>/);
 });
 
-test('favourites catalogue excludes unpublished episodes and uses the current full/sample selection', async () => {
-	const { load: favourites } = await import('../../routes/favourites/+page.server.ts');
+test('legacy favourites URL permanently redirects to the playlist', async () => {
+	const { load } = await import('../../routes/favourites/+page.server.ts');
+	assert.throws(() => load(), { status: 308, location: '/playlist/' });
+});
+
+test('playlist catalogue excludes unpublished episodes and uses the current full/sample selection', async () => {
+	const { load: favourites } = await import('../../routes/playlist/+page.server.ts');
 	const layout = (await loadLayout({} as Parameters<typeof loadLayout>[0]))!;
 	const data = await favourites({ parent: async () => layout } as Parameters<typeof favourites>[0]) as {
 		episodes: { slug: string; href: string; title: string; date: string; audio: { src: string; playbackType: string } }[];
