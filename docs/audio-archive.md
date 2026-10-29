@@ -15,6 +15,7 @@ links, its own canonical URL, and a sitemap entry. Pagination works without
 JavaScript or query parameters. The order selector and automatic-next playback
 apply to the recordings on the current archive page. My Playlist continues to
 offer a saved list independent of archive pagination.
+The archive selector is labelled “Sort this page” to make that scope explicit.
 
 Feed discovery, episode links, search results and navigation use `/audio/`.
 The collection moved before deployment, so no old podcast URL aliases are kept.
@@ -25,3 +26,5 @@ are visually hidden below 32rem while remaining accessible to screen readers.
 All toolbar links have at least 44px touch targets. A fourth such target fits
 on phone screens; Login is not implemented. The main menu also includes Audio,
 Playlist and Search with icons and visible text at all widths.
+Navigation highlights the current page, or the containing section when viewing
+an episode or a later archive page, with an accessible current-location marker.

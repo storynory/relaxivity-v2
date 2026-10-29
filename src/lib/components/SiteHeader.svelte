@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Picture from '#lib/components/Picture.svelte';
 	import type { NavigationContent } from '#lib/generated/types.ts';
 
@@ -25,6 +26,15 @@
 		'/pages/about/': 'info',
 		'/contact/': 'mail'
 	};
+
+	function current(href?: string) {
+		if (!href?.startsWith('/') || href.startsWith('//')) return undefined;
+		const target = href.split(/[?#]/)[0].replace(/\/+$/, '') || '/';
+		const pathname = page.url.pathname.replace(/\/+$/, '') || '/';
+		if (pathname === target) return 'page';
+		if (target !== '/' && pathname.startsWith(target + '/')) return 'location';
+		return undefined;
+	}
 
 	function closeMenu() {
 		menuOpen = false;
@@ -60,7 +70,7 @@
 	<div class="utility-bar">
 		<nav class="container utility-links" aria-label="Utility">
 			{#each utilityLinks as link}
-				<a href={link.href} onclick={closeMenu}>
+				<a href={link.href} aria-current={current(link.href)} onclick={closeMenu}>
 					<svg aria-hidden="true" class="icon nav-icon"><use href={`/icons.svg#${link.icon}`} /></svg>
 					<span class="utility-label">{link.label}</span>
 				</a>
@@ -118,6 +128,7 @@
 							{#if item.url}
 								<a
 									href={item.url}
+									aria-current={current(item.url)}
 									target={item.newTab ? '_blank' : undefined}
 									rel={item.newTab ? 'noopener noreferrer' : undefined}
 									onclick={closeMenu}
@@ -152,6 +163,7 @@
 										<li>
 											<a
 												href={child.url}
+												aria-current={current(child.url)}
 												target={child.newTab ? '_blank' : undefined}
 												rel={child.newTab ? 'noopener noreferrer' : undefined}
 												onclick={closeMenu}
@@ -209,6 +221,17 @@
 	}
 
 	.utility-links a:hover { text-decoration: underline; }
+
+	.utility-links a[aria-current],
+	.primary a[aria-current] {
+		font-weight: 700;
+		text-decoration: underline;
+		text-decoration-thickness: 0.15em;
+		text-underline-offset: 0.25em;
+	}
+
+	/* The underline remains visible when toolbar text is hidden on phones. */
+	.utility-links a[aria-current] { box-shadow: inset 0 -3px 0 currentColor; }
 
 	/* Four 44px targets fit comfortably on phones, including a future Login link. */
 	@media (max-width: 31.999rem) {

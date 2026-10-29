@@ -47,7 +47,7 @@
 	{/if}
 	{#if items.length}
 		<div class="playlist-settings">
-			<StoryOrderSelect bind:value={order} onchange={changeOrder} />
+			<StoryOrderSelect bind:value={order} label={pagination ? 'Sort this page' : 'Order'} onchange={changeOrder} />
 			{#if hasEpisodes}<AutoAdvanceSwitch />{/if}
 		</div>
 	{/if}

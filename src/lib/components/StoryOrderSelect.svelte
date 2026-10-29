@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { StoryOrder } from '#lib/audio/story-order.ts';
-	let { value = $bindable<StoryOrder>('newest'), manual = false, onchange }: {
-		value?: StoryOrder; manual?: boolean; onchange?: () => void | Promise<void>;
+	let { value = $bindable<StoryOrder>('newest'), manual = false, label = 'Order', onchange }: {
+		value?: StoryOrder; manual?: boolean; label?: string; onchange?: () => void | Promise<void>;
 	} = $props();
 </script>
 
 <label>
-	<span>Order</span>
+	<span>{label}</span>
 	<select value={value} onchange={(event) => { value = event.currentTarget.value as StoryOrder; void onchange?.(); }}>
 		{#if manual}<option value="manual">My order</option>{/if}
 		<option value="newest">Newest first</option>
