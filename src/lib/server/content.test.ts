@@ -38,11 +38,16 @@ await write('audio', 'episode', { title: 'Episode', date: '2026-01-01', narrator
 await write('pages', 'home', { title: 'Home' });
 await write('pages', 'about', { title: 'About' });
 await write('pages', 'draft', { title: 'Draft', draft: true });
-await write('settings', 'general', { homePage: 'home', siteName: 'Test Site', siteLogo: '/logo.svg', podcastFeed: { audioBaseUrl: 'https://audio.relaxivity.app/' } });
+await write('settings', 'general', { homePage: 'home', siteName: 'Test Site', siteLogo: '/logo.svg', podcastFeed: { audioBaseUrl: 'https://audio.relaxivity.app/' }, footer: { description: 'Footer description', copyright: 'Test copyright' } });
 await write('colour-schemes', 'default', { title: 'Default', prime: '#123456', surfaceText: '#102030', readingBackground: '#fff8ee', readingText: 'invalid' });
 await write('typography', 'default', { title: 'System Sans', bodyFont: 'Arial, sans-serif', headingFont: 'Georgia, serif', fontSize: 17, fontScale: 1.2, lineHeight: 1.6 });
 await write('navigation', 'main-menu', { title: 'Main', items: [
 	{ label: 'About', url: '/pages/about/', newTab: false, children: [
+		{ label: 'External', url: 'https://example.com', newTab: true }
+	] }
+] });
+await write('navigation', 'footer', { title: 'Footer', items: [
+	{ label: 'Secondary', url: '/pages/about/', newTab: false, children: [
 		{ label: 'External', url: 'https://example.com', newTab: true }
 	] }
 ] });
@@ -152,6 +157,28 @@ test('root layout exposes branding and nested navigation alongside the selected 
 	assert.deepEqual(data?.navigation[0].children, [
 		{ label: 'External', url: 'https://example.com', newTab: true }
 	]);
+	assert.deepEqual(data?.footer, {
+		description: 'Footer description', copyright: 'Test copyright',
+		items: [{ label: 'Secondary', url: '/pages/about/', newTab: false, children: [
+			{ label: 'External', url: 'https://example.com', newTab: true }
+		] }]
+	});
+});
+
+test('root layout supports an absent footer menu and empty footer settings', async () => {
+	const menu = path.join(root, 'content/navigation/footer.yml');
+	const settings = path.join(root, 'content/settings/general.yml');
+	const originalMenu = await fs.readFile(menu);
+	const originalSettings = await fs.readFile(settings);
+	try {
+		await fs.rm(menu);
+		await write('settings', 'general', { homePage: 'home', footer: null });
+		const data = await loadLayout({} as Parameters<typeof loadLayout>[0]);
+		assert.deepEqual(data?.footer, { items: [], description: '', copyright: '' });
+	} finally {
+		await fs.writeFile(menu, originalMenu);
+		await fs.writeFile(settings, originalSettings);
+	}
 });
 
 test('podcast RSS resolves R2 paths and retains full URLs, byte lengths and publication filtering', async () => {

@@ -21,8 +21,8 @@ Feed discovery, episode links, search results and navigation use `/audio/`.
 The collection moved before deployment, so no old podcast URL aliases are kept.
 
 The utility bar appears only in the mobile layout (up to 48rem) and uses the
-sprite's headphones, heart and search icons. Labels
-are visually hidden below 32rem while remaining accessible to screen readers.
+sprite's headphones, heart and search icons. Toolbar labels are visually hidden
+but remain accessible to screen readers.
 All toolbar links have at least 44px touch targets. A fourth such target fits
 on phone screens; Login is not implemented. The main menu also includes Audio,
 Playlist and Search with icons and visible text at all widths.

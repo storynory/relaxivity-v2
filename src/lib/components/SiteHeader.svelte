@@ -72,7 +72,7 @@
 			{#each utilityLinks as link}
 				<a href={link.href} aria-current={current(link.href)} onclick={closeMenu}>
 					<svg aria-hidden="true" class="icon nav-icon"><use href={`/icons.svg#${link.icon}`} /></svg>
-					<span class="utility-label">{link.label}</span>
+					<span class="sr-only">{link.label}</span>
 				</a>
 			{/each}
 		</nav>
@@ -207,15 +207,18 @@
 		display: flex;
 		justify-content: flex-end;
 		flex-wrap: wrap;
-		gap: 0 1.25rem;
-		font-size: 0.85em;
+		gap: 0 0.35rem;
+		font-size: 1rem;
+		line-height: 1.25;
 	}
 
 	.utility-links a {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.4em;
+		justify-content: center;
+		min-width: 44px;
 		min-height: 44px;
+		padding: 0.5rem;
 		color: var(--text);
 		text-decoration: none;
 	}
@@ -230,25 +233,8 @@
 		text-underline-offset: 0.25em;
 	}
 
-	/* The underline remains visible when toolbar text is hidden on phones. */
+	/* Mark the current section even without a visible text label. */
 	.utility-links a[aria-current] { box-shadow: inset 0 -3px 0 currentColor; }
-
-	/* Four 44px targets fit comfortably on phones, including a future Login link. */
-	@media (max-width: 31.999rem) {
-		.utility-links { gap: 0.35rem; }
-		.utility-links a { min-width: 44px; justify-content: center; }
-		.utility-label {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			padding: 0;
-			margin: -1px;
-			overflow: hidden;
-			clip-path: inset(50%);
-			white-space: nowrap;
-			border: 0;
-		}
-	}
 
 	.header-inner {
 		display: flex;

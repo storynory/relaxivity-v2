@@ -2,10 +2,11 @@ title: Welcome Hero
 type: hero
 heading: A Little Time to Yourself
 introduction: Welcome to Relaxivity
-image: /uploads/vlcsnap-11937.jpg
+image: /uploads/moon-sun-logo.jpg
 imageAlt: ''
-buttonText: Browse Posts
-buttonUrl: /posts/
+imagePosition: right
+buttonText: Browse Audio
+buttonUrl: /audio/
 collection: ''
 category: ''
 tags: []

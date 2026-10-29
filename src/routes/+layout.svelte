@@ -1,6 +1,7 @@
 <script lang="ts">
 	import favicon from '#lib/assets/favicon.svg';
 	import SiteHeader from '#lib/components/SiteHeader.svelte';
+	import SiteFooter from '#lib/components/SiteFooter.svelte';
 	import PersistentAudioPlayer from '#lib/components/PersistentAudioPlayer.svelte';
 	import { onMount, setContext } from 'svelte';
 	import { createPlayback, playbackKey } from '#lib/audio/playback.ts';
@@ -61,15 +62,26 @@
 	{#if $favourites.ready && !$favourites.persistent}
 		<p class="container" role="status">Browser storage is unavailable. Your playlist will be kept for this visit only.</p>
 	{/if}
-	{@render children()}
+	<div class="site-content">
+		{@render children()}
+	</div>
+	<SiteFooter {...data.footer} />
 	<PersistentAudioPlayer bind:height={playerHeight} publisher={data.siteName} />
 </div>
 
 <style>
 	.site {
+		display: flex;
+		flex-direction: column;
 		background: var(--prime);
 		color: var(--text);
 		min-height: 100vh;
+		min-height: 100dvh;
 		font: var(--font-size) / var(--line-height) var(--font-body);
+	}
+	.site-content {
+		/* Keep page margins inside the coloured site rather than exposing the body. */
+		display: flow-root;
+		flex: 1;
 	}
 </style>

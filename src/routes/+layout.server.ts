@@ -40,6 +40,7 @@ const colour = (value: unknown, fallback: string) =>
 export const load: LayoutServerLoad = async () => {
 	// Read the configured slug directly, then load that colour scheme.
 	const settings = (await readDoc('settings', 'general')).data;
+	const footer = settings.footer as { description?: string; copyright?: string } | null | undefined;
 	const slug = typeof settings.activeScheme === 'string' && settings.activeScheme
 		? settings.activeScheme : 'default';
 	const scheme = await getOne('colour-schemes', slug);
@@ -72,6 +73,11 @@ export const load: LayoutServerLoad = async () => {
 		siteName: typeof settings.siteName === 'string' ? settings.siteName : '',
 		siteLogo: typeof settings.siteLogo === 'string' ? settings.siteLogo : '',
 		navigation: (await getOne('navigation', 'main-menu'))?.items ?? [],
+		footer: {
+			items: (await getOne('navigation', 'footer'))?.items ?? [],
+			description: typeof footer?.description === 'string' ? footer.description : '',
+			copyright: typeof footer?.copyright === 'string' ? footer.copyright : ''
+		},
 		feeds: publicCollections().flatMap((collection) => {
 			const type = String(collections[collection].rss);
 			if (type !== 'standard' && type !== 'podcast') return [];

@@ -225,6 +225,19 @@
     ],
     "fallback": "/optimized/mattise.640.jpg"
   },
+  "/uploads/moon-sun-logo.jpg": {
+    "width": 2000,
+    "height": 2000,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/moon-sun-logo.640.jpg"
+  },
   "/uploads/music-cropped.png": {
     "width": 988,
     "height": 667,
