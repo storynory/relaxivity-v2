@@ -20,7 +20,10 @@ producer: ''
 featuredImage: /uploads/cleopatra-coverart1.jpg
 featuredImageAlt: ''
 category: ''
-tags: []
+tags:
+  - biography
+  - history
+  - egypt
 showOnHome: true
 featured: false
 seo: null

@@ -10,6 +10,8 @@ collections:
     slug: "{{slug}}"
     identifier_field: name
     public_route: true
+    template: person
+    list_template: people
 
     fields:
       - name: name

@@ -9,6 +9,10 @@ seasonNumber: null
 audio: green-willow-mix-relaxivity.mp3
 length: 20904757
 duration: '00:12:52'
+sampleAudio: ''
+sampleLength: null
+sampleDuration: ''
+permanentlyFree: false
 author: bertie
 narrator: jana
 presenter: ''
@@ -16,7 +20,9 @@ producer: bertie
 featuredImage: /uploads/willow-wood-cut.jpg
 featuredImageAlt: A Japanese Willow Tree
 category: japan
-tags: []
+tags:
+  - japan
+  - romantic
 showOnHome: true
 featured: false
 seo: null

@@ -1,4 +1,16 @@
 {
+  "/uploads/browning.jpg": {
+    "width": 849,
+    "height": 1134,
+    "sizes": [
+      320,
+      640
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/browning.640.jpg"
+  },
   "/uploads/buddha-horse.jpg": {
     "width": 1184,
     "height": 1024,
@@ -99,6 +111,18 @@
     ],
     "fallback": "/optimized/icarus-1946.618.jpg"
   },
+  "/uploads/jana-eliz.jpg": {
+    "width": 640,
+    "height": 640,
+    "sizes": [
+      320,
+      640
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/jana-eliz.640.jpg"
+  },
   "/uploads/lanval-romance-fairy-queen.jpg": {
     "width": 1456,
     "height": 816,
@@ -122,6 +146,19 @@
       "webp"
     ],
     "fallback": "/optimized/lanval-videoart.600.jpg"
+  },
+  "/uploads/lover.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/lover.640.jpg"
   },
   "/uploads/mattise.jpg": {
     "width": 1920,
@@ -187,6 +224,45 @@
       "webp"
     ],
     "fallback": "/optimized/sappho-coverart.640.jpg"
+  },
+  "/uploads/stage.jpg": {
+    "width": 2000,
+    "height": 2000,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/stage.640.jpg"
+  },
+  "/uploads/stagev.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/stagev.640.jpg"
+  },
+  "/uploads/Taoism-video-art.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/Taoism-video-art.640.jpg"
   },
   "/uploads/vlcsnap-11937.jpg": {
     "width": 1024,
