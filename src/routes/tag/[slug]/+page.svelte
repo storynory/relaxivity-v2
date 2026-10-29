@@ -3,5 +3,5 @@
   import TaxonomyListing from '#lib/components/TaxonomyListing.svelte';
   let { data } = $props();
 </script>
-<SeoMeta title={data.title} item={{ ...data.term, excerpt: data.description, featuredImage: data.term.image }} />
-<TaxonomyListing title={data.title} description={data.description} items={data.items} />
+<SeoMeta title={data.title} item={data.term} />
+<TaxonomyListing title={data.title} description={data.description} image={data.term.image} items={data.items} />

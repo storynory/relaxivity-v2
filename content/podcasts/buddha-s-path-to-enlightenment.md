@@ -22,6 +22,8 @@ featuredImageAlt: Buddha rides a white horse
 category: ''
 tags:
   - buddha
+  - spiritual
+  - biography
 showOnHome: true
 featured: false
 seo: null

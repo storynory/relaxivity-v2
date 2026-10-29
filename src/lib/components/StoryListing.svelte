@@ -10,8 +10,8 @@
 	import Picture from './Picture.svelte';
 	import StoryOrderSelect from './StoryOrderSelect.svelte';
 
-	let { title, description = '', items }: {
-		title: string; description?: string; items: (Record<string, unknown> & { collection: string; slug: string })[];
+	let { title, description = '', image = '', items }: {
+		title: string; description?: string; image?: string; items: (Record<string, unknown> & { collection: string; slug: string })[];
 	} = $props();
 	const playback = getContext<Playback>(playbackKey);
 	let order = $state<StoryOrder>('newest');
@@ -37,6 +37,11 @@
 <main>
 	<h1>{title}</h1>
 	{#if description}<p>{description}</p>{/if}
+	{#if image}
+		<div class="archive-image">
+			<Picture src={image} alt={title} sizes="(min-width: 900px) 852px, 100vw" priority="high" />
+		</div>
+	{/if}
 	{#if items.length}
 		<div class="playlist-settings">
 			<StoryOrderSelect bind:value={order} onchange={changeOrder} />
@@ -76,6 +81,8 @@
 
 <style>
 	main { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
+	.archive-image { margin-block: 1.5rem; }
+	.archive-image :global(img) { width: 100%; }
 	.playlist-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-block: 1.5rem; }
 	article { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding-bottom: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime)); }
 	article.with-artwork { grid-template-columns: minmax(0, 200px) minmax(0, 1fr); }

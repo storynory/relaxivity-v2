@@ -13,7 +13,7 @@ sampleAudio: ''
 sampleLength: null
 sampleDuration: ''
 permanentlyFree: false
-author: william-shakespeare
+author: ''
 narrator: jana
 presenter: ''
 producer: ''
@@ -28,7 +28,9 @@ featured: false
 seo: null
 ---
 
-  All the world’s a stage,
+Also known as  "The Seven Ages of Man"   
+
+All the world’s a stage,
 
 And all the men and women merely players;
 

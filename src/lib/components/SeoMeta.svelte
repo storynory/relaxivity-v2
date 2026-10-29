@@ -16,8 +16,8 @@
   const site = $derived(page.data as Record<string, unknown>);
   const heading = $derived(text(title));
   const metaTitle = $derived(text(seo.title) || heading);
-  const description = $derived(text(seo.description) || text(item.excerpt) || text(site.siteDescription));
-  const imagePath = $derived(text(seo.image) || text(item.featuredImage) || text(site.defaultImage));
+  const description = $derived(text(seo.description) || text(item.excerpt) || text(item.description) || text(site.siteDescription));
+  const imagePath = $derived(text(seo.image) || text(item.featuredImage) || text(item.image) || text(site.defaultImage));
   const base = $derived(text(site.siteUrl).replace(/\/$/, ''));
   const canonical = $derived(base ? base + (page.url.pathname.endsWith('/') ? page.url.pathname : page.url.pathname + '/') : '');
   const image = $derived(imagePath && base

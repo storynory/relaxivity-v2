@@ -87,6 +87,45 @@
     ],
     "fallback": "/optimized/cleopatra-coverart1.640.jpg"
   },
+  "/uploads/creation-dear.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/creation-dear.640.jpg"
+  },
+  "/uploads/francis.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/francis.640.jpg"
+  },
+  "/uploads/ghosts.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/ghosts.640.jpg"
+  },
   "/uploads/green-willow-videoart.webp": {
     "width": 960,
     "height": 540,
@@ -160,6 +199,19 @@
     ],
     "fallback": "/optimized/lover.640.jpg"
   },
+  "/uploads/marriage-minds.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/marriage-minds.640.jpg"
+  },
   "/uploads/mattise.jpg": {
     "width": 1920,
     "height": 1080,
@@ -198,6 +250,19 @@
       "webp"
     ],
     "fallback": "/optimized/Northern-Lights.640.jpg"
+  },
+  "/uploads/reflection.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/reflection.640.jpg"
   },
   "/uploads/relaxivity3.jpg": {
     "width": 1024,

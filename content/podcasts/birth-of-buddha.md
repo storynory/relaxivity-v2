@@ -22,6 +22,8 @@ featuredImageAlt: Buddha lying down
 category: india
 tags:
   - buddha
+  - spiritual
+  - biography
 showOnHome: true
 featured: true
 seo: null

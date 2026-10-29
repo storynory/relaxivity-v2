@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { test } from 'node:test';
+import YAML from 'yaml';
 
 const buildDir = path.resolve('build');
 
@@ -71,4 +72,42 @@ test('podcast artwork and header logo reserve image space in rendered HTML', asy
 		assert.match(image, /\bheight="[1-9]\d*"/);
 	}
 	assert.match(images[0], /\bloading="eager"/);
+});
+
+
+test('taxonomy pages render optional artwork and SEO overrides with content fallbacks', async () => {
+	const settings = YAML.parse(await fs.readFile('content/settings/general.yml', 'utf8'));
+	const text = (value: unknown): string => typeof value === 'string' ? value.trim() : '';
+	const decode = (value: string) => value.replace(/&quot;/g, '"').replace(/&#(?:39|x27);/g, "'")
+		.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+	for (const [collection, route] of [['tags', 'tag'], ['categories', 'category']]) {
+		for (const file of await fs.readdir(`content/${collection}`)) {
+			if (!file.endsWith('.yml')) continue;
+			const term = YAML.parse(await fs.readFile(`content/${collection}/${file}`, 'utf8'));
+			const slug = file.slice(0, -4);
+			const html = await fs.readFile(path.join(buildDir, route, slug, 'index.html'), 'utf8');
+			const head = html.split('</head>')[0];
+			const meta = (name: string) => {
+				const tag = [...head.matchAll(/<meta\b[^>]*>/g)].find(([tag]) =>
+					tag.includes(`name="${name}"`) || tag.includes(`property="${name}"`));
+				return decode(tag?.[0].match(/content="([^"]*)"/)?.[1] ?? '');
+			};
+			const title = text(term.seo?.title) || text(term.title);
+			const description = text(term.seo?.description) || text(term.description) || text(settings.description);
+			const image = text(term.seo?.image) || text(term.image) || text(settings.defaultImage);
+			assert.equal(decode(head.match(/<title>(.*?)<\/title>/s)?.[1] ?? ''), title, `${route}/${slug} title`);
+			for (const key of ['og:title', 'twitter:title']) assert.equal(meta(key), title);
+			for (const key of ['description', 'og:description', 'twitter:description']) assert.equal(meta(key), description);
+			for (const key of ['og:image', 'twitter:image']) {
+				assert.equal(meta(key), image ? new URL(image, settings.siteUrl + '/').href : '');
+			}
+			const body = html.split('</head>')[1];
+			assert.equal(body.includes('class="archive-image'), Boolean(text(term.image)), `${route}/${slug} artwork`);
+			if (text(term.image)) {
+				const artwork = body.match(/class="archive-image[^>]*>.*?<img\b[^>]*>/s)?.[0] ?? '';
+				assert.ok(artwork.includes(`alt="${term.title}"`), `${route}/${slug} image alt`);
+				assert.match(artwork, /loading="eager"/);
+			}
+		}
+	}
 });
