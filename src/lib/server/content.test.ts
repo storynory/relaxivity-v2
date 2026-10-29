@@ -20,7 +20,7 @@ after(() => fs.rm(root, { recursive: true, force: true }));
 async function write(collection: string, slug: string, data: Record<string, unknown>, body = '') {
 	const dir = path.join(root, 'content', collection);
 	await fs.mkdir(dir, { recursive: true });
-	const markdown = ['posts', 'podcasts', 'pages'].includes(collection);
+	const markdown = ['posts', 'audio', 'pages'].includes(collection);
 	await fs.writeFile(path.join(dir, `${slug}.${markdown ? 'md' : 'yml'}`),
 		markdown ? `---\n${JSON.stringify(data)}\n---\n${body}` : JSON.stringify(data));
 }
@@ -34,7 +34,7 @@ await write('posts', 'newer', { title: 'Newer', date: '2026-02-01', category: 't
 await write('posts', 'draft', { title: 'Draft', date: '2026-03-01', draft: true, category: 'topic', tags: ['one', 'two'], featured: true });
 await write('posts', 'undated', { title: 'Undated', category: 'topic', tags: ['two'], featured: true });
 await write('posts', 'dangling', { title: 'Dangling', category: 'missing', tags: ['missing'] });
-await write('podcasts', 'episode', { title: 'Episode', date: '2026-01-01', narrator: 'reader' }, 'Episode body');
+await write('audio', 'episode', { title: 'Episode', date: '2026-01-01', narrator: 'reader' }, 'Episode body');
 await write('pages', 'home', { title: 'Home' });
 await write('pages', 'about', { title: 'About' });
 await write('pages', 'draft', { title: 'Draft', draft: true });
@@ -50,7 +50,7 @@ for (const [slug, settings] of Object.entries({
 	latest: { type: 'latest', limit: 2, tags: ['one', 'two'], tagMatch: 'any' },
 	all: { type: 'latest', tags: ['one', 'two'], tagMatch: 'all' },
 	featured: { type: 'featured', tags: ['one', 'two'], tagMatch: 'any' },
-	selected: { type: 'selected', items: [{ type: 'posts', slug: 'draft' }, { collection: 'posts', slug: 'older' }, { type: 'podcasts', slug: 'episode' }], limit: 1 }
+	selected: { type: 'selected', items: [{ type: 'posts', slug: 'draft' }, { collection: 'posts', slug: 'older' }, { type: 'audio', slug: 'episode' }], limit: 1 }
 })) {
 	await write('blocks', slug, { title: slug, collection: 'posts', category: 'topic', ...settings });
 }
@@ -102,12 +102,12 @@ test('episode blocks sort YAML timestamps and string dates newest first before l
 		['order-z-newest', '2025-03-01T10:00:00'],
 		['order-m-middle', '"2025-02-01T10:00:00"']
 	]) {
-		await fs.writeFile(path.join(root, 'content/podcasts', `${slug}.md`),
+		await fs.writeFile(path.join(root, 'content/audio', `${slug}.md`),
 			`---\ntitle: ${slug}\ndate: ${date}\nfeatured: true\ncategory: topic\n---\n`);
 	}
 	for (const type of ['latest', 'featured']) {
 		await write('blocks', `episode-order-${type}`, {
-			title: 'Episodes', type, collection: 'podcasts', category: 'topic', limit: 2
+			title: 'Episodes', type, collection: 'audio', category: 'topic', limit: 2
 		});
 		assert.deepEqual((await buildBlock(`episode-order-${type}`))?.items.map((item) => item.slug),
 			['order-z-newest', 'order-m-middle']);
@@ -132,7 +132,7 @@ test('listings exclude drafts and the homepage while retaining resolved narrator
 	// The route only reads params; SvelteKit supplies the remaining event fields in production.
 	const pages = await load({ params: { collection: 'pages' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };
 	assert.deepEqual(pages.items.map((item) => item.slug), ['about']);
-	const episodes = await load({ params: { collection: 'podcasts' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };
+	const episodes = await load({ params: { collection: 'audio' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };
 	assert.deepEqual(episodes.items[0].narrator, { name: 'Reader', slug: 'reader' });
 });
 
@@ -156,11 +156,11 @@ test('root layout exposes branding and nested navigation alongside the selected 
 
 test('podcast RSS resolves R2 paths and retains full URLs, byte lengths and publication filtering', async () => {
 	const episode = { date: '2026-01-01', length: 12345, duration: '01:30', draft: false };
-	await write('podcasts', 'r2', { ...episode, title: 'R2', audio: 'episodes/story.mp3?x=1&y=2' });
-	await write('podcasts', 'legacy', { ...episode, title: 'Legacy', audio: 'https://old.example/story.mp3' });
-	await write('podcasts', 'draft-audio', { ...episode, title: 'Draft audio', audio: 'draft.mp3', draft: true });
-	await write('podcasts', 'no-size', { ...episode, title: 'No size', audio: 'missing.mp3', length: 0 });
-	const feed = await (await podcastFeed('podcasts', 'https://example.com')).text();
+	await write('audio', 'r2', { ...episode, title: 'R2', audio: 'episodes/story.mp3?x=1&y=2' });
+	await write('audio', 'legacy', { ...episode, title: 'Legacy', audio: 'https://old.example/story.mp3' });
+	await write('audio', 'draft-audio', { ...episode, title: 'Draft audio', audio: 'draft.mp3', draft: true });
+	await write('audio', 'no-size', { ...episode, title: 'No size', audio: 'missing.mp3', length: 0 });
+	const feed = await (await podcastFeed('audio', 'https://example.com')).text();
 	assert.match(feed, /<enclosure url="https:\/\/audio.relaxivity.app\/episodes\/story.mp3\?x=1&amp;y=2" length="12345" type="audio\/mpeg"\/>/);
 	assert.match(feed, /<enclosure url="https:\/\/old.example\/story.mp3"/);
 	assert.match(feed, /<itunes:duration>01:30<\/itunes:duration>/);
@@ -173,29 +173,29 @@ test('website and RSS share the rolling twelve, without backfilling invalid encl
 	const { publicAudio } = await import('../audio/availability.ts');
 	const { publicEntries } = await import('./public-routes.ts');
 	for (let i = 1; i <= 14; i++) {
-		await write('podcasts', `rolling-${i}`, {
+		await write('audio', `rolling-${i}`, {
 			title: `Rolling ${i}`, date: `2026-09-${String(i).padStart(2, '0')}`, audio: `full-${i}.mp3`,
 			length: i === 14 ? 0 : 10000, duration: '01:00:00', sampleAudio: `sample-${i}.mp3`,
 			sampleLength: 100, sampleDuration: '00:01:00', permanentlyFree: i === 1
 		});
 	}
-	await write('podcasts', 'future', { title: 'Future', date: '2999-01-01', audio: 'future.mp3', length: 12345 });
+	await write('audio', 'future', { title: 'Future', date: '2999-01-01', audio: 'future.mp3', length: 12345 });
 	const layout = (await loadLayout({} as Parameters<typeof loadLayout>[0]))!;
 	assert.equal(layout.supercastUrl, '');
 	assert.equal(layout.freeEpisodeSlugs.length, 12);
 	assert.ok(!layout.freeEpisodeSlugs.includes('rolling-1'));
-	const listing = await load({ params: { collection: 'podcasts' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };
+	const listing = await load({ params: { collection: 'audio' } } as Parameters<typeof load>[0]) as { items: Record<string, unknown>[] };
 	assert.ok(!listing.items.some(({ slug }) => slug === 'future'));
 	assert.ok(!(await publicEntries()).some(({ slug }) => slug === 'future'));
-	await assert.rejects(async () => detail({ params: { collection: 'podcasts', slug: 'future' } } as Parameters<typeof detail>[0]), { status: 404 });
-	const archived = await detail({ params: { collection: 'podcasts', slug: 'rolling-2' } } as Parameters<typeof detail>[0]) as { item: Record<string, unknown> };
+	await assert.rejects(async () => detail({ params: { collection: 'audio', slug: 'future' } } as Parameters<typeof detail>[0]), { status: 404 });
+	const archived = await detail({ params: { collection: 'audio', slug: 'rolling-2' } } as Parameters<typeof detail>[0]) as { item: Record<string, unknown> };
 	const selection = publicAudio(archived.item, layout.freeEpisodeSlugs, layout.audioBaseUrl, layout.audioPublicationTime);
 	assert.equal(selection.src, 'https://audio.relaxivity.app/sample-2.mp3');
 	assert.equal(selection.duration, '00:01:00');
 	assert.equal(selection.length, 100);
-	const permanent = listing.items.find(({ slug }) => slug === 'rolling-1')!;
-	assert.equal(publicAudio(permanent, layout.freeEpisodeSlugs, layout.audioBaseUrl, layout.audioPublicationTime).playbackType, 'full');
-	const feed = await (await podcastFeed('podcasts', 'https://example.com')).text();
+	const permanent = await detail({ params: { collection: 'audio', slug: 'rolling-1' } } as Parameters<typeof detail>[0]) as { item: Record<string, unknown> };
+	assert.equal(publicAudio(permanent.item, layout.freeEpisodeSlugs, layout.audioBaseUrl, layout.audioPublicationTime).playbackType, 'full');
+	const feed = await (await podcastFeed('audio', 'https://example.com')).text();
 	assert.equal((feed.match(/<item>/g) ?? []).length, 11);
 	assert.doesNotMatch(feed, /sample-|full-[12]\.mp3|future\.mp3|full-14\.mp3|<title>R2<\/title>/);
 	assert.match(feed, /full-3\.mp3" length="10000"/);
@@ -217,7 +217,7 @@ test('playlist catalogue excludes unpublished episodes and uses the current full
 	const archived = data.episodes.find(({ slug }) => slug === 'rolling-2')!;
 	assert.equal(archived.audio.playbackType, 'sample');
 	assert.equal(archived.audio.src, 'https://audio.relaxivity.app/sample-2.mp3');
-	assert.equal(archived.href, '/podcasts/rolling-2/');
+	assert.equal(archived.href, '/audio/rolling-2/');
 	assert.equal(archived.date, '2026-09-02');
 	assert.equal(data.episodes.find(({ slug }) => slug === 'rolling-1')?.audio.playbackType, 'full');
 	assert.ok(!('body' in archived));
@@ -232,16 +232,16 @@ test('taxonomy archives retain episode metadata, descendant categories and mixed
 	await write('categories', 'playlist-child', { title: 'Child', parent: 'playlist-parent' });
 	await write('tags', 'playlist-tag', { title: 'Playlist tag' });
 	const common = { category: 'playlist-child', tags: ['playlist-tag'], narrator: 'reader' };
-	await write('podcasts', 'taxonomy-z-new', {
+	await write('audio', 'taxonomy-z-new', {
 		...common, title: 'Newest', date: '2025-03-01T10:00:00', audio: 'new.mp3',
 		permanentlyFree: true, featuredImage: '/new.jpg', duration: '00:10:00'
 	});
 	// Real CMS YAML timestamps are parsed as Date objects, unlike quoted string dates.
-	await fs.writeFile(path.join(root, 'content/podcasts/taxonomy-a-old.md'),
+	await fs.writeFile(path.join(root, 'content/audio/taxonomy-a-old.md'),
 		'---\ntitle: Oldest\ndate: 2025-01-01T10:00:00\ncategory: playlist-child\ntags: [playlist-tag]\nnarrator: reader\naudio: old.mp3\nsampleAudio: old-sample.mp3\nsampleDuration: "00:01:00"\nfeaturedImage: /old.jpg\n---\nTranscript');
 	await write('posts', 'taxonomy-post', { ...common, title: 'Post', date: '2025-02-01T10:00:00' });
-	await write('podcasts', 'taxonomy-draft', { ...common, title: 'Draft', date: '2025-04-01', draft: true });
-	await write('podcasts', 'taxonomy-future', { ...common, title: 'Future', date: '2999-01-01' });
+	await write('audio', 'taxonomy-draft', { ...common, title: 'Draft', date: '2025-04-01', draft: true });
+	await write('audio', 'taxonomy-future', { ...common, title: 'Future', date: '2999-01-01' });
 	for (const [kind, slug] of [['category', 'playlist-parent'], ['tag', 'playlist-tag']] as const) {
 		const data = (await archive(kind, slug))!;
 		assert.deepEqual(data.items.map((item) => item.title), ['Newest', 'Post', 'Oldest']);

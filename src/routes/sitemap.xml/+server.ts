@@ -1,6 +1,7 @@
 import { readDoc, readOne } from '#lib/content/read.ts';
 import { homePageSlug } from '#lib/server/home.ts';
 import { publicCollections, publicEntries, published } from '#lib/server/public-routes.ts';
+import { audioPageEntries, audioPageHref } from '#lib/server/audio-archive.ts';
 import type { RequestHandler } from './$types';
 
 // Generate this endpoint as a static XML file during the build.
@@ -30,6 +31,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
 	if (home && published(home.data)) paths.push('/');
 	for (const collection of publicCollections()) paths.push(`/${collection}/`);
+	for (const { page } of await audioPageEntries()) paths.push(audioPageHref(Number(page)));
 	for (const { collection, slug } of await publicEntries()) {
 		paths.push(`/${collection}/${encodeURIComponent(slug)}/`);
 	}

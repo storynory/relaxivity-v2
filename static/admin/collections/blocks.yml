@@ -52,7 +52,7 @@ collections:
       - name: collection
         label: Collection for Latest / Featured
         widget: select
-        options: [posts, podcasts]
+        options: [posts, audio]
         required: false
         hint: Selected can include items from different collections.
       - name: category
@@ -91,7 +91,7 @@ collections:
         widget: list
         required: false
         collapsed: true
-        hint: Add a Post or Podcast and search for its title.
+        hint: Add a Post or Audio episode and search for its title.
         types:
           - name: posts
             label: Post
@@ -104,14 +104,14 @@ collections:
                 value_field: "{{slug}}"
                 search_fields: [title]
                 display_fields: [title]
-          - name: podcasts
-            label: Podcast
+          - name: audio
+            label: Audio
             widget: object
             fields:
               - name: slug
-                label: Choose Podcast
+                label: Choose Audio Episode
                 widget: relation
-                collection: podcasts
+                collection: audio
                 value_field: "{{slug}}"
                 search_fields: [title]
                 display_fields: [title]

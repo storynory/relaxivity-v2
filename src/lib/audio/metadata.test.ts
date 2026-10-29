@@ -46,7 +46,7 @@ async function save(values: Record<string, unknown>, options: {
 		}
 	});
 	const data = new Map(Object.entries(values));
-	const updated = await handler!({ entry: new Map<string, unknown>([['collection', 'podcasts'], ['data', data]]) });
+	const updated = await handler!({ entry: new Map<string, unknown>([['collection', 'audio'], ['data', data]]) });
 	return { data: updated ?? data, requests, media };
 }
 

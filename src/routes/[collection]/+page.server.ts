@@ -3,6 +3,7 @@ import { collections } from '#lib/generated/collections.ts';
 import { homePageSlug } from '#lib/server/home.ts';
 import { getAll } from '#lib/server/content.ts';
 import { publicCollection, publicCollections, published } from '#lib/server/public-routes.ts';
+import { loadAudioArchive } from '#lib/server/audio-archive.ts';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => publicCollections().map((collection) => ({ collection }));
@@ -10,6 +11,7 @@ export const entries: EntryGenerator = () => publicCollections().map((collection
 export const load: PageServerLoad = async ({ params }) => {
 	const collection = publicCollection(params.collection);
 	if (!collection) error(404, 'Collection not found');
+	if (collection === 'audio') return loadAudioArchive();
 
 	const home = collection === 'pages' ? await homePageSlug() : null;
 	const items = await getAll(collection, (records) => records.filter((record) =>

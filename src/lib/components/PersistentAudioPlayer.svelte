@@ -54,7 +54,7 @@
 			{/if}
 			<button type="button" onclick={() => playback.jump(-10)} aria-label="Go back 10 seconds">↶ 10</button>
 			<button class="play-toggle" type="button" onclick={() => playback.toggle()} aria-label={$playback.playing ? 'Pause' : 'Play'}>
-				{$playback.playing ? '❚❚' : '▶'}
+				<svg aria-hidden="true" focusable="false"><use href={$playback.playing ? '/icons.svg#pause' : '/icons.svg#play'} /></svg>
 			</button>
 			<button type="button" onclick={() => playback.jump(10)} aria-label="Go forward 10 seconds">10 ↷</button>
 			{#if $playback.queue.length}
@@ -95,7 +95,8 @@
 	}
 	button:hover { color: var(--prime); background: var(--text); }
 	button:disabled { opacity: 0.4; cursor: default; }
-	.play-toggle { width: 52px; height: 52px; border-radius: 50%; }
+	.play-toggle { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; }
+	.play-toggle svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
 	.close { grid-column: 3; grid-row: 1; font-size: 1.6rem; border-color: transparent; }
 	.episode { grid-column: 1; grid-row: 1; min-width: 0; display: flex; align-items: center; gap: 0.75rem; }
 	.track-artwork { flex: 0 0 48px; width: 48px; height: 48px; object-fit: cover; }

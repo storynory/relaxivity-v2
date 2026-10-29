@@ -1,12 +1,12 @@
 collections:
-  - name: podcasts
-    label: Podcasts
+  - name: audio
+    label: Audio
     label_singular: Episode
     public_route: true
     rss: podcast
     template: podcast
     list_template: episodes
-    folder: content/podcasts
+    folder: content/audio
     create: true
     extension: md
     format: frontmatter

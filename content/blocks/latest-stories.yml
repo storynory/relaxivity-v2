@@ -1,13 +1,13 @@
-title: Latest Podcasts
+title: Latest Audio
 type: latest
-heading: Latest Podcasts
-introduction: Discover our newest[ podcast episodes.](/podcasts/)
+heading: Latest Audio
+introduction: Discover our newest [audio stories.](/audio/)
 image: ''
 imageAlt: dragon fights monkey
 imagePosition: right
-buttonText: Podcasts
-buttonUrl: /podcasts/
-collection: podcasts
+buttonText: Audio
+buttonUrl: /audio/
+collection: audio
 category: ''
 tags: []
 tagMatch: any

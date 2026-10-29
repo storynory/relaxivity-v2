@@ -64,7 +64,7 @@ function hasDuration(value) {
 CMS.registerEventListener({
   name: 'preSave',
   handler: async ({ entry }) => {
-    if (entry.get('collection') !== 'podcasts') return;
+    if (entry.get('collection') !== 'audio') return;
     const data = entry.get('data');
     let settings;
     async function resolveUrl(path) {

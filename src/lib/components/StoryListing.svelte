@@ -9,16 +9,18 @@
 	import EpisodeAudio from './EpisodeAudio.svelte';
 	import Picture from './Picture.svelte';
 	import StoryOrderSelect from './StoryOrderSelect.svelte';
+	import type { ListingData } from '#lib/list-templates/types.ts';
 
-	let { title, description = '', image = '', items }: {
+	let { title, description = '', image = '', items, pagination }: {
 		title: string; description?: string; image?: string; items: (Record<string, unknown> & { collection: string; slug: string })[];
+		pagination?: ListingData['pagination'];
 	} = $props();
 	const playback = getContext<Playback>(playbackKey);
 	let order = $state<StoryOrder>('newest');
 	const ordered = $derived(orderStories(items, order));
-	const hasEpisodes = $derived(items.some((item) => item.collection === 'podcasts'));
+	const hasEpisodes = $derived(items.some((item) => item.collection === 'audio'));
 	const tracks: Track[] = $derived(ordered.flatMap((item) => {
-		if (item.collection !== 'podcasts') return [];
+		if (item.collection !== 'audio') return [];
 		const audio = publicAudio(item, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime);
 		const title = textField(item, 'title') || item.slug;
 		return audio.src ? [{
@@ -36,6 +38,7 @@
 
 <main>
 	<h1>{title}</h1>
+	{#if pagination && pagination.totalPages > 1}<p>Page {pagination.page} of {pagination.totalPages}</p>{/if}
 	{#if description}<p>{description}</p>{/if}
 	{#if image}
 		<div class="archive-image">
@@ -61,7 +64,7 @@
 			{/if}
 			<div class="story-copy">
 				<h2><a {href}>{itemTitle}</a></h2>
-				{#if item.collection === 'podcasts'}
+				{#if item.collection === 'audio'}
 					{@const audio = publicAudio(item, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime)}
 					<p class="meta">
 						{#if date}<time datetime={date}>{date.slice(0, 10)}</time>{/if}
@@ -77,10 +80,26 @@
 			</div>
 		</article>
 	{/each}
+	{#if pagination && pagination.totalPages > 1}
+		<nav class="pagination" aria-label="Audio pages">
+			{#if pagination.page > 1}
+				<a href={pagination.pages[pagination.page - 2].href} rel="prev">Previous</a>
+			{/if}
+			{#each pagination.pages as entry}
+				<a href={entry.href} aria-label={`Page ${entry.number}`} aria-current={entry.number === pagination.page ? 'page' : undefined}>{entry.number}</a>
+			{/each}
+			{#if pagination.page < pagination.totalPages}
+				<a href={pagination.pages[pagination.page].href} rel="next">Next</a>
+			{/if}
+		</nav>
+	{/if}
 </main>
 
 <style>
 	main { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
+	.pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+	.pagination a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0.35em 0.65em; border: 1px solid currentColor; border-radius: var(--radius); }
+	.pagination [aria-current="page"] { font-weight: 700; background: var(--text); color: var(--prime); text-decoration: none; }
 	.archive-image { margin-block: 1.5rem; }
 	.archive-image :global(img) { width: 100%; }
 	.playlist-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-block: 1.5rem; }

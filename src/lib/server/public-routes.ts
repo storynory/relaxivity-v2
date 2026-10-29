@@ -16,7 +16,7 @@ export function publicCollection(name: string): FolderCollectionName | null {
 }
 
 export function published(data: Record<string, unknown>, collection?: string): boolean {
-	return collection === 'podcasts' ? isPublishedEpisode(data) : data.draft !== true;
+	return collection === 'audio' ? isPublishedEpisode(data) : data.draft !== true;
 }
 
 export async function publicEntries(): Promise<{ collection: string; slug: string }[]> {

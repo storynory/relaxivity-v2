@@ -45,7 +45,7 @@
 		<p role="status">Loading your playlist…</p>
 	{:else if !saved.length}
 		<p>Your playlist is empty. Use the heart button on a story to save it here.</p>
-		<p><a href="/podcasts/">Browse stories</a></p>
+		<p><a href="/audio/">Browse stories</a></p>
 	{:else}
 		<div class="playlist-controls">
 			<StoryOrderSelect bind:value={order} manual onchange={changeOrder} />

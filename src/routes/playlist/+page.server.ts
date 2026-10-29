@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 // Only this page needs the catalogue; favourites themselves stay in the browser.
 export const load: PageServerLoad = async ({ parent }) => {
 	const settings = await parent();
-	const records = await readAll('podcasts');
+	const records = await readAll('audio');
 	const text = (value: unknown) => typeof value === 'string' ? value : '';
 	return {
 		episodes: records
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 				date: episode.date instanceof Date ? episode.date.toISOString() : text(episode.date),
 				excerpt: text(episode.excerpt),
 				artwork: text(episode.featuredImage),
-				href: `/podcasts/${encodeURIComponent(episode.slug)}/`,
+				href: `/audio/${encodeURIComponent(episode.slug)}/`,
 				audio: publicAudio(episode, settings.freeEpisodeSlugs, settings.audioBaseUrl, settings.audioPublicationTime)
 			}))
 	};

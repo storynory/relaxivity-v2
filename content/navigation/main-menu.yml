@@ -12,7 +12,15 @@ items:
     url: /contact/
     newTab: false
     children: []
-  - label: Podcasts
-    url: /podcasts/
+  - label: Audio
+    url: /audio/
+    newTab: false
+    children: []
+  - label: Playlist
+    url: /playlist/
+    newTab: false
+    children: []
+  - label: Search
+    url: /search/
     newTab: false
     children: []

@@ -18,8 +18,8 @@ function setup() {
 	return { playback, audio, sourceChanges: () => sourceChanges };
 }
 
-const first = { src: '/one.mp3', title: 'One', href: '/podcasts/one/' };
-const second = { src: '/two.mp3', title: 'Two', href: '/podcasts/two/' };
+const first = { src: '/one.mp3', title: 'One', href: '/audio/one/' };
+const second = { src: '/two.mp3', title: 'Two', href: '/audio/two/' };
 
 test('dismiss pauses and preserves position; resuming the same episode keeps its audio source', async () => {
 	const { playback, audio, sourceChanges } = setup();
@@ -161,7 +161,7 @@ test('single-story playback clears the queue; dismissing never advances it', asy
 
 test('selecting the same story from another list replaces the queue and retains playback position', async () => {
 	const { playback, audio, sourceChanges } = setup();
-	const third = { src: '/three.mp3', title: 'Three', href: '/podcasts/three/' };
+	const third = { src: '/three.mp3', title: 'Three', href: '/audio/three/' };
 	await playback.startQueue([first, second], 0, undefined, 'Playlist', '/category/one/');
 	playback.seek(30);
 	await playback.startQueue([first, third], 0, undefined, 'Playlist', '/tag/two/');
@@ -179,12 +179,12 @@ test('selecting the same story from another list replaces the queue and retains 
 
 test('changing list order updates what plays next without restarting the current story or touching another list', async () => {
 	const { playback, audio, sourceChanges } = setup();
-	const third = { src: '/three.mp3', title: 'Three', href: '/podcasts/three/' };
-	await playback.startQueue([first, second, third], 1, undefined, 'Playlist', '/podcasts/');
+	const third = { src: '/three.mp3', title: 'Three', href: '/audio/three/' };
+	await playback.startQueue([first, second, third], 1, undefined, 'Playlist', '/audio/');
 	playback.seek(42);
 	playback.reorderQueue([third, second, first], '/favourites/');
 	assert.equal(get(playback).queue[2].src, third.src);
-	playback.reorderQueue([third, second, first], '/podcasts/');
+	playback.reorderQueue([third, second, first], '/audio/');
 	assert.equal(sourceChanges(), 1);
 	assert.equal(audio.currentTime, 42);
 	assert.equal(audio.paused, false);

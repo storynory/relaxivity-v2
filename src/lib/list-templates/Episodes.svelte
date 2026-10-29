@@ -9,4 +9,4 @@
 	})));
 </script>
 
-<StoryListing title="Podcasts" {items} />
+<StoryListing title="Audio" {items} pagination={data.pagination} />

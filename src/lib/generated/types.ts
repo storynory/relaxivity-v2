@@ -1,5 +1,37 @@
 // Generated automatically from Sveltia collection YAML. Do not edit.
 
+export type AudioContent = {
+	"title": string;
+	"draft": boolean;
+	"body"?: string;
+	"excerpt"?: string;
+	"description"?: string;
+	"date": string;
+	"episodeNumber"?: number;
+	"seasonNumber"?: number;
+	"audio"?: string;
+	"length"?: number;
+	"duration"?: string;
+	"sampleAudio"?: string;
+	"sampleLength"?: number;
+	"sampleDuration"?: string;
+	"permanentlyFree"?: boolean;
+	"author"?: string;
+	"narrator"?: string;
+	"presenter"?: string;
+	"producer"?: string;
+	"featuredImage"?: string;
+	"featuredImageAlt"?: string;
+	"category"?: string;
+	"tags"?: string[];
+	"showOnHome"?: boolean;
+	"featured"?: boolean;
+	"seo"?: {
+		"title"?: string;
+		"description"?: string;
+	};
+};
+
 export type BlocksContent = {
 	"title": string;
 	"type": "selected" | "latest" | "featured" | "hero" | "panel";
@@ -10,7 +42,7 @@ export type BlocksContent = {
 	"imagePosition"?: "left" | "right";
 	"buttonText"?: string;
 	"buttonUrl"?: string;
-	"collection"?: "posts" | "podcasts";
+	"collection"?: "posts" | "audio";
 	"category"?: string;
 	"tags"?: string[];
 	"tagMatch"?: "any" | "all";
@@ -74,38 +106,6 @@ export type PeopleContent = {
 	"bio"?: string;
 	"photo"?: string;
 	"website"?: string;
-};
-
-export type PodcastsContent = {
-	"title": string;
-	"draft": boolean;
-	"body"?: string;
-	"excerpt"?: string;
-	"description"?: string;
-	"date": string;
-	"episodeNumber"?: number;
-	"seasonNumber"?: number;
-	"audio"?: string;
-	"length"?: number;
-	"duration"?: string;
-	"sampleAudio"?: string;
-	"sampleLength"?: number;
-	"sampleDuration"?: string;
-	"permanentlyFree"?: boolean;
-	"author"?: string;
-	"narrator"?: string;
-	"presenter"?: string;
-	"producer"?: string;
-	"featuredImage"?: string;
-	"featuredImageAlt"?: string;
-	"category"?: string;
-	"tags"?: string[];
-	"showOnHome"?: boolean;
-	"featured"?: boolean;
-	"seo"?: {
-		"title"?: string;
-		"description"?: string;
-	};
 };
 
 export type PostsContent = {
@@ -195,13 +195,13 @@ export type TypographyContent = {
 };
 
 export type ContentByCollection = {
+	"audio": AudioContent;
 	"blocks": BlocksContent;
 	"categories": CategoriesContent;
 	"colour-schemes": ColourSchemesContent;
 	"navigation": NavigationContent;
 	"pages": PagesContent;
 	"people": PeopleContent;
-	"podcasts": PodcastsContent;
 	"posts": PostsContent;
 	"settings": {
 		"general": SettingsGeneralContent;

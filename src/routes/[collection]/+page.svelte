@@ -8,6 +8,6 @@
 	const Template = $derived(listTemplates[selected] ?? listTemplates.default);
 </script>
 
-<SeoMeta title={data.collection} />
+<SeoMeta title={data.collection === 'audio' ? 'Audio' : data.collection} />
 
 <Template {data} />

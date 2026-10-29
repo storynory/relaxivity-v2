@@ -3,4 +3,10 @@ export type ListingData = {
 	collection: string;
 	items: Record<string, unknown>[];
 	listTemplate: string;
+	pagination?: {
+		page: number;
+		totalPages: number;
+		total: number;
+		pages: { number: number; href: string }[];
+	};
 };

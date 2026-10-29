@@ -3,7 +3,7 @@ import { afterEach, test } from 'node:test';
 import { createPlayback } from './playback.ts';
 import { attachMediaSession } from './media-session.ts';
 
-const base = 'https://example.test/podcasts/one/';
+const base = 'https://example.test/audio/one/';
 const globals = ['navigator', 'document', 'MediaMetadata'] as const;
 const descriptors = globals.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)] as const);
 afterEach(() => {
@@ -56,8 +56,8 @@ function setup(unsupported: MediaSessionAction[] = []) {
 		metadataCreations: () => metadataCreations, sourceChanges: () => sourceChanges };
 }
 
-const first = { src: '/one.mp3', title: 'One', href: '/podcasts/one/', artwork: '/uploads/one.webp' };
-const second = { src: '/two.mp3', title: 'Two — Audio Sample', href: '/podcasts/two/', artwork: '/uploads/two.jpg' };
+const first = { src: '/one.mp3', title: 'One', href: '/audio/one/', artwork: '/uploads/one.webp' };
+const second = { src: '/two.mp3', title: 'Two — Audio Sample', href: '/audio/two/', artwork: '/uploads/two.jpg' };
 
 test('metadata follows selected and automatically advanced tracks without being recreated on time updates', async () => {
 	const { playback, audio, session, metadataCreations } = setup();

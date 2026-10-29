@@ -44,7 +44,7 @@
 					{/if}
 					<h3><a href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}>{item.title}</a></h3>
 					{#if item.excerpt}<p>{item.excerpt}</p>{/if}
-					{#if item.collection === 'podcasts'}<FavouriteButton slug={item.slug} title={item.title} />{/if}
+					{#if item.collection === 'audio'}<FavouriteButton slug={item.slug} title={item.title} />{/if}
 				</article>
 			{/each}
 		</div>

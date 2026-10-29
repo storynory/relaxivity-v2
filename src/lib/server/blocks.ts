@@ -78,7 +78,7 @@ export async function buildBlock(slug: string): Promise<RenderedBlock | null> {
 		for (const entry of selected) {
 			if (!entry || typeof entry !== 'object') continue;
 			const choice = entry as Data;
-			// Sveltia variable-type list stores { type: 'posts', slug: '...' } (or podcasts).
+			// Sveltia variable-type list stores { type: 'posts', slug: '...' } (or audio).
 			// Continue accepting older { collection, slug } records as well.
 			const collection = publicCollection(value(choice, 'type') || value(choice, 'collection'));
 			const selectedSlug = value(choice, 'slug');
@@ -95,7 +95,7 @@ export async function buildBlock(slug: string): Promise<RenderedBlock | null> {
 			const all = await getAll(collection, (items) => items
 				.filter((item) => matches(item.data, settings, collection))
 				.filter((item) => type !== 'featured' || item.data.featured === true)
-				.sort((a, b) => collection === 'podcasts'
+				.sort((a, b) => collection === 'audio'
 					? compareEpisodes({ ...a.data, slug: a.meta.slug }, { ...b.data, slug: b.meta.slug })
 					: value(b.data, 'date').localeCompare(value(a.data, 'date')))
 				.slice(0, limit));

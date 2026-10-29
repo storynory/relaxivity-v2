@@ -4,7 +4,7 @@
 
 <svelte:head>
 	<title>Search</title>
-	<meta name="description" content="Search published pages, posts and podcasts." />
+	<meta name="description" content="Search published pages, posts and audio." />
 </svelte:head>
 
 <main>

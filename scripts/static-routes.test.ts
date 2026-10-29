@@ -3,6 +3,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { test } from 'node:test';
 import YAML from 'yaml';
+import { readAll } from '../src/lib/content/read.ts';
+import { compareEpisodes, isPublishedEpisode } from '../src/lib/audio/availability.ts';
+import { audioPageSize } from '../src/lib/server/audio-archive.ts';
 
 const buildDir = path.resolve('build');
 
@@ -76,14 +79,52 @@ test('playlist is built, utility links are visible, and the legacy URL redirects
 	assert.match(utility, /\/icons\.svg#heart/);
 	assert.match(utility, /Search/);
 	assert.match(utility, /Playlist/);
+	assert.match(utility, /href="\/audio\/"/);
+	assert.match(utility, /\/icons\.svg#headphones/);
+	const menu = html.match(/<nav\b[^>]*id="main-navigation"[^>]*>(.*?)<\/nav>/s)?.[1] ?? '';
+	for (const [route, label, icon] of [['audio', 'Audio', 'headphones'], ['playlist', 'Playlist', 'heart'], ['search', 'Search', 'search']]) {
+		const link = menu.match(new RegExp(`<a\\b[^>]*href="/${route}/"[^>]*>(.*?)</a>`, 's'))?.[1] ?? '';
+		assert.ok(link.includes(label), `${label} is labelled in the main menu`);
+		assert.ok(link.includes(`/icons.svg#${icon}`), `${label} has its menu icon`);
+	}
 	assert.doesNotMatch(html, /href="\/favourites\/"/);
 	const redirect = await fs.readFile(path.join(buildDir, 'favourites/index.html'), 'utf8');
 	assert.match(redirect, /http-equiv="refresh"/i);
 	assert.match(redirect, /0;url=\/playlist\//);
 });
 
+test('audio archive pages are crawlable, canonical, and cover every published episode once', async () => {
+	const episodes = (await readAll('audio')).filter(({ data }) => isPublishedEpisode(data))
+		.sort((a, b) => compareEpisodes({ ...a.data, slug: a.meta.slug }, { ...b.data, slug: b.meta.slug }));
+	const expected = episodes.map(({ meta }) => `/audio/${encodeURIComponent(meta.slug!)}/`);
+	const pageCount = Math.max(1, Math.ceil(expected.length / audioPageSize));
+	const seen: string[] = [];
+	const sitemap = await fs.readFile(path.join(buildDir, 'sitemap.xml'), 'utf8');
+	for (let page = 1; page <= pageCount; page++) {
+		const href = page === 1 ? '/audio/' : `/audio/page/${page}/`;
+		const html = await fs.readFile(targetFile(href), 'utf8');
+		assert.ok(html.includes(`rel="canonical" href="https://relaxivity.app${href}"`), href);
+		assert.ok(sitemap.includes(`https://relaxivity.app${href}</loc>`), href);
+		assert.doesNotMatch(html, /href="\/podcasts\//);
+		const links = [...html.matchAll(/<h2[^>]*>\s*<a href="([^"#]+)"/g)].map((match) => match[1]);
+		assert.deepEqual(links, expected.slice((page - 1) * audioPageSize, page * audioPageSize), href);
+		seen.push(...links);
+		if (page < pageCount) assert.match(html, new RegExp(`href="/audio/page/${page + 1}/"[^>]*rel="next"`));
+		if (page > 1) {
+			const previous = page === 2 ? '/audio/' : `/audio/page/${page - 1}/`;
+			assert.ok(html.includes(`href="${previous}" rel="prev"`), href);
+		}
+	}
+	assert.deepEqual(seen, expected);
+	assert.equal(new Set(seen).size, expected.length);
+	const feed = await fs.readFile(path.join(buildDir, 'audio/feed.xml'), 'utf8');
+	assert.match(feed, /<rss /);
+	assert.match(feed, /\/audio\//);
+	assert.doesNotMatch(feed, /\/podcasts\//);
+});
+
 test('podcast artwork and header logo reserve image space in rendered HTML', async () => {
-	const html = await fs.readFile(path.join(buildDir, 'podcasts/birth-of-buddha/index.html'), 'utf8');
+	const html = await fs.readFile(path.join(buildDir, 'audio/birth-of-buddha/index.html'), 'utf8');
 	const images = [...html.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
 	assert.ok(images.length >= 2);
 	for (const image of images) {

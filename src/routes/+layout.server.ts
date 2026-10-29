@@ -51,7 +51,7 @@ export const load: LayoutServerLoad = async () => {
 	if (!preset) throw new Error(`Typography preset "${typographySlug}" was not found in content/typography`);
 
 	const audioPublicationTime = Date.now();
-	const freeEpisodeSlugs = latestFreeEpisodes((await readAll('podcasts')).map(({ data, meta }) =>
+	const freeEpisodeSlugs = latestFreeEpisodes((await readAll('audio')).map(({ data, meta }) =>
 		({ ...data, slug: meta.slug })), audioPublicationTime).map(({ slug }) => slug!);
 
 	return {

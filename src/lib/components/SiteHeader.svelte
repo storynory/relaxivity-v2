@@ -15,6 +15,16 @@
 	let menuOpen = $state(false);
 	let openDropdown = $state<number | null>(null);
 	let menuButton = $state<HTMLButtonElement>();
+	const utilityLinks = [
+		{ href: '/audio/', label: 'Audio', icon: 'headphones' },
+		{ href: '/playlist/', label: 'Playlist', icon: 'heart' },
+		{ href: '/search/', label: 'Search', icon: 'search' }
+	];
+	const navigationIcons: Record<string, string> = {
+		'/': 'home',
+		'/pages/about/': 'info',
+		'/contact/': 'mail'
+	};
 
 	function closeMenu() {
 		menuOpen = false;
@@ -49,14 +59,12 @@
 <header>
 	<div class="utility-bar">
 		<nav class="container utility-links" aria-label="Utility">
-			<a href="/search/" onclick={closeMenu}>
-				<svg aria-hidden="true" class="icon nav-icon"><use href="/icons.svg#search" /></svg>
-				Search
-			</a>
-			<a href="/playlist/" onclick={closeMenu}>
-				<svg aria-hidden="true" class="icon nav-icon"><use href="/icons.svg#heart" /></svg>
-				Playlist
-			</a>
+			{#each utilityLinks as link}
+				<a href={link.href} onclick={closeMenu}>
+					<svg aria-hidden="true" class="icon nav-icon"><use href={`/icons.svg#${link.icon}`} /></svg>
+					<span class="utility-label">{link.label}</span>
+				</a>
+			{/each}
 		</nav>
 	</div>
 	<div class="container header-inner">
@@ -95,6 +103,7 @@
 			<nav id="main-navigation" aria-label="Main" class:open={menuOpen}>
 				<ul class="primary">
 					{#each items as item, index}
+						{@const icon = utilityLinks.find((link) => link.href === item.url)?.icon ?? navigationIcons[item.url ?? '']}
 						<li
 							class:expanded={openDropdown === index}
 							class:disclosure={!item.url && !!item.children?.length}
@@ -113,6 +122,9 @@
 									rel={item.newTab ? 'noopener noreferrer' : undefined}
 									onclick={closeMenu}
 								>
+									{#if icon}
+										<svg aria-hidden="true" class="icon nav-icon"><use href={`/icons.svg#${icon}`} /></svg>
+									{/if}
 									{item.label}
 
 									{#if item.newTab}
@@ -174,6 +186,7 @@
 	}
 
 	.utility-bar {
+		display: none;
 		background: color-mix(in srgb, var(--text) 5%, var(--prime));
 		border-bottom: 1px solid color-mix(in srgb, var(--text) 12%, var(--prime));
 	}
@@ -196,6 +209,23 @@
 	}
 
 	.utility-links a:hover { text-decoration: underline; }
+
+	/* Four 44px targets fit comfortably on phones, including a future Login link. */
+	@media (max-width: 31.999rem) {
+		.utility-links { gap: 0.35rem; }
+		.utility-links a { min-width: 44px; justify-content: center; }
+		.utility-label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			padding: 0;
+			margin: -1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+			border: 0;
+		}
+	}
 
 	.header-inner {
 		display: flex;
@@ -339,6 +369,8 @@
 	/* Mobile navigation */
 
 	@media (max-width: 48rem) {
+		.utility-bar { display: block; }
+
 		.header-inner {
 			flex-wrap: wrap;
 			padding-block: 0.75rem;

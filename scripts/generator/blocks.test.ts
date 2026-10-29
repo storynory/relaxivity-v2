@@ -22,7 +22,7 @@ test('Selected items offer searchable relations for each public content type', a
 	const items = blocks?.fields?.find((field) => field.name === 'items');
 	assert.equal(items?.widget, 'list');
 	assert.ok(!config.some((entry) => entry.name === 'stories'));
-	for (const collection of ['posts', 'podcasts']) {
+	for (const collection of ['posts', 'audio']) {
 		const variants = items as unknown as {
 			types?: { name: string; fields: { name: string; widget: string; collection: string }[] }[];
 		} | undefined;

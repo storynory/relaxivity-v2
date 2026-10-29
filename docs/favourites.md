@@ -1,6 +1,6 @@
 # Playlist playback
 
-Listeners can save episodes from story pages, episode listings and podcast blocks.
+Listeners can save episodes from story pages, episode listings and audio blocks.
 The My Playlist page at `/playlist/` lists saved stories in their chosen order.
 The former `/favourites/` URL redirects to `/playlist/`; static hosts use the
 prerendered HTML refresh redirect.
@@ -11,7 +11,7 @@ switch is off, starting a saved story plays only that story. There is no separat
 Play All button; playback starts from whichever story the listener chooses and
 continues in the selected order while automatic-next is on.
 
-Podcasts, category, tag and Playlist pages offer newest first, oldest first,
+Audio, category, tag and Playlist pages offer newest first, oldest first,
 and title order. Playlist defaults to My order, which keeps the listener's
 saved arrangement; Earlier/Later controls appear in that mode. Other sort
 choices do not overwrite that arrangement. Order choices apply to the current
@@ -26,7 +26,7 @@ visit and a notice explains the limitation. Storage events sync favourites
 between open tabs, but tabs do not control each other's audio.
 
 Play next story automatically appears at the top of the Playlist page and
-defaults to on. The same switch and preference are used by podcast, tag and
+defaults to on. The same switch and preference are used by audio, tag and
 category listings. Its setting is stored separately
 in `relaxivity:auto-advance:v1`. Turning it off during an existing queue stops
 playback at the end of the current story; manual previous/next buttons still
@@ -36,7 +36,7 @@ at the end of the playlist. Reloading a page does not automatically start audio.
 The existing root-layout audio element remains mounted during navigation.
 `createPlayback().startQueue(tracks, index, trigger, name, contextId)` takes a
 snapshot of any ordered list of playable `Track` records. Category, tag and
-podcast listings use the same API. Favourites edits do not modify an active queue;
+audio listings use the same API. Favourites edits do not modify an active queue;
 starting or resuming from the favourites list uses the updated order. The shared
 `AudioPlayer` accepts an optional queue and uses it only when automatic-next is
 on. Each list supplies its route as a playback context; choosing a story from a

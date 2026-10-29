@@ -1,6 +1,48 @@
 // Generated automatically. Do not edit.
 
 export const collections = {
+  "audio": {
+    "kind": "folder",
+    "publicRoute": true,
+    "rss": "podcast",
+    "template": "podcast",
+    "listTemplate": "episodes",
+    "folder": "content/audio",
+    "extension": "md",
+    "format": "markdown",
+    "relations": {
+      "author": {
+        "collection": "people",
+        "multiple": false,
+        "valueField": "{{slug}}"
+      },
+      "narrator": {
+        "collection": "people",
+        "multiple": false,
+        "valueField": "{{slug}}"
+      },
+      "presenter": {
+        "collection": "people",
+        "multiple": false,
+        "valueField": "{{slug}}"
+      },
+      "producer": {
+        "collection": "people",
+        "multiple": false,
+        "valueField": "{{slug}}"
+      },
+      "category": {
+        "collection": "categories",
+        "multiple": false,
+        "valueField": "{{slug}}"
+      },
+      "tags": {
+        "collection": "tags",
+        "multiple": true,
+        "valueField": "{{slug}}"
+      }
+    }
+  },
   "blocks": {
     "kind": "folder",
     "publicRoute": false,
@@ -89,48 +131,6 @@ export const collections = {
     "extension": "yml",
     "format": "yaml",
     "relations": {}
-  },
-  "podcasts": {
-    "kind": "folder",
-    "publicRoute": true,
-    "rss": "podcast",
-    "template": "podcast",
-    "listTemplate": "episodes",
-    "folder": "content/podcasts",
-    "extension": "md",
-    "format": "markdown",
-    "relations": {
-      "author": {
-        "collection": "people",
-        "multiple": false,
-        "valueField": "{{slug}}"
-      },
-      "narrator": {
-        "collection": "people",
-        "multiple": false,
-        "valueField": "{{slug}}"
-      },
-      "presenter": {
-        "collection": "people",
-        "multiple": false,
-        "valueField": "{{slug}}"
-      },
-      "producer": {
-        "collection": "people",
-        "multiple": false,
-        "valueField": "{{slug}}"
-      },
-      "category": {
-        "collection": "categories",
-        "multiple": false,
-        "valueField": "{{slug}}"
-      },
-      "tags": {
-        "collection": "tags",
-        "multiple": true,
-        "valueField": "{{slug}}"
-      }
-    }
   },
   "posts": {
     "kind": "folder",

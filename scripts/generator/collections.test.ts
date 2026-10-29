@@ -15,17 +15,17 @@ test('only explicitly opted-in folder collections have public routes', () => {
 
 test('generates independently configurable listing and detail templates', () => {
 	const output = generateCollections([
-		{ name: 'podcasts', folder: 'content/podcasts', public_route: true, template: 'podcast', list_template: 'episodes' },
+		{ name: 'audio', folder: 'content/audio', public_route: true, template: 'podcast', list_template: 'episodes' },
 		{ name: 'posts', folder: 'content/posts', public_route: true, template: 'post' }
 	]);
-	assert.match(output, /"podcasts": \{[\s\S]*?"template": "podcast",[\s\S]*?"listTemplate": "episodes"/);
+	assert.match(output, /"audio": \{[\s\S]*?"template": "podcast",[\s\S]*?"listTemplate": "episodes"/);
 	assert.match(output, /"posts": \{[\s\S]*?"listTemplate": "default"/);
 });
 
 test('generates RSS settings for opted-in and disabled collections', () => {
 	const output = generateCollections([
 		{ name: 'posts', folder: 'content/posts', public_route: true, rss: 'standard' },
-		{ name: 'podcasts', folder: 'content/podcasts', public_route: true, rss: 'podcast' },
+		{ name: 'audio', folder: 'content/audio', public_route: true, rss: 'podcast' },
 		{ name: 'pages', folder: 'content/pages', public_route: true, rss: false },
 		{ name: 'other', folder: 'content/other' }
 	]);
