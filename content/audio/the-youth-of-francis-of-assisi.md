@@ -3,7 +3,7 @@ title: The Youth of Francis of Assisi
 draft: false
 excerpt: St. Francis of Assisi is celebrated on the 4th of October, and it's a time when people around the world remember his teachings of peace and kindness towards all creatures. He is best known for talking to animals, especially the birds, and seeing God in all forms of creation. He also was the first to set up a nativity creche to celebrate Christmas.
 description: St. Francis of Assisi is celebrated on the 4th of October, and it's a time when people around the world remember his teachings of peace and kindness towards all creatures. Audio story.
-date: 2026-10-29T15:52:00
+date: 2026-10-30T18:37:00
 episodeNumber: null
 seasonNumber: null
 audio: assisi-youth-relaxivity.mp3

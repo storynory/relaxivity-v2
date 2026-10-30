@@ -3,7 +3,7 @@ title: All the World's A Stage
 draft: false
 excerpt: Otherwise known as The Seven Ages of Man,  this wise and witty speech comes from William Shakespeare's play, "As You Like it" (Act 2 Scene 7).  It is spoken by Jaques, a cynical nobleman.
 description: Otherwise known as The Seven Ages of Man, this famous and funny speech comes from William Shakespeare's play, "As You Like it" (Act 2, Scene 7).  It is spoken by Jaques, a cynical nobleman.
-date: 2026-10-28T21:47:00
+date: 2026-10-29T21:47:00
 episodeNumber: null
 seasonNumber: null
 audio: all-world-stage-16.wav

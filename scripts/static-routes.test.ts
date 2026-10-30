@@ -7,6 +7,7 @@ import sharp from 'sharp';
 import { readAll } from '../src/lib/content/read.ts';
 import { compareEpisodes, isPublishedEpisode } from '../src/lib/audio/availability.ts';
 import { audioPageSize } from '../src/lib/server/audio-archive.ts';
+import { loadTagArchive, tagPageEntries, tagPageHref } from '../src/lib/server/taxonomy.ts';
 
 const buildDir = path.resolve('build');
 
@@ -120,12 +121,27 @@ test('audio archive pages are crawlable, canonical, and cover every published ep
 	const pageCount = Math.max(1, Math.ceil(expected.length / audioPageSize));
 	const seen: string[] = [];
 	const sitemap = await fs.readFile(path.join(buildDir, 'sitemap.xml'), 'utf8');
+	const descriptions = new Set<string>();
 	for (let page = 1; page <= pageCount; page++) {
 		const href = page === 1 ? '/audio/' : `/audio/page/${page}/`;
 		const html = await fs.readFile(targetFile(href), 'utf8');
 		assert.ok(html.includes(`rel="canonical" href="https://relaxivity.app${href}"`), href);
 		assert.ok(sitemap.includes(`https://relaxivity.app${href}</loc>`), href);
 		assert.doesNotMatch(html, /href="\/podcasts\//);
+		const heading = page === 1 ? 'Audio' : `Audio Page ${page}`;
+		assert.ok(html.includes(`<title>${heading}</title>`), href);
+		assert.match(html, new RegExp(`<h1[^>]*>${heading}</h1>`));
+		assert.doesNotMatch(html, /<p>Page \d+ of \d+<\/p>/);
+		const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
+		assert.ok(description, href);
+		assert.ok(!descriptions.has(description), `Unique description for ${href}`);
+		descriptions.add(description);
+		if (page > 1) {
+			assert.ok(description.startsWith('Audio Stories including '));
+			assert.ok(description.endsWith(`${heading}.`));
+			assert.ok(html.includes(`property="og:description" content="${description}"`));
+			assert.ok(html.includes(`name="twitter:description" content="${description}"`));
+		}
 		const links = [...html.matchAll(/<h2[^>]*>\s*<a href="([^"#]+)"/g)].map((match) => match[1]);
 		assert.deepEqual(links, expected.slice((page - 1) * audioPageSize, page * audioPageSize), href);
 		seen.push(...links);
@@ -141,6 +157,27 @@ test('audio archive pages are crawlable, canonical, and cover every published ep
 	assert.match(feed, /<rss /);
 	assert.match(feed, /\/audio\//);
 	assert.doesNotMatch(feed, /\/podcasts\//);
+});
+
+test('later tag pages have their own titles, descriptions, canonicals and crawlable pagination', async () => {
+	const sitemap = await fs.readFile(path.join(buildDir, 'sitemap.xml'), 'utf8');
+	for (const { slug, page } of await tagPageEntries()) {
+		const data = await loadTagArchive(slug, Number(page));
+		const href = tagPageHref(slug, Number(page));
+		const html = await fs.readFile(targetFile(href), 'utf8');
+		const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
+		assert.ok(description.startsWith('Audio Stories including '), href);
+		assert.ok(description.endsWith(`Page ${page}.`), href);
+		assert.match(html, new RegExp(`<title>[^<]* Page ${page}</title>`));
+		assert.match(html, new RegExp(`<h1[^>]*>[^<]* Page ${page}</h1>`));
+		assert.doesNotMatch(html, /<p>Page \d+ of \d+<\/p>/);
+		assert.ok(html.includes(`rel="canonical" href="https://relaxivity.app${href}"`));
+		assert.ok(sitemap.includes(`https://relaxivity.app${href}</loc>`));
+		assert.ok(html.includes(`href="${tagPageHref(slug, Number(page) - 1)}" rel="prev"`));
+		if (data.pagination.page < data.pagination.totalPages) {
+			assert.ok(html.includes(`href="${tagPageHref(slug, Number(page) + 1)}" rel="next"`));
+		}
+	}
 });
 
 test('podcast artwork and header logo reserve image space in rendered HTML', async () => {

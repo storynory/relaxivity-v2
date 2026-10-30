@@ -1,8 +1,8 @@
 ---
 title: About Relaxivity
-excerpt: Relaxivity aims to delight your ears with audio stories, myths, and verse.
+excerpt: We aim to delight your ears with audio stories, myths, and verse.
 seo: null
-layout: standard
+layout: wide
 blocks: []
 description: Welcome to our new website.
 ---
@@ -42,22 +42,22 @@ Our plan is that subscribers will have access to our growing collection of stori
 
 This is the app.  
 
-We're building Relaxivity as a modern web app. That means you can enjoy many of the conveniences of a phone app without having to download anything from an app store.
+We're building _Relaxivity_ as a modern web app. That means you can enjoy many of the conveniences of a phone app without having to download anything from an app store.
 
 You can:
 
 - **Keep listening while browsing.** Our audio player continues playing as you move around the site.
 - **Create your own playlists.** Save your favourite stories, arrange them in any order, and let the next story play automatically.
 - **Listen with your screen locked.** Control playback from your phone or tablet's lock screen.
-- **Add Relaxivity to your Home Screen.** Launch it with a tap, just like a regular app.
+- **Add _Relaxivity_ to your Home Screen.** Launch it with a tap, just like a regular app.
 - **Listen in your favourite podcast app.** Our free podcast is another way to enjoy the latest stories.
 
 We're also working towards subscriber accounts that will unlock our full archive and more features.
 
-## What Does Relaxivity Actually Mean?
+## What Does _Relaxivity_ Actually Mean?
 
-Relaxivity is a measurement of how quickly atomic nuclei settle back after being disturbed by a magnetic pulse.
+_Relaxivity_ is a measurement of how quickly atomic nuclei settle back after being disturbed by a magnetic pulse.
 
 So now you know. 
 
-For us, he word suggests two opposites - Relaxation and Activity.  We are not trying to be bore you to sleep like some stories.  You can relax to our audio while we transport your imagination to a far away place.
+For us, he word suggests two opposites - Relaxation and Activity.  You can relax to our audio while we transport your imagination to a far away place.

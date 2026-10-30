@@ -38,7 +38,6 @@
 
 <main>
 	<h1>{title}</h1>
-	{#if pagination && pagination.totalPages > 1}<p>Page {pagination.page} of {pagination.totalPages}</p>{/if}
 	{#if description}<p>{description}</p>{/if}
 	{#if image}
 		<div class="archive-image">
@@ -55,7 +54,6 @@
 	{#each ordered as item (`${item.collection}/${item.slug}`)}
 		{@const href = `/${item.collection}/${encodeURIComponent(item.slug)}/`}
 		{@const itemTitle = textField(item, 'title') || item.slug}
-		{@const date = item.date instanceof Date ? item.date.toISOString() : textField(item, 'date')}
 		<article class:with-artwork={!!textField(item, 'featuredImage')}>
 			{#if textField(item, 'featuredImage')}
 				<a class="artwork" {href} tabindex="-1" aria-hidden="true">
@@ -67,21 +65,19 @@
 				{#if item.collection === 'audio'}
 					{@const audio = publicAudio(item, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime)}
 					<p class="meta">
-						{#if date}<time datetime={date}>{date.slice(0, 10)}</time>{/if}
 						{#if audio.duration}<span>{audio.duration}</span>{/if}
 						{#if relationLabel(item.narrator, 'name')}<span>Narrated by {relationLabel(item.narrator, 'name')}</span>{/if}
 					</p>
 					{#if textField(item, 'excerpt') || textField(item, 'description')}<p>{textField(item, 'excerpt') || textField(item, 'description')}</p>{/if}
 					<EpisodeAudio {audio} slug={item.slug} title={itemTitle} {href} artwork={textField(item, 'featuredImage')} queue={tracks} contextId={page.url.pathname} />
 				{:else}
-					{#if date}<p class="meta"><time datetime={date}>{date.slice(0, 10)}</time></p>{/if}
 					{#if textField(item, 'excerpt') || textField(item, 'description')}<p>{textField(item, 'excerpt') || textField(item, 'description')}</p>{/if}
 				{/if}
 			</div>
 		</article>
 	{/each}
 	{#if pagination && pagination.totalPages > 1}
-		<nav class="pagination" aria-label="Audio pages">
+		<nav class="pagination" aria-label="Archive pages">
 			{#if pagination.page > 1}
 				<a href={pagination.pages[pagination.page - 2].href} rel="prev">Previous</a>
 			{/if}

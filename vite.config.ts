@@ -17,7 +17,7 @@ export default defineConfig({
 				entries: ['*'],
 				handleUnseenRoutes: ({ routes }) => {
 					// These routes can legitimately have no entries when their collections are empty.
-					const optional = ['/preview/[slug]', '/audio/page/[page]', '/category/[slug]', '/tag/[slug]'];
+					const optional = ['/preview/[slug]', '/audio/page/[page]', '/category/[slug]', '/tag/[slug]', '/tag/[slug]/page/[page]'];
 					const unexpected = routes.filter((route) => !optional.includes(route));
 					if (unexpected.length) {
 						throw new Error(`Prerenderable routes were not generated: ${unexpected.join(', ')}`);

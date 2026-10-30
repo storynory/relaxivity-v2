@@ -3,6 +3,7 @@ export type ListingData = {
 	collection: string;
 	items: Record<string, unknown>[];
 	listTemplate: string;
+	title?: string;
 	pagination?: {
 		page: number;
 		totalPages: number;

@@ -3,7 +3,7 @@ title: Buddha's Path to Enlightenment
 draft: false
 excerpt: The future Buddha resolved to seek enlightenment. He took one last glance at his sleeping wife and child. Then he rode out through the city's gates on his horse Kanthaka followed by his faithful servant Channa.
 description: ''
-date: 2026-10-28T12:16:00
+date: 2026-10-30T22:34:00
 episodeNumber: null
 seasonNumber: null
 audio: budda-enlightenment-relaxivityb.mp3
@@ -33,7 +33,7 @@ Previously, we heard how the future Buddha was born two and half thousand years 
 
 Buddha’s path to enlightenment
 
-![Buddha under a banyan tree](/uploads/buddha-tree.jpg)
+![Buddha under a banyan tree](/uploads/buddha-tree.jpg "Buddha Under a Tree")
 
 The earth beneath the feet of Kanthaka turned around like a potter's wheel, forcing the future Buddha to contemplate the star-lit city of splendour. Then he roared like a lion.
 

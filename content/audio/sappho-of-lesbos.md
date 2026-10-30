@@ -3,7 +3,7 @@ title: Sappho of  Lesbos
 draft: false
 excerpt: The story of Sappho -  author of divine lyric poetry - and the subject of gossip and scandal.
 description: The story of Sappho -  author of divine lyric poetry - and the subject of gossip and scandal.
-date: 2026-10-27T22:17:00
+date: 2026-10-30T20:36:00
 episodeNumber: null
 seasonNumber: null
 audio: Sappho of Lesbos.mp3

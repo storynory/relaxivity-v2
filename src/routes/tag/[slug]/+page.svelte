@@ -4,4 +4,4 @@
   let { data } = $props();
 </script>
 <SeoMeta title={data.title} item={data.term} />
-<TaxonomyListing title={data.title} description={data.description} image={data.term.image} items={data.items} />
+<TaxonomyListing title={data.title} description={data.description} image={data.term.image} items={data.items} pagination={data.pagination} />

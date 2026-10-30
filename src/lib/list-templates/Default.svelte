@@ -18,7 +18,6 @@
 			<article>
 				<h2><a href={`/${data.collection}/${encodeURIComponent(String(item.slug))}/`}>{textField(item, 'title') || textField(item, 'name') || String(item.slug)}</a></h2>
 				{#if textField(item, 'excerpt')}<p>{textField(item, 'excerpt')}</p>{/if}
-				{#if textField(item, 'date')}<small>{textField(item, 'date')}</small>{/if}
 			</article>
 		{/each}
 	{/if}

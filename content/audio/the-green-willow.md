@@ -3,7 +3,7 @@ title: The Green Willow
 draft: false
 excerpt: A mellow and sad story of a Samurai warrior who falls in love.
 description: A mellow and sad story of a Samurai warrior who falls in love.
-date: 2026-10-18T14:51:00
+date: 2026-10-29T22:38:00
 episodeNumber: null
 seasonNumber: null
 audio: green-willow-mix-relaxivity.mp3

@@ -5,5 +5,5 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<SeoMeta title={`Audio — Page ${data.pagination.page}`} />
+<SeoMeta title={data.title} item={{ seo: data.seo }} />
 <Episodes {data} />

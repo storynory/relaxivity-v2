@@ -3,7 +3,7 @@ title: Lanval
 draft: false
 excerpt: An ancient Story from the court of King Arthur
 description: An ancient Story from the court of King Arthur
-date: 2026-10-18T14:59:00
+date: 2026-10-29T18:30:00
 episodeNumber: null
 seasonNumber: null
 audio: lanval-relaxivity.mp3

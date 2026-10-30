@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import { readAll } from '#lib/content/read.ts';
 import { compareEpisodes, isPublishedEpisode } from '#lib/audio/availability.ts';
 import { getAll } from '#lib/server/content.ts';
+import { storyDescription } from './story-description.ts';
 
 export const audioPageSize = 10;
 export const audioPageHref = (page: number) => page === 1 ? '/audio/' : `/audio/page/${page}/`;
@@ -23,7 +24,10 @@ export async function loadAudioArchive(page = 1) {
 		// Select the page before rendering Markdown and resolving relationships.
 		return eligible.slice((page - 1) * audioPageSize, page * audioPageSize);
 	});
+	const title = page === 1 ? 'Audio' : `Audio Page ${page}`;
 	return {
+		title,
+		seo: { description: page > 1 ? storyDescription(items, title) : '' },
 		collection: 'audio',
 		listTemplate: 'episodes',
 		items: items as unknown as Record<string, unknown>[],

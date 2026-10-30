@@ -3,7 +3,7 @@ title: The Life of Cleopatra
 draft: false
 excerpt: The life of Cleopatra, queen of Egypt, in 20 fascinating facts.
 description: ''
-date: 2026-10-28T09:46:00
+date: 2026-10-29T22:38:00
 episodeNumber: null
 seasonNumber: null
 audio: cleopatra-master-affair.mp3

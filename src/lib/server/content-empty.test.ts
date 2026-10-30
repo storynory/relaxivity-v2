@@ -13,7 +13,7 @@ process.chdir(root);
 const { readAll, readOne, readDoc } = await import('../content/read.ts');
 const { getAll } = await import('./content.ts');
 const { publicEntries } = await import('./public-routes.ts');
-const { archive } = await import('./taxonomy.ts');
+const { archive, tagPageEntries } = await import('./taxonomy.ts');
 const categoryIndex = await import('../../routes/category/+page.server.ts');
 const categoryDetail = await import('../../routes/category/[slug]/+page.server.ts');
 const tagIndex = await import('../../routes/tag/+page.server.ts');
@@ -39,6 +39,7 @@ for (const state of ['missing', 'empty'] as const) {
 			assert.equal(await readOne(name, 'missing'), null, name);
 		}
 		assert.deepEqual(await publicEntries(), []);
+		assert.deepEqual(await tagPageEntries(), []);
 		for (const [index, detail] of [[categoryIndex, categoryDetail], [tagIndex, tagDetail]] as const) {
 			assert.deepEqual(await index.load(), { terms: [] });
 			assert.deepEqual(await detail.entries(), []);

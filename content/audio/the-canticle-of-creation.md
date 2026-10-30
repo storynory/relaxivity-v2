@@ -3,7 +3,7 @@ title: The Canticle of Creation
 draft: false
 excerpt: The Canticle written by St Francis of Assisi and recited by Jana
 description: The Canticle written by St Francis of Assisi and recited by Jana
-date: 2026-10-03T16:22:00
+date: 2026-10-30T19:37:00
 episodeNumber: null
 seasonNumber: null
 audio: canticle-of-assisi.mp3

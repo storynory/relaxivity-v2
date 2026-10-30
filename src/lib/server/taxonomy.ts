@@ -1,6 +1,8 @@
 import { getAll, getOne } from '#lib/server/content.ts';
 import { publicCollections, published } from '#lib/server/public-routes.ts';
 import { collections } from '#lib/generated/collections.ts';
+import { error } from '@sveltejs/kit';
+import { storyDescription } from './story-description.ts';
 
 export type TaxonomyKind = 'category' | 'tag';
 export type ArchiveItem = Record<string, unknown> & { collection: string; slug: string; title: string; excerpt: string; date: string };
@@ -68,5 +70,42 @@ export async function archive(kind: TaxonomyKind, slug: string) {
     description: stringValue(term.description),
     items: content.flat().sort((a, b) => b.date.localeCompare(a.date)
       || a.collection.localeCompare(b.collection) || a.slug.localeCompare(b.slug))
+  };
+}
+
+export const tagPageSize = 10;
+export const tagPageHref = (slug: string, page: number) => page === 1
+  ? `/tag/${encodeURIComponent(slug)}/` : `/tag/${encodeURIComponent(slug)}/page/${page}/`;
+
+export async function tagPageEntries() {
+  const entries: { slug: string; page: string }[] = [];
+  for (const term of await terms('tag')) {
+    const data = await archive('tag', term.slug);
+    const count = Math.ceil((data?.items.length ?? 0) / tagPageSize);
+    for (let page = 2; page <= count; page++) entries.push({ slug: term.slug, page: String(page) });
+  }
+  return entries;
+}
+
+export async function loadTagArchive(slug: string, page = 1) {
+  if (!Number.isSafeInteger(page) || page < 1) error(404, 'Tag page not found');
+  const data = await archive('tag', slug);
+  if (!data) error(404, 'Tag not found');
+  const totalPages = Math.max(1, Math.ceil(data.items.length / tagPageSize));
+  if (page > totalPages) error(404, 'Tag page not found');
+  const items = data.items.slice((page - 1) * tagPageSize, page * tagPageSize);
+  const title = page === 1 ? data.title : `${data.title} Page ${page}`;
+  const seo = data.term.seo && typeof data.term.seo === 'object' ? data.term.seo : {};
+  return {
+    ...data, title, items,
+    term: page === 1 ? data.term : {
+      ...data.term, seo: { ...seo, title, description: storyDescription(items, title) }
+    },
+    pagination: {
+      page, totalPages, total: data.items.length,
+      pages: Array.from({ length: totalPages }, (_, index) => ({
+        number: index + 1, href: tagPageHref(slug, index + 1)
+      }))
+    }
   };
 }

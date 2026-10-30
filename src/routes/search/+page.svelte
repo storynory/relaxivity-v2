@@ -8,10 +8,13 @@
 </svelte:head>
 
 <main>
-	<h1>Search</h1>
 	<SiteSearch />
 </main>
 
 <style>
-	main { max-width: var(--content-width); margin: 3rem auto; padding: 0 var(--space); }
+	main {
+		max-width: var(--content-width);
+		margin: 3rem auto;
+		padding: 0 var(--space);
+	}
 </style>
