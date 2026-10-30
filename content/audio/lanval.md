@@ -19,7 +19,7 @@ presenter: ''
 producer: bertie
 featuredImage: /uploads/lanval-romance-fairy-queen.jpg
 featuredImageAlt: Lanval and fairy queen
-category: england
+category: ''
 tags:
   - arthur
 showOnHome: true

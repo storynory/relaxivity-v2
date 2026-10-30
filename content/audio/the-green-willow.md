@@ -19,7 +19,7 @@ presenter: ''
 producer: bertie
 featuredImage: /uploads/willow-wood-cut.jpg
 featuredImageAlt: A Japanese Willow Tree
-category: japan
+category: ''
 tags:
   - japan
   - romantic

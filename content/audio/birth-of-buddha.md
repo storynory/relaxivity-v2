@@ -19,7 +19,7 @@ presenter: bertie
 producer: jana
 featuredImage: /uploads/buddha-videoart.webp
 featuredImageAlt: Buddha lying down
-category: india
+category: ''
 tags:
   - buddha
   - spiritual
