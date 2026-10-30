@@ -31,7 +31,16 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	{#if data.siteLogo}
+		<link rel="icon" type="image/png" sizes="16x16" href="/app-icons/favicon-16.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/app-icons/favicon-32.png" />
+		<link rel="icon" type="image/png" sizes="48x48" href="/app-icons/favicon-48.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/app-icons/apple-touch-icon.png" />
+	{:else}
+		<link rel="icon" href={favicon} />
+	{/if}
+	<link rel="manifest" href="/site.webmanifest" />
+	<meta name="theme-color" content={data.colours.prime} />
 	{#if usesLora}
 		<link rel="preload" href="/fonts/lora.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 	{/if}

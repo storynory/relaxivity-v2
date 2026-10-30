@@ -3,11 +3,31 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { test } from 'node:test';
 import YAML from 'yaml';
+import sharp from 'sharp';
 import { readAll } from '../src/lib/content/read.ts';
 import { compareEpisodes, isPublishedEpisode } from '../src/lib/audio/availability.ts';
 import { audioPageSize } from '../src/lib/server/audio-archive.ts';
 
 const buildDir = path.resolve('build');
+
+test('web app manifest and linked icons are included in the production build', async () => {
+	const manifest = JSON.parse(await fs.readFile(path.join(buildDir, 'site.webmanifest'), 'utf8'));
+	const html = await fs.readFile(path.join(buildDir, 'index.html'), 'utf8');
+	assert.match(html, /rel="manifest" href="\/site.webmanifest"/);
+	const settings = YAML.parse(await fs.readFile('content/settings/general.yml', 'utf8'));
+	assert.equal(manifest.name, settings.siteName);
+	for (const icon of manifest.icons) {
+		const metadata = await sharp(path.join(buildDir, icon.src)).metadata();
+		assert.equal(`${metadata.width}x${metadata.height}`, icon.sizes);
+	}
+	if (settings.siteLogo) {
+		assert.match(html, /rel="apple-touch-icon" sizes="180x180"/);
+		const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0] ?? '';
+		assert.match(header, /sizes="3rem"/);
+		assert.match(header, /\.96\.webp 96w/);
+		assert.match(header, /\.192\.webp 192w/);
+	}
+});
 
 async function htmlFiles(dir: string): Promise<string[]> {
 	const files: string[] = [];

@@ -3,6 +3,8 @@
     "width": 849,
     "height": 1134,
     "sizes": [
+      96,
+      192,
       320,
       640
     ],
@@ -15,6 +17,8 @@
     "width": 1184,
     "height": 1024,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -28,6 +32,8 @@
     "width": 600,
     "height": 337,
     "sizes": [
+      96,
+      192,
       320
     ],
     "formats": [
@@ -39,6 +45,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -52,6 +60,8 @@
     "width": 960,
     "height": 540,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -65,6 +75,8 @@
     "width": 2360,
     "height": 1640,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -78,6 +90,8 @@
     "width": 1024,
     "height": 1024,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -91,6 +105,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -104,6 +120,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -117,6 +135,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -130,6 +150,8 @@
     "width": 960,
     "height": 540,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -143,6 +165,8 @@
     "width": 618,
     "height": 900,
     "sizes": [
+      96,
+      192,
       320
     ],
     "formats": [
@@ -154,6 +178,8 @@
     "width": 640,
     "height": 640,
     "sizes": [
+      96,
+      192,
       320,
       640
     ],
@@ -166,6 +192,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -179,6 +207,8 @@
     "width": 600,
     "height": 336,
     "sizes": [
+      96,
+      192,
       320
     ],
     "formats": [
@@ -190,6 +220,8 @@
     "width": 1920,
     "height": 1080,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -203,6 +235,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -216,6 +250,8 @@
     "width": 1920,
     "height": 1080,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -229,6 +265,8 @@
     "width": 2000,
     "height": 2000,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -242,6 +280,8 @@
     "width": 988,
     "height": 667,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -255,6 +295,8 @@
     "width": 1450,
     "height": 967,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -268,6 +310,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -277,10 +321,27 @@
     ],
     "fallback": "/optimized/reflection.640.jpg"
   },
+  "/uploads/relaxivity-podcast-logo.jpg": {
+    "width": 2000,
+    "height": 2000,
+    "sizes": [
+      96,
+      192,
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/relaxivity-podcast-logo.640.jpg"
+  },
   "/uploads/relaxivity3.jpg": {
     "width": 1024,
     "height": 1024,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -294,6 +355,8 @@
     "width": 2000,
     "height": 2000,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -303,10 +366,27 @@
     ],
     "fallback": "/optimized/sappho-coverart.640.jpg"
   },
+  "/uploads/site-logo-relaxivity.jpg": {
+    "width": 2000,
+    "height": 2000,
+    "sizes": [
+      96,
+      192,
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/site-logo-relaxivity.640.jpg"
+  },
   "/uploads/stage.jpg": {
     "width": 2000,
     "height": 2000,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -320,6 +400,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -333,6 +415,8 @@
     "width": 1920,
     "height": 1080,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -346,6 +430,8 @@
     "width": 1024,
     "height": 476,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960
@@ -359,6 +445,8 @@
     "width": 1456,
     "height": 816,
     "sizes": [
+      96,
+      192,
       320,
       640,
       960

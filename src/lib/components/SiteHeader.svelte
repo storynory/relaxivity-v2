@@ -84,7 +84,7 @@
 					<Picture
 						src={siteLogo}
 						alt=""
-						sizes="64px"
+						sizes="3rem"
 						width={64}
 						height={64}
 						loading="eager"

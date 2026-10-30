@@ -6,15 +6,16 @@
 	"scripts": {
 		"test": "tsx --test scripts/generator/*.test.ts scripts/images/*.test.ts src/lib/audio/*.test.ts src/lib/images/*.test.ts src/lib/templates/*.test.ts src/lib/server/*.test.ts",
 		"test:routes": "tsx --test scripts/static-routes.test.ts",
-		"dev": "npm run images && tsx scripts/generator/index.ts && vite dev",
-		"build": "npm run images && tsx scripts/generator/index.ts && vite build",
+		"dev": "npm run manifest && tsx scripts/generator/index.ts && vite dev",
+		"build": "npm run manifest && tsx scripts/generator/index.ts && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"images": "tsx scripts/images/process.ts"
+		"images": "tsx scripts/images/process.ts",
+		"manifest": "tsx scripts/images/manifest.ts && npm run images"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
