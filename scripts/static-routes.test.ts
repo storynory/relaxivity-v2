@@ -140,11 +140,10 @@ test('taxonomy pages render optional artwork and SEO overrides with content fall
 	const text = (value: unknown): string => typeof value === 'string' ? value.trim() : '';
 	const decode = (value: string) => value.replace(/&quot;/g, '"').replace(/&#(?:39|x27);/g, "'")
 		.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-	for (const [collection, route] of [['tags', 'tag'], ['categories', 'category']]) {
-		for (const file of await fs.readdir(`content/${collection}`)) {
-			if (!file.endsWith('.yml')) continue;
-			const term = YAML.parse(await fs.readFile(`content/${collection}/${file}`, 'utf8'));
-			const slug = file.slice(0, -4);
+	for (const [collection, route] of [['tags', 'tag'], ['categories', 'category']] as const) {
+		for (const { data: term, meta: { slug } } of await readAll(collection)) {
+			assert.ok(slug);
+			const seo = term.seo as Record<string, unknown> | undefined;
 			const html = await fs.readFile(path.join(buildDir, route, slug, 'index.html'), 'utf8');
 			const head = html.split('</head>')[0];
 			const meta = (name: string) => {
@@ -152,9 +151,9 @@ test('taxonomy pages render optional artwork and SEO overrides with content fall
 					tag.includes(`name="${name}"`) || tag.includes(`property="${name}"`));
 				return decode(tag?.[0].match(/content="([^"]*)"/)?.[1] ?? '');
 			};
-			const title = text(term.seo?.title) || text(term.title);
-			const description = text(term.seo?.description) || text(term.description) || text(settings.description);
-			const image = text(term.seo?.image) || text(term.image) || text(settings.defaultImage);
+			const title = text(seo?.title) || text(term.title);
+			const description = text(seo?.description) || text(term.description) || text(settings.description);
+			const image = text(seo?.image) || text(term.image) || text(settings.defaultImage);
 			assert.equal(decode(head.match(/<title>(.*?)<\/title>/s)?.[1] ?? ''), title, `${route}/${slug} title`);
 			for (const key of ['og:title', 'twitter:title']) assert.equal(meta(key), title);
 			for (const key of ['description', 'og:description', 'twitter:description']) assert.equal(meta(key), description);

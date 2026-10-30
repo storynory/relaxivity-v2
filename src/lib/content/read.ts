@@ -61,7 +61,11 @@ export async function readAll(name: CollectionName): Promise<ReadResult[]> {
 	}
 
 	const dir = path.join(ROOT, def.folder);
-	const entries = await fs.readdir(dir, { withFileTypes: true });
+	const entries = await fs.readdir(dir, { withFileTypes: true }).catch((err: NodeJS.ErrnoException) => {
+		// Folder collections may have no content directory yet.
+		if (err.code === 'ENOENT') return [];
+		throw err;
+	});
 
 	const results: ReadResult[] = [];
 

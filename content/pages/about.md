@@ -7,7 +7,7 @@ blocks: []
 description: Welcome to our new website.
 ---
 
-Our main narrator, [Jana Elizabeth, ](people/jana.)has a rich and relaxing voice.  We add immersive sound effects and tasteful music  - including Jana's own chants.
+Our main narrator, [Jana Elizabeth](/people/jana/), has a rich and relaxing voice.  We add immersive sound effects and tasteful music  - including Jana's own chants.
 
 To see - or rather hear - what we mean,[ browse through our stories](/audio/) and have a good listen.
 

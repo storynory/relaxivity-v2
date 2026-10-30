@@ -16,8 +16,8 @@ export default defineConfig({
 			prerender: {
 				entries: ['*'],
 				handleUnseenRoutes: ({ routes }) => {
-					// Preview can be empty; audio pagination has no entries until a second page is needed.
-					const optional = ['/preview/[slug]', '/audio/page/[page]'];
+					// These routes can legitimately have no entries when their collections are empty.
+					const optional = ['/preview/[slug]', '/audio/page/[page]', '/category/[slug]', '/tag/[slug]'];
 					const unexpected = routes.filter((route) => !optional.includes(route));
 					if (unexpected.length) {
 						throw new Error(`Prerenderable routes were not generated: ${unexpected.join(', ')}`);
