@@ -42,6 +42,7 @@ h1, h2, h3, h4, h5, h6 {
 	--link-hover: var(--accent);
 	color: var(--text);
 	font-family: var(--font-heading);
+	font-style: italic;
 	font-weight: 500;
 	line-height: 1.2;
 	letter-spacing: -0.025em;

@@ -23,7 +23,7 @@ test('web app manifest and linked icons are included in the production build', a
 	if (settings.siteLogo) {
 		assert.match(html, /rel="apple-touch-icon" sizes="180x180"/);
 		const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0] ?? '';
-		assert.match(header, /sizes="3rem"/);
+		assert.match(header, /sizes="\(max-width: 30rem\) 4rem, 5rem"/);
 		assert.match(header, /\.96\.webp 96w/);
 		assert.match(header, /\.192\.webp 192w/);
 	}

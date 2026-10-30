@@ -7,6 +7,8 @@ blocks: []
 description: Welcome to our new website.
 ---
 
+![Stories for Relaxivity](/uploads/relaxivity-podcast-logo.jpg "Our Podcast Branding")
+
 Our main narrator, [Jana Elizabeth](/people/jana/), has a rich and relaxing voice.  We add immersive sound effects and tasteful music  - including Jana's own chants.
 
 To see - or rather hear - what we mean,[ browse through our stories](/audio/) and have a good listen.
@@ -52,4 +54,10 @@ You can:
 
 We're also working towards subscriber accounts that will unlock our full archive and more features.
 
-Above all, we want Relaxivity to be a delightful place to discover wonderful stories, settle down, and listen.
+## What Does Relaxivity Actually Mean?
+
+Relaxivity is a measurement of how quickly atomic nuclei settle back after being disturbed by a magnetic pulse.
+
+So now you know. 
+
+For us, he word suggests two opposites - Relaxation and Activity.  We are not trying to be bore you to sleep like some stories.  You can relax to our audio while we transport your imagination to a far away place.

@@ -43,6 +43,7 @@
 	<meta name="theme-color" content={data.colours.prime} />
 	{#if usesLora}
 		<link rel="preload" href="/fonts/lora.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+		<link rel="preload" href="/fonts/lora-italic.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
 	{/if}
 	{#each data.feeds as feed (feed.href)}
 		<link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />

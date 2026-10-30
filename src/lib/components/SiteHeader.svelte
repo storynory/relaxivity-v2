@@ -84,9 +84,9 @@
 					<Picture
 						src={siteLogo}
 						alt=""
-						sizes="3rem"
-						width={64}
-						height={64}
+						sizes="(max-width: 30rem) 4rem, 5rem"
+						width={80}
+						height={80}
 						loading="eager"
 						class="brand-logo"
 					/>
@@ -240,8 +240,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--space);
-		padding-block: var(--space);
+		gap: clamp(0.75rem, 2vw, var(--space));
+		padding-block: 1rem;
 	}
 
 	.brand {
@@ -251,7 +251,10 @@
 		min-width: 0;
 		color: var(--text);
 		font-family: var(--font-heading);
-		font-weight: 700;
+		font-size: clamp(1.5rem, 3vw, 2.125rem);
+		font-style: italic;
+		font-weight: 600;
+		line-height: 1.15;
 		text-decoration: none;
 		overflow-wrap: anywhere;
 	}
@@ -261,9 +264,9 @@
 
 	.logo-box {
 		display: block;
-		flex: 0 0 3rem;
-		width: 3rem;
-		height: 3rem;
+		flex: 0 0 5rem;
+		width: 5rem;
+		height: 5rem;
 	}
 
 	.logo-box :global(picture) {
@@ -292,12 +295,13 @@
 	.primary {
 		display: flex;
 		align-items: center;
-		flex-wrap: wrap;
+		flex-wrap: nowrap;
 		gap: calc(var(--space) / 2) var(--space);
 	}
 
 	.primary > li {
 		position: relative;
+		flex-shrink: 0;
 	}
 
 	.primary a {
@@ -377,7 +381,7 @@
 
 	/* Mobile navigation */
 
-	@media (max-width: 48rem) {
+	@media (max-width: 72rem) {
 		.utility-bar { display: block; }
 
 		.header-inner {
@@ -385,11 +389,9 @@
 			padding-block: 0.75rem;
 		}
 
-		.brand { font-size: 1.25em; }
-		.logo-box { flex-basis: 3.25rem; width: 3.25rem; height: 3.25rem; }
-
 		.menu-toggle {
 			display: inline-flex;
+			flex-shrink: 0;
 			align-items: center;
 			justify-content: center;
 			min-width: 44px;
@@ -457,6 +459,10 @@
 		.submenu a {
 			padding: 0.5rem 0.25rem;
 		}
+	}
+
+	@media (max-width: 30rem) {
+		.logo-box { flex-basis: 4rem; width: 4rem; height: 4rem; }
 	}
 
 	.sr-only {
