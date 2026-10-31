@@ -9,7 +9,7 @@ export const collections = {
       "title": "Audio Stories",
       "introduction": "",
       "seo": {
-        "title": "Stories",
+        "title": "Audio Stories",
         "description": "",
         "image": ""
       }
