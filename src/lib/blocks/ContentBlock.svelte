@@ -49,6 +49,9 @@
 			{/each}
 		</div>
 	{/if}
+	{#if block.type !== 'hero' && block.type !== 'panel' && block.buttonText && block.buttonUrl}
+		<p class="block-action"><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
+	{/if}
 </section>
 
 <style>
@@ -74,6 +77,7 @@
 	a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
 	h2 { margin-top: 0; }
 	.intro { margin-bottom: 1.5em; }
+	.block-action { margin: 1.5rem 0 0; }
 	.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: var(--space); }
 	article { min-width: 0; padding: 1em; background: var(--prime); border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime)); }
 	article h3 { margin-block: 0.5em; }
@@ -81,4 +85,13 @@
 	article :global(picture) { display: block; }
 	article a { color: var(--accent); }
 	article h3 a { color: inherit; }
+	@media (max-width: 48rem) {
+		section { padding: 0.5rem; margin-block: 1.5rem; }
+		article {
+			padding: 0.75rem;
+			font-size: max(1rem, 0.9em);
+			line-height: 1.5;
+		}
+		article h3 { font-size: 1.25em; }
+	}
 </style>

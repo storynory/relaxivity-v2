@@ -107,5 +107,11 @@
 	h2 { margin: 0; }
 	.meta { display: flex; flex-wrap: wrap; gap: 1rem; color: var(--text); }
 	a { color: inherit; }
+	@media (max-width: 48rem) {
+		.story-copy { font-size: max(1rem, 0.9em); line-height: 1.5; }
+		h2 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale) * 0.9); }
+		.meta { font-size: 0.85em; gap: 0.5rem; }
+		article { padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
+	}
 	@media (max-width: 560px) { article.with-artwork { grid-template-columns: minmax(0, 1fr); } }
 </style>

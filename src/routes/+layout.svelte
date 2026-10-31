@@ -94,4 +94,19 @@
 		display: flow-root;
 		flex: 1;
 	}
+
+	@media (max-width: 48rem) {
+		/* Keep the gap below the masthead consistent across mobile page templates. */
+		.site-content :global(main) {
+			margin-top: 1rem;
+			padding-top: 0;
+			padding-inline: 0.75rem;
+		}
+		.site-content :global(main h1) {
+			margin-top: 0;
+		}
+		.site-content :global(main > article:first-child) {
+			margin-top: 0;
+		}
+	}
 </style>

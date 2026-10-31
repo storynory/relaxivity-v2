@@ -151,3 +151,13 @@ img { max-width: 100%; }
 .reading .content blockquote p { font-style: italic; }
 .reading > picture { display: block; margin-block: 2rem 2.5rem; }
 .reading > picture img { display: block; width: 100%; height: auto; }
+
+@media (max-width: 48rem) {
+	.reading {
+		padding: 1.25rem 0.875rem;
+		font-size: max(1rem, 0.9em);
+		line-height: 1.5;
+	}
+	.reading h2 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale) * 0.9); }
+	.reading h3 { font-size: calc(var(--font-size) * var(--font-scale) * 0.9); }
+}

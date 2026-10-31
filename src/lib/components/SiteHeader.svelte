@@ -71,7 +71,9 @@
 		<nav class="container utility-links" aria-label="Utility">
 			{#each utilityLinks as link}
 				<a href={link.href} aria-current={current(link.href)} onclick={closeMenu}>
-					<svg aria-hidden="true" class="icon nav-icon"><use href={`/icons.svg#${link.icon}`} /></svg>
+					<svg aria-hidden="true" class="icon nav-icon"
+						><use href={`/icons.svg#${link.icon}`} /></svg
+					>
 					<span class="sr-only">{link.label}</span>
 				</a>
 			{/each}
@@ -84,7 +86,7 @@
 					<Picture
 						src={siteLogo}
 						alt=""
-						sizes="(max-width: 30rem) 4rem, 5rem"
+						sizes="(max-width: 22rem) 3rem, (max-width: 30rem) 3.5rem, 5rem"
 						width={80}
 						height={80}
 						loading="eager"
@@ -92,7 +94,7 @@
 					/>
 				</span>
 			{/if}
-			<span>{siteName}</span>
+			<span class="brand-name">{siteName}</span>
 		</a>
 
 		{#if items.length}
@@ -113,7 +115,9 @@
 			<nav id="main-navigation" aria-label="Main" class:open={menuOpen}>
 				<ul class="primary">
 					{#each items as item, index}
-						{@const icon = utilityLinks.find((link) => link.href === item.url)?.icon ?? navigationIcons[item.url ?? '']}
+						{@const icon =
+							utilityLinks.find((link) => link.href === item.url)?.icon ??
+							navigationIcons[item.url ?? '']}
 						<li
 							class:expanded={openDropdown === index}
 							class:disclosure={!item.url && !!item.children?.length}
@@ -134,7 +138,9 @@
 									onclick={closeMenu}
 								>
 									{#if icon}
-										<svg aria-hidden="true" class="icon nav-icon"><use href={`/icons.svg#${icon}`} /></svg>
+										<svg aria-hidden="true" class="icon nav-icon"
+											><use href={`/icons.svg#${icon}`} /></svg
+										>
 									{/if}
 									{item.label}
 
@@ -223,7 +229,9 @@
 		text-decoration: none;
 	}
 
-	.utility-links a:hover { text-decoration: underline; }
+	.utility-links a:hover {
+		text-decoration: underline;
+	}
 
 	.utility-links a[aria-current],
 	.primary a[aria-current] {
@@ -234,9 +242,12 @@
 	}
 
 	/* Mark the current section even without a visible text label. */
-	.utility-links a[aria-current] { box-shadow: inset 0 -3px 0 currentColor; }
+	.utility-links a[aria-current] {
+		box-shadow: inset 0 -3px 0 currentColor;
+	}
 
 	.header-inner {
+		--logo-size: 5rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -251,7 +262,7 @@
 		min-width: 0;
 		color: var(--text);
 		font-family: var(--font-heading);
-		font-size: clamp(1.5rem, 3vw, 2.125rem);
+		font-size: clamp(1rem, 3vw, 2.125rem);
 		font-style: italic;
 		font-weight: 600;
 		line-height: 1.15;
@@ -260,13 +271,20 @@
 	}
 
 	/* Reserve space for the logo before it loads */
-	.brand:hover, .brand:focus-visible { color: var(--accent); }
+	.brand:hover,
+	.brand:focus-visible {
+		color: var(--accent);
+	}
 
 	.logo-box {
 		display: block;
-		flex: 0 0 5rem;
-		width: 5rem;
-		height: 5rem;
+		flex: 0 0 var(--logo-size);
+		width: var(--logo-size);
+		height: var(--logo-size);
+	}
+
+	.brand-name {
+		max-width: 100%;
 	}
 
 	.logo-box :global(picture) {
@@ -382,14 +400,29 @@
 	/* Mobile navigation */
 
 	@media (max-width: 72rem) {
-		.utility-bar { display: block; }
+		.utility-bar {
+			display: block;
+		}
 
 		.header-inner {
-			flex-wrap: wrap;
+			/* Reserve a column for the button, even when the brand wraps. */
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
 			padding-block: 0.75rem;
 		}
 
+		.brand {
+			grid-column: 1;
+			grid-row: 1;
+			flex-wrap: wrap;
+			gap: 0.25rem 0.5rem;
+		}
+
 		.menu-toggle {
+			grid-column: 2;
+			grid-row: 1;
+			align-self: start;
+			margin-top: max(0px, calc((var(--logo-size) - 44px) / 2));
 			display: inline-flex;
 			flex-shrink: 0;
 			align-items: center;
@@ -408,7 +441,8 @@
 
 		#main-navigation {
 			display: none;
-			flex-basis: 100%;
+			grid-column: 1 / -1;
+			grid-row: 2;
 		}
 
 		#main-navigation.open {
@@ -462,7 +496,15 @@
 	}
 
 	@media (max-width: 30rem) {
-		.logo-box { flex-basis: 4rem; width: 4rem; height: 4rem; }
+		.header-inner {
+			--logo-size: 3.5rem;
+		}
+	}
+
+	@media (max-width: 22rem) {
+		.header-inner {
+			--logo-size: 3rem;
+		}
 	}
 
 	.sr-only {

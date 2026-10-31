@@ -1,7 +1,7 @@
 ---
 title: Buddha's Path to Enlightenment
 draft: false
-excerpt: The future Buddha resolved to seek enlightenment. He took one last glance at his sleeping wife and child. Then he rode out through the city's gates on his horse Kanthaka followed by his faithful servant Channa.
+excerpt: The future Buddha resolved to seek enlightenment. He took one last glance at his sleeping wife and child before setting off.
 description: ''
 date: 2026-10-30T22:34:00
 episodeNumber: null

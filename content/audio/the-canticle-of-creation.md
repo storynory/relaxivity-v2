@@ -17,7 +17,7 @@ author: ''
 narrator: jana
 presenter: ''
 producer: ''
-featuredImage: /uploads/creation-dear.jpg
+featuredImage: /uploads/fawn1.jpg
 featuredImageAlt: A dear and a robin
 category: ''
 tags:

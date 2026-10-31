@@ -116,6 +116,21 @@
     ],
     "fallback": "/optimized/creation-dear.640.jpg"
   },
+  "/uploads/fawn1.jpg": {
+    "width": 1456,
+    "height": 816,
+    "sizes": [
+      96,
+      192,
+      320,
+      640,
+      960
+    ],
+    "formats": [
+      "webp"
+    ],
+    "fallback": "/optimized/fawn1.640.jpg"
+  },
   "/uploads/francis.jpg": {
     "width": 1456,
     "height": 816,
