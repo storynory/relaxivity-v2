@@ -2,6 +2,7 @@
 title: About Relaxivity
 excerpt: We aim to delight your ears with audio stories, myths, and verse.
 seo: null
+template: page
 layout: wide
 blocks: []
 description: Welcome to our new website.
