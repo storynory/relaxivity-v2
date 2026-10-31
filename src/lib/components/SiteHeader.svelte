@@ -17,6 +17,7 @@
 	let openDropdown = $state<number | null>(null);
 	let menuButton = $state<HTMLButtonElement>();
 	const utilityLinks = [
+		{ href: '/', label: 'Home', icon: 'home' },
 		{ href: '/audio/', label: 'Stories', icon: 'headphones' },
 		{ href: '/playlist/', label: 'Playlist', icon: 'heart' },
 		{ href: '/search/', label: 'Search', icon: 'search' }
@@ -70,7 +71,7 @@
 	<div class="utility-bar">
 		<nav class="container utility-links" aria-label="Utility">
 			{#each utilityLinks as link}
-				<a href={link.href} aria-current={current(link.href)} onclick={closeMenu}>
+				<a href={link.href} title={link.label} aria-current={current(link.href)} onclick={closeMenu}>
 					<svg aria-hidden="true" class="icon nav-icon"
 						><use href={`/icons.svg#${link.icon}`} /></svg
 					>
@@ -200,11 +201,20 @@
 		color: var(--text);
 	}
 	header {
+		/* Reserve the fixed toolbar's height, including any device safe area. */
+		padding-top: calc(45px + env(safe-area-inset-top));
 		border-bottom: 1px solid var(--prime);
 	}
 
+	:global(html) {
+		scroll-padding-top: calc(45px + env(safe-area-inset-top) + 0.5rem);
+	}
+
 	.utility-bar {
-		display: none;
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 30;
+		padding-top: env(safe-area-inset-top);
 		background: color-mix(in srgb, var(--text) 5%, var(--prime));
 		border-bottom: 1px solid color-mix(in srgb, var(--text) 12%, var(--prime));
 	}
@@ -212,7 +222,6 @@
 	.utility-links {
 		display: flex;
 		justify-content: flex-end;
-		flex-wrap: wrap;
 		gap: 0 0.35rem;
 		font-size: 1rem;
 		line-height: 1.25;
@@ -230,11 +239,12 @@
 	}
 
 	.utility-links a:hover {
-		text-decoration: underline;
+		color: var(--accent);
 	}
 
 	.utility-links a[aria-current],
 	.primary a[aria-current] {
+		color: var(--accent);
 		font-weight: 700;
 		text-decoration: underline;
 		text-decoration-thickness: 0.15em;
@@ -400,10 +410,6 @@
 	/* Mobile navigation */
 
 	@media (max-width: 72rem) {
-		.utility-bar {
-			display: block;
-		}
-
 		.header-inner {
 			/* Reserve a column for the button, even when the brand wraps. */
 			display: grid;
