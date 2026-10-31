@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { getContext, tick } from 'svelte';
+	import { getContext } from 'svelte';
 	import { favouritesKey, type Favourites } from '#lib/audio/favourites.ts';
 	import { playbackKey, type Playback, type Track } from '#lib/audio/playback.ts';
 	import { orderStories, type StoryOrder } from '#lib/audio/story-order.ts';
 	import StoryOrderSelect from '#lib/components/StoryOrderSelect.svelte';
 	import AutoAdvanceSwitch from '#lib/components/AutoAdvanceSwitch.svelte';
-	import AudioPlayer from '#lib/components/AudioPlayer.svelte';
+	import StoryCard from '#lib/components/StoryCard.svelte';
 	import FavouriteButton from '#lib/components/FavouriteButton.svelte';
-	import Picture from '#lib/components/Picture.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -43,10 +42,9 @@
 				: []
 		)
 	);
-	async function changeOrder() {
-		await tick();
+	$effect(() => {
 		playback.reorderQueue(tracks, '/favourites/');
-	}
+	});
 </script>
 
 <svelte:head>
@@ -64,64 +62,30 @@
 		<p><a href="/audio/">Browse stories</a></p>
 	{:else}
 		<div class="playlist-controls">
-			<StoryOrderSelect bind:value={order} manual onchange={changeOrder} />
+			<StoryOrderSelect bind:value={order} manual />
 			<AutoAdvanceSwitch />
 		</div>
 		<ol>
 			{#each saved as { slug, episode }, index (slug)}
 				<li>
+					{#snippet reorder()}
+						{#if order === 'manual'}
+							<button type="button" disabled={index === 0}
+								aria-label={`Move ${episode?.title ?? 'unavailable story'} earlier`}
+								onclick={() => favourites.move(slug, -1)}>↑ Earlier</button>
+							<button type="button" disabled={index === saved.length - 1}
+								aria-label={`Move ${episode?.title ?? 'unavailable story'} later`}
+								onclick={() => favourites.move(slug, 1)}>↓ Later</button>
+						{/if}
+					{/snippet}
 					{#if episode}
-						<div class="story">
-							{#if episode.artwork}
-								<a class="artwork" href={episode.href} aria-label={episode.title}>
-									<Picture src={episode.artwork} alt="" sizes="80px" />
-								</a>
-							{/if}
-							<div>
-								<h2><a href={episode.href}>{episode.title}</a></h2>
-								{#if episode.excerpt}<p>{episode.excerpt}</p>{/if}
-								<p>
-									{episode.audio.canPlayFullAudio ? 'Full Story · Free' : 'Audio Sample'}{episode
-										.audio.duration
-										? ` · ${episode.audio.duration}`
-										: ''}
-								</p>
-							</div>
-						</div>
-						<div class="actions">
-							{#if episode.audio.src}
-								<AudioPlayer
-									src={episode.audio.src}
-									queue={tracks}
-									contextId="/favourites/"
-									title={episode.audio.playbackType === 'sample'
-										? `${episode.title} — Audio Sample`
-										: episode.title}
-									href={episode.href}
-									artwork={episode.artwork}
-									duration={episode.audio.duration}
-								/>
-							{:else}<p>Audio is currently unavailable for this story. It will be skipped.</p>{/if}
-							<FavouriteButton {slug} title={episode.title} />
-						</div>
+						<StoryCard {slug} title={episode.title} href={episode.href} artwork={episode.artwork}
+							audio={episode.audio} queue={tracks} contextId="/favourites/" ordering={reorder} />
 					{:else}
 						<p>This saved story is no longer available.</p>
 						<FavouriteButton {slug} title="unavailable story" />
+						{@render reorder()}
 					{/if}
-					{#if order === 'manual'}<div class="reorder">
-							<button
-								type="button"
-								disabled={index === 0}
-								aria-label={`Move ${episode?.title ?? 'unavailable story'} earlier`}
-								onclick={() => favourites.move(slug, -1)}>↑ Earlier</button
-							>
-							<button
-								type="button"
-								disabled={index === saved.length - 1}
-								aria-label={`Move ${episode?.title ?? 'unavailable story'} later`}
-								onclick={() => favourites.move(slug, 1)}>↓ Later</button
-							>
-						</div>{/if}
 				</li>
 			{/each}
 		</ol>
@@ -135,53 +99,12 @@
 	h1 {
 		margin-top: 0;
 	}
-	h2 {
-		margin: 0 0 0.5em;
-		font-size: 1.25em;
-	}
-	ol {
-		padding-inline-start: 1.5rem;
-	}
-	li {
-		padding: 1.5rem 0;
-		border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime));
-	}
-	.story {
-		display: flex;
-		align-items: start;
-		gap: 1rem;
-	}
-	.story > div {
-		min-width: 0;
-		overflow-wrap: anywhere;
-	}
-	.artwork {
-		display: block;
-		flex: 0 0 80px;
-		max-width: 80px;
-	}
-	.artwork :global(picture) {
-		display: block;
-	}
-	.story :global(img) {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
-	.playlist-controls,
-	.actions,
-	.reorder {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 0.75rem;
-		margin-block: 1rem;
-	}
+	ol { padding-inline-start: 1.25rem; }
+	.playlist-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-block: 1rem; }
+
 	button {
 		min-height: 44px;
 		cursor: pointer;
-	}
-	.reorder button {
 		padding: 0.5em 0.8em;
 		border: 1px solid currentColor;
 		border-radius: var(--radius);

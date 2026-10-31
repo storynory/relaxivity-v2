@@ -19,7 +19,7 @@
 :root {
 	--font-body: system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--font-heading: var(--font-body);
-	--font-size: 1.0625rem;
+	--font-size: 1rem;
 	--font-scale: 1.2;
 	--line-height: 1.6;
 	--space: 1.5rem;
@@ -29,16 +29,37 @@
 }
 
 /* Keep the page width steady when search results introduce a scrollbar. */
-html { scrollbar-gutter: stable; }
+html {
+	scrollbar-gutter: stable;
+}
 
-* { box-sizing: border-box; }
+* {
+	box-sizing: border-box;
+}
 
 body {
 	margin: 0;
 	font: var(--font-size) / var(--line-height) var(--font-body);
 }
 
-h1, h2, h3, h4, h5, h6 {
+/* Convert the CMS font sizes into rem. */
+.site {
+	--font-size: calc(var(--font-size-mobile, 17) / 16 * 1rem);
+	font: var(--font-size) / var(--line-height) var(--font-body);
+}
+
+@media (min-width: 1000px) {
+	.site {
+		--font-size: calc(var(--font-size-desktop, 20) / 16 * 1rem);
+	}
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	--link-hover: var(--accent);
 	color: var(--text);
 	font-family: var(--font-heading);
@@ -50,68 +71,114 @@ h1, h2, h3, h4, h5, h6 {
 	margin-block: 1.5em 0.6em;
 }
 
-h1 { font-size: clamp(2rem, 1.2rem + 3vw, calc(var(--font-size) * var(--font-scale) * var(--font-scale) * var(--font-scale) * var(--font-scale))); }
-h2 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale)); }
-h3 { font-size: calc(var(--font-size) * var(--font-scale)); }
-h4 { font-size: var(--font-size); }
-h5, h6 { font-size: 0.9em; letter-spacing: 0; }
-p { margin-block: 0 1.25em; }
+h1 {
+	font-size: clamp(
+		2rem,
+		1.2rem + 3vw,
+		calc(
+			var(--font-size) * var(--font-scale) * var(--font-scale) * var(--font-scale) *
+				var(--font-scale)
+		)
+	);
+}
+h2 {
+	font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale));
+}
+h3 {
+	font-size: calc(var(--font-size) * var(--font-scale));
+}
+h4 {
+	font-size: var(--font-size);
+}
+h5,
+h6 {
+	font-size: 0.9em;
+	letter-spacing: 0;
+}
+p {
+	margin-block: 0 1.25em;
+}
 
-a { color: var(--accent); text-underline-offset: 0.18em; }
-:is(h1, h2, h3, h4, h5, h6) a:any-link { color: inherit; }
-:root a:any-link:hover, :root a:any-link:focus-visible {
+a {
+	color: var(--accent);
+	text-underline-offset: 0.18em;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+	color: inherit;
+}
+
+a:hover,
+a:focus-visible {
 	color: var(--link-hover, var(--text));
 	text-decoration-thickness: 0.12em;
 }
-img { max-width: 100%; }
+img {
+	max-width: 100%;
+}
 
 /* A few repeatable helpers, not a utility framework. */
-.container, .container-narrow, .container-wide {
+.container,
+.container-narrow,
+.container-wide {
 	width: 100%;
 	margin-inline: auto;
 	padding-inline: min(var(--space), 5vw);
 }
-.container { max-width: 1200px; }
-.container-narrow { max-width: 760px; }
-.container-wide { max-width: 1440px; }
-
-.bg-prime { background-color: var(--prime); }
-.bg-accent { background-color: var(--accent); }
-.bg-light { background-color: var(--second); }
-.bg-gray { background-color: var(--gray); }
-.txt-accent { color: var(--accent); }
-.txt-center { text-align: center; }
-.-p { padding: 0.5em; }
-.-p-lg { padding: 1em; }
-.-m-b { margin-bottom: 1em; }
-.-m-y { margin-block: 1em; }
-
-/* Opt-in form styling: specialised inputs keep their native appearance. */
-.form-control {
-  display: block;
-  width: 100%;
-  padding: 0.65em;
-  font: inherit;
-  color: var(--reading-text);
-  background: var(--reading-background);
-  border: 1px solid var(--text);
-  border-radius: 0.3rem;
+.container {
+	max-width: 1200px;
 }
-.button {
-  padding: 0.65em 1em;
-  font: inherit;
-  color: var(--reading-background);
-  background: var(--surface-text);
-  border: 0;
-  border-radius: 0.3rem;
-  cursor: pointer;
+.container-narrow {
+	max-width: 760px;
 }
-:where(a, button, input, textarea, select):focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
+.container-wide {
+	max-width: 1440px;
 }
 
-/* Shared long-form reading surface for posts and podcast transcripts. */
+.bg-prime {
+	background-color: var(--prime);
+}
+.bg-accent {
+	background-color: var(--accent);
+}
+.bg-light {
+	background-color: var(--second);
+}
+.bg-gray {
+	background-color: var(--gray);
+}
+.txt-accent {
+	color: var(--accent);
+}
+.txt-center {
+	text-align: center;
+}
+.-p {
+	padding: 0.5em;
+}
+.-p-lg {
+	padding: 1em;
+}
+.-m-b {
+	margin-bottom: 1em;
+}
+.-m-y {
+	margin-block: 1em;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: 3px solid var(--accent);
+	outline-offset: 3px;
+}
+
 .reading {
 	--text: var(--reading-text);
 	--accent: var(--reading-link);
@@ -123,41 +190,4 @@ img { max-width: 100%; }
 	border-radius: var(--radius);
 	line-height: var(--line-height);
 	overflow-wrap: anywhere;
-}
-.reading > header, .reading > footer, .reading .content, .reading .description, .reading .credits {
-	max-width: 60ch;
-	margin-inline: auto;
-}
-.reading .content p, .reading .content ul, .reading .content ol {
-	margin-block: 0 1.25em;
-}
-.reading .content :is(h2, h3, h4, h5, h6) {
-	margin-block: 2em 0.7em;
-	line-height: 1.3;
-}
-.reading .content blockquote {
-	margin-inline: 0;
-	padding-inline-start: 1.25em;
-	border-inline-start: 3px solid var(--accent);
-}
-.reading .content pre { overflow-x: auto; }
-.reading .tag { color: var(--reading-text); }
-
-.reading > header h1 { margin-block: 0 0.65em; }
-.reading .content > :first-child { margin-top: 0; }
-.reading .content > :last-child { margin-bottom: 0; }
-.reading .content li + li { margin-top: 0.45em; }
-.reading .content :is(ul, ol) { padding-inline-start: 1.4em; }
-.reading .content blockquote p { font-style: italic; }
-.reading > picture { display: block; margin-block: 2rem 2.5rem; }
-.reading > picture img { display: block; width: 100%; height: auto; }
-
-@media (max-width: 48rem) {
-	.reading {
-		padding: 1.25rem 0.875rem;
-		font-size: max(1rem, 0.9em);
-		line-height: 1.5;
-	}
-	.reading h2 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale) * 0.9); }
-	.reading h3 { font-size: calc(var(--font-size) * var(--font-scale) * 0.9); }
 }

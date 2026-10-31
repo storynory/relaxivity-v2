@@ -101,6 +101,26 @@ test('selected blocks retain explicit ordering, legacy references, publication c
 	assert.deepEqual((await buildBlock('selected'))?.items.map((item) => item.slug), ['older']);
 });
 
+test('blocks expose playback metadata only for their selected audio records', async () => {
+	const { publicAudio } = await import('../audio/availability.ts');
+	await write('audio', 'block-playback', {
+		title: 'Block playback', date: '2024-01-01', audio: 'full.mp3', duration: '19:10',
+		sampleAudio: 'sample.mp3', sampleDuration: '01:20', permanentlyFree: false
+	});
+	await write('blocks', 'playback', { type: 'selected', items: [
+		{ type: 'posts', slug: 'older' }, { type: 'audio', slug: 'block-playback' },
+		{ type: 'audio', slug: 'episode' }
+	], limit: 2 });
+	const items = (await buildBlock('playback'))!.items;
+	assert.deepEqual(items.map((item) => item.slug), ['older', 'block-playback']);
+	assert.equal(items[0].audioRecord, undefined);
+	const record = items[1].audioRecord!;
+	assert.equal(record.slug, 'block-playback');
+	assert.equal(publicAudio(record, ['block-playback'], 'https://audio.example/').src, 'https://audio.example/full.mp3');
+	assert.equal(publicAudio(record, [], 'https://audio.example/').src, 'https://audio.example/sample.mp3');
+	assert.equal(publicAudio(record, [], 'https://audio.example/').duration, '01:20');
+});
+
 test('episode blocks sort YAML timestamps and string dates newest first before limiting', async () => {
 	for (const [slug, date] of [
 		['order-a-oldest', '2025-01-01T10:00:00'],

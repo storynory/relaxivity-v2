@@ -42,8 +42,20 @@
 	<link rel="manifest" href="/site.webmanifest" />
 	<meta name="theme-color" content={data.colours.prime} />
 	{#if usesLora}
-		<link rel="preload" href="/fonts/lora.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
-		<link rel="preload" href="/fonts/lora-italic.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+		<link
+			rel="preload"
+			href="/fonts/lora.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="preload"
+			href="/fonts/lora-italic.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
 	{/if}
 	{#each data.feeds as feed (feed.href)}
 		<link rel="alternate" type="application/rss+xml" title={feed.title} href={feed.href} />
@@ -55,7 +67,8 @@
 	style:padding-bottom={`${$playback.visible ? playerHeight : 0}px`}
 	style:--font-body={data.typography.bodyFont}
 	style:--font-heading={data.typography.headingFont}
-	style:--font-size={`${data.typography.fontSize}px`}
+	style:--font-size-mobile={data.typography.fontSize}
+	style:--font-size-desktop={data.typography.fontSizeDesktop}
 	style:--font-scale={data.typography.fontScale}
 	style:--line-height={data.typography.lineHeight}
 	style:--prime={data.colours.prime}
@@ -70,7 +83,9 @@
 >
 	<SiteHeader siteName={data.siteName} siteLogo={data.siteLogo} items={data.navigation} />
 	{#if $favourites.ready && !$favourites.persistent}
-		<p class="container" role="status">Browser storage is unavailable. Your playlist will be kept for this visit only.</p>
+		<p class="container" role="status">
+			Browser storage is unavailable. Your playlist will be kept for this visit only.
+		</p>
 	{/if}
 	<div class="site-content">
 		{@render children()}

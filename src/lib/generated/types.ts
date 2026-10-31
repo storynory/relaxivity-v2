@@ -191,6 +191,7 @@ export type TypographyContent = {
 	"bodyFont": string;
 	"headingFont": string;
 	"fontSize": number;
+	"fontSizeDesktop": number;
 	"fontScale": number;
 	"lineHeight": number;
 };

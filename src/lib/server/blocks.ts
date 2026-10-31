@@ -11,6 +11,8 @@ export type BlockItem = {
 	excerpt: string;
 	date: string;
 	image: string;
+	// Playback metadata is optional; ordinary collection blocks stay presentation-only.
+	audioRecord?: Record<string, unknown>;
 };
 
 export type RenderedBlock = {
@@ -60,7 +62,13 @@ function toItem(record: Data, collection: string): BlockItem {
 		title: value(record, 'title') || value(record, 'name') || value(record, 'slug'),
 		excerpt: value(record, 'excerpt') || value(record, 'description'),
 		date: value(record, 'date'),
-		image: value(record, 'featuredImage')
+		image: value(record, 'featuredImage'),
+		...(collection === 'audio' ? { audioRecord: {
+			slug: record.slug, date: record.date, draft: record.draft,
+			audio: record.audio, duration: record.duration,
+			sampleAudio: record.sampleAudio, sampleDuration: record.sampleDuration,
+			permanentlyFree: record.permanentlyFree
+		} } : {})
 	};
 }
 

@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { RenderedBlock } from '#lib/server/blocks.ts';
 	import Picture from '#lib/components/Picture.svelte';
-	import FavouriteButton from '#lib/components/FavouriteButton.svelte';
-	let { block }: { block: RenderedBlock } = $props();
+	import StoryCard from '#lib/components/StoryCard.svelte';
+	import { publicAudio } from '#lib/audio/availability.ts';
+	import type { Track } from '#lib/audio/playback.ts';
+	import { page } from '$app/state';
+	let { block, queue = [] }: { block: RenderedBlock; queue?: Track[] } = $props();
 </script>
 
 <section class:hero={block.type === 'hero'} class:panel={block.type === 'panel'} aria-label={block.heading}>
@@ -36,16 +39,10 @@
 	{#if block.items.length}
 		<div class="cards">
 			{#each block.items as item (`${item.collection}/${item.slug}`)}
-				<article>
-					{#if item.image}
-						<a href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}>
-							<Picture src={item.image} alt={item.title} sizes="(min-width: 900px) 280px, 100vw" />
-						</a>
-					{/if}
-					<h3><a href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}>{item.title}</a></h3>
-					{#if item.excerpt}<p>{item.excerpt}</p>{/if}
-					{#if item.collection === 'audio'}<FavouriteButton slug={item.slug} title={item.title} />{/if}
-				</article>
+				<StoryCard slug={item.slug} title={item.title} href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}
+					artwork={item.image} excerpt={item.excerpt} headingLevel={3}
+					audio={item.audioRecord ? publicAudio(item.audioRecord, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime) : undefined}
+					{queue} contextId={page.url.pathname} />
 			{/each}
 		</div>
 	{/if}
@@ -78,20 +75,8 @@
 	h2 { margin-top: 0; }
 	.intro { margin-bottom: 1.5em; }
 	.block-action { margin: 1.5rem 0 0; }
-	.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: var(--space); }
-	article { min-width: 0; padding: 1em; background: var(--prime); border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime)); }
-	article h3 { margin-block: 0.5em; }
-	article :global(img) { max-width: 100%; height: auto; }
-	article :global(picture) { display: block; }
-	article a { color: var(--accent); }
-	article h3 a { color: inherit; }
+	.cards { display: grid; grid-template-columns: minmax(0, 1fr); }
 	@media (max-width: 48rem) {
 		section { padding: 0.5rem; margin-block: 1.5rem; }
-		article {
-			padding: 0.75rem;
-			font-size: max(1rem, 0.9em);
-			line-height: 1.5;
-		}
-		article h3 { font-size: 1.25em; }
 	}
 </style>

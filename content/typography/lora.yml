@@ -1,6 +1,7 @@
 title: Lora
-bodyFont: "'Lora', Georgia, 'Times New Roman', serif"
+bodyFont: system-ui, -apple-system, 'Segoe UI', sans-serif
 headingFont: "'Lora', Georgia, 'Times New Roman', serif"
 fontSize: 18
+fontSizeDesktop: 20
 fontScale: 1.25
 lineHeight: 1.75

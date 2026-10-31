@@ -27,12 +27,20 @@ collections:
         hint: "Use a separate stack for headings; custom fonts must be loaded by the site."
 
       - name: fontSize
-        label: Base Font Size (px)
+        label: Mobile Base Font Size (px)
         widget: number
         value_type: int
         min: 12
         max: 28
         default: 17
+
+      - name: fontSizeDesktop
+        label: Desktop Base Font Size (px)
+        widget: number
+        default: 20
+        value_type: int
+        min: 12
+        max: 32
 
       - name: fontScale
         label: Heading Scale

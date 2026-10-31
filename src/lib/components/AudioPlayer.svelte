@@ -2,11 +2,11 @@
 	import { getContext } from 'svelte';
 	import { page } from '$app/state';
 	import { formatTime, playbackKey, type Playback, type Track } from '#lib/audio/playback.ts';
-	let { src, title = 'Audio', href, artwork = '', duration = '', queue = [], contextId = '' }: {
-		src: string; title?: string; href?: string; artwork?: string; duration?: string; queue?: Track[]; contextId?: string;
+	let { src, title = 'Audio', href, artwork = '', duration = '', queue = [], contextId = '', compact = false }: {
+		src: string; title?: string; href?: string; artwork?: string; duration?: string; queue?: Track[]; contextId?: string; compact?: boolean;
 	} = $props();
 	const playback = getContext<Playback>(playbackKey);
-	const active = $derived($playback.track?.src === src && $playback.contextId === contextId);
+	const active = $derived($playback.track?.src === src);
 	function toggle(event: MouseEvent) {
 		if (active && $playback.playing) playback.pause();
 		else {
@@ -24,7 +24,7 @@
 		<svg aria-hidden="true" focusable="false"><use href={active && $playback.playing ? '/icons.svg#pause' : '/icons.svg#play'} /></svg>
 		{active && $playback.playing ? 'Pause' : active && $playback.current > 0 ? 'Resume' : 'Play'}
 	</button>
-	{#if active}
+	{#if active && !compact}
 		<span>{formatTime($playback.current)} / {formatTime($playback.duration)}</span>
 	{/if}
 	<p role="status">{active ? $playback.status : ''}</p>

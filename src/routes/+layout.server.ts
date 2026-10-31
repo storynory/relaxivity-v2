@@ -17,6 +17,7 @@ const defaultTypography = {
 	bodyFont: "system-ui, -apple-system, 'Segoe UI', sans-serif",
 	headingFont: "system-ui, -apple-system, 'Segoe UI', sans-serif",
 	fontSize: 17,
+	fontSizeDesktop: 20,
 	fontScale: 1.2,
 	lineHeight: 1.6
 };
@@ -33,27 +34,32 @@ const boundedNumber = (value: unknown, fallback: number, min: number, max: numbe
 
 // Sveltia's colour widget supplies hex colours.
 const colour = (value: unknown, fallback: string) =>
-	typeof value === 'string' && /^#[\da-fA-F]{3}([\da-fA-F]{3})?$/.test(value)
-		? value
-		: fallback;
+	typeof value === 'string' && /^#[\da-fA-F]{3}([\da-fA-F]{3})?$/.test(value) ? value : fallback;
 
 export const load: LayoutServerLoad = async () => {
 	// Read the configured slug directly, then load that colour scheme.
 	const settings = (await readDoc('settings', 'general')).data;
 	const footer = settings.footer as { description?: string; copyright?: string } | null | undefined;
-	const slug = typeof settings.activeScheme === 'string' && settings.activeScheme
-		? settings.activeScheme : 'default';
+	const slug =
+		typeof settings.activeScheme === 'string' && settings.activeScheme
+			? settings.activeScheme
+			: 'default';
 	const scheme = await getOne('colour-schemes', slug);
 	if (!scheme) throw new Error(`Colour scheme "${slug}" was not found in content/colour-schemes`);
 
-	const typographySlug = typeof settings.activeTypography === 'string' && settings.activeTypography
-		? settings.activeTypography : 'default';
+	const typographySlug =
+		typeof settings.activeTypography === 'string' && settings.activeTypography
+			? settings.activeTypography
+			: 'default';
 	const preset = await getOne('typography', typographySlug);
-	if (!preset) throw new Error(`Typography preset "${typographySlug}" was not found in content/typography`);
+	if (!preset)
+		throw new Error(`Typography preset "${typographySlug}" was not found in content/typography`);
 
 	const audioPublicationTime = Date.now();
-	const freeEpisodeSlugs = latestFreeEpisodes((await readAll('audio')).map(({ data, meta }) =>
-		({ ...data, slug: meta.slug })), audioPublicationTime).map(({ slug }) => slug!);
+	const freeEpisodeSlugs = latestFreeEpisodes(
+		(await readAll('audio')).map(({ data, meta }) => ({ ...data, slug: meta.slug })),
+		audioPublicationTime
+	).map(({ slug }) => slug!);
 
 	return {
 		freeEpisodeSlugs,
@@ -63,6 +69,12 @@ export const load: LayoutServerLoad = async () => {
 			bodyFont: fontStack(preset.bodyFont, defaultTypography.bodyFont),
 			headingFont: fontStack(preset.headingFont, defaultTypography.headingFont),
 			fontSize: boundedNumber(preset.fontSize, defaultTypography.fontSize, 12, 28),
+			fontSizeDesktop: boundedNumber(
+				preset.fontSizeDesktop,
+				defaultTypography.fontSizeDesktop,
+				12,
+				32
+			),
 			fontScale: boundedNumber(preset.fontScale, defaultTypography.fontScale, 1, 1.6),
 			lineHeight: boundedNumber(preset.lineHeight, defaultTypography.lineHeight, 1, 2.2)
 		},
@@ -83,7 +95,12 @@ export const load: LayoutServerLoad = async () => {
 			if (type !== 'standard' && type !== 'podcast') return [];
 			const options = type === 'podcast' ? settings.podcastFeed : settings.rss;
 			if ((options as { enabled?: boolean } | null)?.enabled === false) return [];
-			return [{ href: `/${collection}/feed.xml`, title: `${typeof settings.siteName === 'string' ? settings.siteName : 'Website'} ${collection} RSS` }];
+			return [
+				{
+					href: `/${collection}/feed.xml`,
+					title: `${typeof settings.siteName === 'string' ? settings.siteName : 'Website'} ${collection} RSS`
+				}
+			];
 		}),
 		colours: {
 			prime: colour(scheme.prime, defaults.prime),
