@@ -72,7 +72,11 @@
 				<li>
 					{#if episode}
 						<div class="story">
-							{#if episode.artwork}<Picture src={episode.artwork} alt="" sizes="100px" />{/if}
+							{#if episode.artwork}
+								<a class="artwork" href={episode.href} aria-label={episode.title}>
+									<Picture src={episode.artwork} alt="" sizes="80px" />
+								</a>
+							{/if}
 							<div>
 								<h2><a href={episode.href}>{episode.title}</a></h2>
 								{#if episode.excerpt}<p>{episode.excerpt}</p>{/if}
@@ -151,9 +155,13 @@
 		min-width: 0;
 		overflow-wrap: anywhere;
 	}
-	.story :global(picture) {
+	.artwork {
+		display: block;
 		flex: 0 0 80px;
 		max-width: 80px;
+	}
+	.artwork :global(picture) {
+		display: block;
 	}
 	.story :global(img) {
 		display: block;
