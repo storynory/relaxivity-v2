@@ -3,6 +3,9 @@ collections:
   - name: people
     label: People
     label_singular: Person
+    archive:
+      seo:
+        title: people
     folder: content/people
     create: true
     extension: yml

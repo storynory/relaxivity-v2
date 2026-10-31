@@ -16,5 +16,11 @@ export const load: PageServerLoad = async ({ params }) => {
 	const home = collection === 'pages' ? await homePageSlug() : null;
 	const items = await getAll(collection, (records) => records.filter((record) =>
 		published(record.data, collection) && !(home && record.meta.slug === home)));
-	return { collection, listTemplate: collections[collection].listTemplate, items: items as Record<string, unknown>[] };
+	const definition = collections[collection];
+	return {
+		collection, listTemplate: definition.listTemplate, items: items as Record<string, unknown>[],
+		title: definition.archive.title,
+		description: definition.archive.introduction,
+		seo: definition.archive.seo
+	};
 };

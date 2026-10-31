@@ -1,6 +1,8 @@
 collections:
   - name: pages
     label: Pages
+    archive:
+      title: pages
     public_route: true
     template: page
     folder: content/pages

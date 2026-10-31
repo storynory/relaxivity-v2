@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"test": "tsx --test scripts/generator/*.test.ts scripts/images/*.test.ts src/lib/audio/*.test.ts src/lib/images/*.test.ts src/lib/templates/*.test.ts src/lib/server/*.test.ts",
+		"test": "tsx --test scripts/collection-archives.test.ts scripts/generator/*.test.ts scripts/images/*.test.ts src/lib/audio/*.test.ts src/lib/images/*.test.ts src/lib/templates/*.test.ts src/lib/server/*.test.ts",
 		"test:routes": "tsx --test scripts/static-routes.test.ts",
 		"dev": "npm run manifest && tsx scripts/generator/index.ts && vite dev",
 		"build": "npm run manifest && tsx scripts/generator/index.ts && vite build",

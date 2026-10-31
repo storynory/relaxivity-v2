@@ -10,6 +10,50 @@ getOne('posts', slug) — retrieve one post, including its author, category and 
 
 getSettings() — retrieve site settings, including the selected colour scheme.
 
+## Collection archives
+
+A folder collection with `public_route: true` automatically gets its archive,
+individual pages, sitemap entries and search-index records. Choose existing
+`template` and `list_template` values, or omit them to use the default templates.
+Draft records are excluded from public listings, pages and search.
+
+Archive copy belongs in the collection's existing YAML configuration:
+
+```yaml
+collections:
+  - name: notes
+    label: Field Notes
+    label_singular: Note
+    public_route: true
+    folder: content/notes
+    template: post
+    archive:
+      title: Our Field Notes
+      introduction: Discover notes from our travels.
+      seo:
+        title: Explore Our Field Notes
+        description: Read notes from our travels around the world.
+        image: /uploads/field-notes.jpg
+    fields:
+      - { name: title, widget: string }
+      - { name: body, widget: richtext }
+```
+
+The entire `archive` section is optional. The heading defaults to `label`, then
+`name`. The SEO title defaults to the heading; its description defaults to the
+plain-text introduction, then the site description. Its image falls back to the
+site's default image. `archive.title` lets the public heading differ from the CMS
+label. Individual records retain their existing SEO fields and fallbacks.
+
+Run `npm run dev` or `npm run build` after editing configuration to regenerate
+the definitions. Existing audio pagination and playback remain specialised;
+later audio pages append `Page N` to the configured archive title and retain
+their automatic story-example descriptions. No general pagination system is added.
+
+`npm test` includes an isolated production-build acceptance test that adds only
+YAML definitions and content, checks archive/detail HTML and SEO, and verifies
+that public records appear in search while drafts and private collections do not.
+
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
 ## Creating a project

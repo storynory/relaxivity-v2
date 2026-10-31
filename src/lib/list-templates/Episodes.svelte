@@ -9,4 +9,4 @@
 	})));
 </script>
 
-<StoryListing title={data.title ?? 'Stories'} {items} pagination={data.pagination} />
+<StoryListing title={data.title} description={data.description} {items} pagination={data.pagination} />

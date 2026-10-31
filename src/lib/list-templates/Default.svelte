@@ -10,7 +10,8 @@
 </script>
 
 <main>
-	<h1>{data.collection}</h1>
+	<h1>{data.title}</h1>
+	{#if data.description}<p>{data.description}</p>{/if}
 	{#if !sorted.length}
 		<p>No published content yet.</p>
 	{:else}

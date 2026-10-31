@@ -3,6 +3,17 @@
 export const collections = {
   "audio": {
     "kind": "folder",
+    "label": "Audio",
+    "labelSingular": "Episode",
+    "archive": {
+      "title": "Audio Stories",
+      "introduction": "",
+      "seo": {
+        "title": "Stories",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": true,
     "rss": "podcast",
     "template": "podcast",
@@ -45,6 +56,17 @@ export const collections = {
   },
   "blocks": {
     "kind": "folder",
+    "label": "Blocks",
+    "labelSingular": "Block",
+    "archive": {
+      "title": "Blocks",
+      "introduction": "",
+      "seo": {
+        "title": "Blocks",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": false,
     "rss": false,
     "template": "default",
@@ -67,6 +89,17 @@ export const collections = {
   },
   "categories": {
     "kind": "folder",
+    "label": "Categories",
+    "labelSingular": "Category",
+    "archive": {
+      "title": "Categories",
+      "introduction": "",
+      "seo": {
+        "title": "Categories",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": false,
     "rss": false,
     "template": "default",
@@ -84,6 +117,17 @@ export const collections = {
   },
   "colour-schemes": {
     "kind": "folder",
+    "label": "Colour Schemes",
+    "labelSingular": "Colour Scheme",
+    "archive": {
+      "title": "Colour Schemes",
+      "introduction": "",
+      "seo": {
+        "title": "Colour Schemes",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": false,
     "rss": false,
     "template": "default",
@@ -95,6 +139,17 @@ export const collections = {
   },
   "navigation": {
     "kind": "folder",
+    "label": "Navigation",
+    "labelSingular": "Menu",
+    "archive": {
+      "title": "Navigation",
+      "introduction": "",
+      "seo": {
+        "title": "Navigation",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": false,
     "rss": false,
     "template": "default",
@@ -106,6 +161,17 @@ export const collections = {
   },
   "pages": {
     "kind": "folder",
+    "label": "Pages",
+    "labelSingular": "Pages",
+    "archive": {
+      "title": "pages",
+      "introduction": "",
+      "seo": {
+        "title": "pages",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": true,
     "rss": false,
     "template": "page",
@@ -123,6 +189,17 @@ export const collections = {
   },
   "people": {
     "kind": "folder",
+    "label": "People",
+    "labelSingular": "Person",
+    "archive": {
+      "title": "People",
+      "introduction": "",
+      "seo": {
+        "title": "people",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": true,
     "rss": false,
     "template": "person",
@@ -134,6 +211,17 @@ export const collections = {
   },
   "posts": {
     "kind": "folder",
+    "label": "Posts",
+    "labelSingular": "Post",
+    "archive": {
+      "title": "posts",
+      "introduction": "",
+      "seo": {
+        "title": "posts",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": true,
     "rss": "standard",
     "template": "post",
@@ -188,6 +276,17 @@ export const collections = {
   },
   "tags": {
     "kind": "folder",
+    "label": "Tags",
+    "labelSingular": "Tag",
+    "archive": {
+      "title": "Tags",
+      "introduction": "",
+      "seo": {
+        "title": "Tags",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": false,
     "rss": false,
     "template": "default",
@@ -199,6 +298,17 @@ export const collections = {
   },
   "typography": {
     "kind": "folder",
+    "label": "Typography Presets",
+    "labelSingular": "Typography Preset",
+    "archive": {
+      "title": "Typography Presets",
+      "introduction": "",
+      "seo": {
+        "title": "Typography Presets",
+        "description": "",
+        "image": ""
+      }
+    },
     "publicRoute": false,
     "rss": false,
     "template": "default",

@@ -56,8 +56,22 @@ export function generateCollections(input: CmsCollection[]) {
 		).fields;
 
 		if (item.folder) {
+			const label = item.label?.trim() || item.name;
+			const title = item.archive?.title?.trim() || label;
+			const introduction = item.archive?.introduction?.trim() || '';
 			collections[item.name] = {
 				kind: 'folder',
+				label,
+				labelSingular: item.label_singular?.trim() || label,
+				archive: {
+					title,
+					introduction,
+					seo: {
+						title: item.archive?.seo?.title?.trim() || title,
+						description: item.archive?.seo?.description?.trim() || introduction,
+						image: item.archive?.seo?.image?.trim() || ''
+					}
+				},
 				publicRoute: item.public_route === true,
 				rss: item.rss ?? false,
 				template: item.template ?? 'default',

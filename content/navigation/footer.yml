@@ -1,6 +1,6 @@
 title: Footer
 items:
-  - label: Spotify
-    url: https://spotify.com
+  - label: Privacy
+    url: /pages/privacy/
     newTab: false
     children: []

@@ -2,6 +2,10 @@ collections:
   - name: audio
     label: Audio
     label_singular: Episode
+    archive:
+      title: Audio Stories
+      seo:
+        title: Audio Stories
     public_route: true
     rss: podcast
     template: podcast

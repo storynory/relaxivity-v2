@@ -3,7 +3,9 @@ export type ListingData = {
 	collection: string;
 	items: Record<string, unknown>[];
 	listTemplate: string;
-	title?: string;
+	title: string;
+	description: string;
+	seo: { title: string; description: string; image: string };
 	pagination?: {
 		page: number;
 		totalPages: number;

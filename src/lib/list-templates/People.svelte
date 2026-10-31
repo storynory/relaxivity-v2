@@ -7,7 +7,8 @@
 </script>
 
 <main>
-	<h1>People</h1>
+	<h1>{data.title}</h1>
+	{#if data.description}<p>{data.description}</p>{/if}
 	{#if !data.items.length}
 		<p>No published content yet.</p>
 	{:else}

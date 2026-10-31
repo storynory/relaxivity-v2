@@ -56,7 +56,7 @@ We're also working towards subscriber accounts that will unlock our full archive
 
 ## What Does _Relaxivity_ Actually Mean?
 
-_Relaxivity_ is a measurement of how quickly atomic nuclei settle back after being disturbed by a magnetic pulse.
+_Relaxivity is a measurement of how quickly atomic nuclei settle back after being disturbed by a magnetic pulse._
 
 So now you know. 
 

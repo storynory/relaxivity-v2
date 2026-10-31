@@ -15,6 +15,13 @@ export type CmsField = {
 };
 
 export type CmsCollection = {
+	label?: string;
+	label_singular?: string;
+	archive?: {
+		title?: string;
+		introduction?: string;
+		seo?: { title?: string; description?: string; image?: string };
+	};
 	public_route?: boolean;
 	rss?: false | 'standard' | 'podcast';
 	template?: string;

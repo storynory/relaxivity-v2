@@ -7,6 +7,7 @@ import sharp from 'sharp';
 import { readAll } from '../src/lib/content/read.ts';
 import { compareEpisodes, isPublishedEpisode } from '../src/lib/audio/availability.ts';
 import { audioPageSize } from '../src/lib/server/audio-archive.ts';
+import { collections } from '../src/lib/generated/collections.ts';
 import { loadTagArchive, tagPageEntries, tagPageHref } from '../src/lib/server/taxonomy.ts';
 
 const buildDir = path.resolve('build');
@@ -128,8 +129,9 @@ test('audio archive pages are crawlable, canonical, and cover every published ep
 		assert.ok(html.includes(`rel="canonical" href="https://relaxivity.app${href}"`), href);
 		assert.ok(sitemap.includes(`https://relaxivity.app${href}</loc>`), href);
 		assert.doesNotMatch(html, /href="\/podcasts\//);
-		const heading = page === 1 ? 'Stories' : `Stories Page ${page}`;
-		assert.ok(html.includes(`<title>${heading}</title>`), href);
+		const heading = page === 1 ? collections.audio.archive.title : `${collections.audio.archive.title} Page ${page}`;
+		const metaTitle = page === 1 ? collections.audio.archive.seo.title : heading;
+		assert.ok(html.includes(`<title>${metaTitle}</title>`), href);
 		assert.match(html, new RegExp(`<h1[^>]*>${heading}</h1>`));
 		assert.doesNotMatch(html, /<p>Page \d+ of \d+<\/p>/);
 		const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';

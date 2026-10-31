@@ -33,3 +33,27 @@ test('generates RSS settings for opted-in and disabled collections', () => {
 	assert.match(output, /"rss": "podcast"/);
 	assert.equal((output.match(/"rss": false/g) ?? []).length, 2);
 });
+
+test('archive defaults come from labels, with optional YAML overrides', () => {
+	const output = generateCollections([
+		{ name: 'notes', label: 'Field Notes', label_singular: 'Note', folder: 'content/notes' },
+		{ name: 'plain', folder: 'content/plain' },
+		{ name: 'custom', label: 'Custom', folder: 'content/custom', archive: {
+			title: 'Our collection', introduction: 'An introduction.',
+			seo: { title: 'Explore our collection', description: 'A search description.', image: '/cover.jpg' }
+		} }
+	]);
+	// Read the generated literal rather than duplicating the normalisation logic.
+	const definitions = JSON.parse(output.split('export const collections = ')[1].split(' as const;')[0]);
+	assert.equal(definitions.notes.labelSingular, 'Note');
+	assert.deepEqual(definitions.notes.archive, {
+		title: 'Field Notes', introduction: '', seo: { title: 'Field Notes', description: '', image: '' }
+	});
+	assert.equal(definitions.plain.archive.title, 'plain');
+	assert.deepEqual(definitions.custom.archive, {
+		title: 'Our collection', introduction: 'An introduction.',
+		seo: { title: 'Explore our collection', description: 'A search description.', image: '/cover.jpg' }
+	});
+	const intro = generateCollections([{ name: 'intro', folder: 'content/intro', archive: { introduction: 'About these records.' } }]);
+	assert.match(intro, /"description": "About these records\."/);
+});
