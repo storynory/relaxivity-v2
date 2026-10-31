@@ -24,7 +24,7 @@ Listening to audio is, of course, far more relaxing and mentally beneficial than
 ## The Story Selection
 
 The emphasis is on ancient stories, myths, and spiritual texts from around the world. 
-These stories have lasted for centuries - sometimes thousands of years - because they tap into humankind's need to understand the world through storytelling.   They also inform us about the cultures that created them.  If you are interested in stories for stories' sake, you are on the same wavelength as us. 
+These stories have lasted for centuries - sometimes for thousands of years - because they tap into humankind's need to understand the world through storytelling. They also inform us about the cultures that created them.  If you are interested in stories for stories' sake, you are on the same wavelength as us. 
 
 ## Free Stories and Subscription
 
@@ -49,7 +49,7 @@ You can:
 - **Keep listening while browsing.** Our audio player continues playing as you move around the site.
 - **Create your own playlists.** Save your favourite stories, arrange them in any order, and let the next story play automatically.
 - **Listen with your screen locked.** Control playback from your phone or tablet's lock screen.
-- **Add _Relaxivity_ to your Home Screen.** Launch it with a tap, just like a regular app.
+- **Add _Relaxivity_ to your Home Screen.** Launch it with a tap, just like a regular app.  If you choose the option in your browser to "install", our app will open with a splash screen when you tap the icon.
 - **Listen in your favourite podcast app.** Our free podcast is another way to enjoy the latest stories.
 
 We're also working towards subscriber accounts that will unlock our full archive and more features.
