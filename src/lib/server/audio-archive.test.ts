@@ -3,6 +3,7 @@ import { after, test } from 'node:test';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { collections } from '../generated/collections.ts';
 
 const root = await fs.mkdtemp(path.join(os.tmpdir(), 'relaxivity-audio-archive-'));
 const originalCwd = process.cwd();
@@ -42,7 +43,7 @@ test('audio pages select ten published records newest first with complete, non-o
 	assert.equal(pages[0].pagination.total, 23);
 	assert.deepEqual(pages.map(({ title }) => title), ['Audio Stories', 'Audio Stories Page 2', 'Audio Stories Page 3']);
 	assert.equal(pages[0].seo.description, '');
-	assert.equal(pages[0].seo.title, 'Stories');
+	assert.equal(pages[0].seo.title, collections.audio.archive.seo.title);
 	assert.equal(pages[1].seo.title, 'Audio Stories Page 2');
 	assert.equal(pages[1].seo.description, 'Audio Stories including Story 13 and Story 12. Audio Stories Page 2.');
 	assert.equal(pages[2].seo.description, 'Audio Stories including Story 3 and Story 2. Audio Stories Page 3.');

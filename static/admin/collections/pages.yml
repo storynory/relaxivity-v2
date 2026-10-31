@@ -36,6 +36,19 @@ collections:
             required: false
             hint: Leave blank to use the excerpt.
 
+      # Options are generated during dev/build from templateFor declarations.
+      - name: template
+        label: Page Template
+        widget: select
+        required: false
+        hint: Leave empty to use the collection default. Choices are generated from
+          compatible templates.
+        options:
+          - label: Landing
+            value: landing
+          - label: Page
+            value: page
+
       - name: layout
         label: Page Layout
         widget: select

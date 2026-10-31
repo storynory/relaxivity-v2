@@ -2,7 +2,7 @@ import { error } from '@sveltejs/kit';
 import { getOne } from '#lib/server/content.ts';
 import { buildBlocks } from '#lib/server/blocks.ts';
 import { homePageSlug } from '#lib/server/home.ts';
-import { published } from '#lib/server/public-routes.ts';
+import { detailTemplate, published } from '#lib/server/public-routes.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
@@ -15,7 +15,7 @@ export const load: PageServerLoad = async () => {
 	return {
 		title: typeof record.title === 'string' ? record.title : 'Home',
 		collection: 'pages',
-		template: 'page',
+		template: detailTemplate('pages', record),
 		item: record,
 		blocks: await buildBlocks(record.blocks)
 	};

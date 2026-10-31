@@ -1,9 +1,8 @@
 import { error } from '@sveltejs/kit';
-import { collections } from '#lib/generated/collections.ts';
 import { buildBlocks } from '#lib/server/blocks.ts';
 import { homePageSlug } from '#lib/server/home.ts';
 import { getOne } from '#lib/server/content.ts';
-import { publicCollection, publicEntries, published } from '#lib/server/public-routes.ts';
+import { detailTemplate, publicCollection, publicEntries, published } from '#lib/server/public-routes.ts';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = publicEntries;
@@ -21,7 +20,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	return {
 		title: typeof heading === 'string' && heading ? heading : params.slug,
 		collection,
-		template: collections[collection].template,
+		template: detailTemplate(collection, record),
 		item: record,
 		blocks: await buildBlocks(record.blocks)
 	};

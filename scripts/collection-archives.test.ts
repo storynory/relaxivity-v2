@@ -27,6 +27,7 @@ test('YAML-only public collections get built archives, detail pages, SEO and sea
 		const settingsPath = path.join(root, 'content/settings/general.yml');
 		const settings = YAML.parse(await fs.readFile(settingsPath, 'utf8'));
 		settings.description = 'Acceptance site description.';
+		settings.homePage = 'template-home';
 		await fs.writeFile(settingsPath, YAML.stringify(settings));
 		const fields = [
 			{ name: 'title', widget: 'string' }, { name: 'excerpt', widget: 'text', required: false },
@@ -52,6 +53,15 @@ test('YAML-only public collections get built archives, detail pages, SEO and sea
 			seo: { title: 'Record SEO title', description: 'Record SEO description.' } });
 		await record('dispatches', 'first-dispatch', { title: 'First Dispatch' });
 		await record('internal-notes', 'private-note', { title: 'Private Note' });
+		const page = { title: 'Template Example', excerpt: 'An introduction.', layout: 'wide',
+			blocks: ['latest-stories'], seo: { title: 'Page SEO', description: 'Page description.' } };
+		await record('pages', 'template-default', page);
+		await record('pages', 'template-page', { ...page, template: 'page' });
+		await record('pages', 'template-landing', { ...page, template: 'landing' });
+		await record('pages', 'template-landing-standard', { ...page, layout: 'standard', template: 'landing' });
+		await record('pages', 'template-home', { ...page, template: 'landing' });
+		await record('pages', 'template-invalid', { ...page, template: 'podcast' });
+		await record('pages', 'template-cleared', { ...page, template: null });
 
 		try {
 			await run('npm', ['run', 'build'], { cwd: root, maxBuffer: 8 * 1024 * 1024 });
@@ -61,6 +71,24 @@ test('YAML-only public collections get built archives, detail pages, SEO and sea
 			throw new Error(`Acceptance build/check failed:\n${result.stdout ?? ''}\n${result.stderr ?? ''}`, { cause: error });
 		}
 		const html = (route: string) => fs.readFile(path.join(root, 'build', route, 'index.html'), 'utf8');
+		const originalPage = await html('pages/template-default');
+		const main = (value: string) => value.match(/<main\b[\s\S]*?<\/main>/)?.[0];
+		for (const slug of ['template-page', 'template-invalid', 'template-cleared']) {
+			assert.equal(main(await html(`pages/${slug}`)), main(originalPage));
+		}
+		const landing = await html('pages/template-landing');
+		assert.doesNotMatch(main(await html('pages/template-landing-standard')) ?? '', /<main\b[^>]*class="[^"]*\bwide\b/);
+		assert.match(await html(''), /class="landing\b/);
+		await assert.rejects(() => html('pages/template-home'), { code: 'ENOENT' });
+		assert.match(landing, /class="landing\b/);
+		assert.doesNotMatch(originalPage, /class="landing\b/);
+		for (const value of [originalPage, landing]) {
+			assert.match(value, /<title>Page SEO<\/title>/);
+			assert.ok(value.includes('name="description" content="Page description."'));
+			assert.ok(value.includes('<strong>published body</strong>'));
+			assert.match(value, /<main\b[^>]*class="[^"]*\bwide\b/);
+			assert.ok(value.includes('Browse stories'));
+		}
 		const archive = await html('field-notes');
 		assert.match(archive, /<h1[^>]*>Field Notes Archive<\/h1>/);
 		assert.ok(archive.includes('Notes from our travels.'));

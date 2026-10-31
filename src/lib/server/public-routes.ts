@@ -1,5 +1,5 @@
 import { isPublishedEpisode } from '#lib/audio/availability.ts';
-import { collections } from '#lib/generated/collections.ts';
+import { collections, templateNames } from '#lib/generated/collections.ts';
 import type { FolderCollectionName } from '#lib/server/content.ts';
 import { homePageSlug } from '#lib/server/home.ts';
 import { readAll } from '#lib/content/read.ts';
@@ -13,6 +13,18 @@ export function publicCollections(): FolderCollectionName[] {
 
 export function publicCollection(name: string): FolderCollectionName | null {
 	return publicCollections().find((item) => item === name) ?? null;
+}
+
+export function detailTemplate(collection: FolderCollectionName, record: Record<string, unknown>): string {
+	const definition = collections[collection];
+	const fallback = templateNames.some((name) => name === definition.template) ? definition.template : 'default';
+	// Only collections with the optional CMS selector enable record overrides.
+	const allowed: readonly string[] = definition.templateOverrides;
+	if (!allowed.length || record.template == null || record.template === '') return fallback;
+	if (typeof record.template === 'string' && allowed.includes(record.template)
+		&& templateNames.some((name) => name === record.template)) return record.template;
+	console.warn(`Invalid template override "${String(record.template)}" for ${collection}/${record.slug ?? ''}; using "${fallback}". Allowed: ${allowed.join(', ')}`);
+	return fallback;
 }
 
 export function published(data: Record<string, unknown>, collection?: string): boolean {

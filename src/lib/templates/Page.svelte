@@ -1,3 +1,7 @@
+<script module lang="ts">
+	export const templateFor = 'pages';
+</script>
+
 <script lang="ts">
 	import type { DetailTemplateData } from './types';
 	import { textField } from './fields.ts';

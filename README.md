@@ -56,6 +56,46 @@ that public records appear in search while drafts and private collections do not
 
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
+## Page templates
+
+Pages have two independent CMS fields: **Page Template** selects the design;
+**Page Layout** keeps the existing Standard/Wide width choice. Leave Page
+Template empty (or clear it) to use the collection's `template` in
+`static/admin/collections/pages.yml`. Existing pages need no changes.
+
+```yaml
+---
+title: About Relaxivity
+template: landing
+layout: wide
+---
+```
+
+The Page and Landing designs accept the same page fields, SEO and reusable blocks.
+Landing reuses Page's content rendering with a larger, centred introduction.
+The homepage is also a Page and respects this selection at its existing `/` URL.
+
+To add another compatible design, add a component under `src/lib/templates/`
+using the existing `DetailTemplateData` props and declare its compatibility:
+
+```svelte
+<script module lang="ts">
+  export const templateFor = 'pages';
+</script>
+```
+
+Run `npm run dev` or `npm run build` to regenerate the registry, CMS options and
+types. The component filename supplies the dropdown label and its lowercase key
+(for example, `Landing.svelte` → `landing`). Do not manually maintain the generated
+Page Template options. Specialised audio, post and people templates do not declare
+Pages compatibility and are not offered. Adding the declaration is a promise that
+the design can consume ordinary Page data; it is not automatic schema inference.
+
+Resolution is a registered, compatible record override, then the collection
+default, then the generic Default template. Invalid record values warn in the
+server/dev/build logs and fall back. A missing configured collection template is
+still caught by the generator. Other collections do not enable record overrides.
+
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!

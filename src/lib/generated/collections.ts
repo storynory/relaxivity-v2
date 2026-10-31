@@ -18,6 +18,7 @@ export const collections = {
     "rss": "podcast",
     "template": "podcast",
     "listTemplate": "episodes",
+    "templateOverrides": [],
     "folder": "content/audio",
     "extension": "md",
     "format": "markdown",
@@ -71,6 +72,7 @@ export const collections = {
     "rss": false,
     "template": "default",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/blocks",
     "extension": "yml",
     "format": "yaml",
@@ -104,6 +106,7 @@ export const collections = {
     "rss": false,
     "template": "default",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/categories",
     "extension": "yml",
     "format": "yaml",
@@ -132,6 +135,7 @@ export const collections = {
     "rss": false,
     "template": "default",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/colour-schemes",
     "extension": "yml",
     "format": "yaml",
@@ -154,6 +158,7 @@ export const collections = {
     "rss": false,
     "template": "default",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/navigation",
     "extension": "yml",
     "format": "yaml",
@@ -176,6 +181,10 @@ export const collections = {
     "rss": false,
     "template": "page",
     "listTemplate": "default",
+    "templateOverrides": [
+      "landing",
+      "page"
+    ],
     "folder": "content/pages",
     "extension": "md",
     "format": "markdown",
@@ -204,6 +213,7 @@ export const collections = {
     "rss": false,
     "template": "person",
     "listTemplate": "people",
+    "templateOverrides": [],
     "folder": "content/people",
     "extension": "yml",
     "format": "yaml",
@@ -226,6 +236,7 @@ export const collections = {
     "rss": "standard",
     "template": "post",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/posts",
     "extension": "md",
     "format": "markdown",
@@ -291,6 +302,7 @@ export const collections = {
     "rss": false,
     "template": "default",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/tags",
     "extension": "yml",
     "format": "yaml",
@@ -313,6 +325,7 @@ export const collections = {
     "rss": false,
     "template": "default",
     "listTemplate": "default",
+    "templateOverrides": [],
     "folder": "content/typography",
     "extension": "yml",
     "format": "yaml",
@@ -321,3 +334,5 @@ export const collections = {
 } as const;
 
 export type CollectionName = keyof typeof collections;
+
+export const templateNames = ["default","landing","page","person","podcast","post"] as const;

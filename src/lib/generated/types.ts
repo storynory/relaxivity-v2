@@ -95,6 +95,7 @@ export type PagesContent = {
 		"title"?: string;
 		"description"?: string;
 	};
+	"template"?: "landing" | "page";
 	"layout"?: "standard" | "wide";
 	"body"?: string;
 	"blocks"?: string[];

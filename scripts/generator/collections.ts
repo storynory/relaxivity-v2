@@ -1,13 +1,4 @@
-import type { CmsCollection } from './config';
-
-type CmsField = {
-	name: string;
-	widget?: string;
-	collection?: string;
-	multiple?: boolean;
-	value_field?: string;
-	fields?: CmsField[];
-};
+import type { CmsCollection, CmsField } from './config';
 
 function formatOf(format?: string) {
 	switch (format) {
@@ -45,7 +36,7 @@ function findRelations(fields: CmsField[] = []) {
 	return relations;
 }
 
-export function generateCollections(input: CmsCollection[]) {
+export function generateCollections(input: CmsCollection[], templateNames: string[] = ['default']) {
 	const collections: Record<string, unknown> = {};
 
 	for (const item of input) {
@@ -76,6 +67,8 @@ export function generateCollections(input: CmsCollection[]) {
 				rss: item.rss ?? false,
 				template: item.template ?? 'default',
 				listTemplate: item.list_template ?? 'default',
+				templateOverrides: (fields?.find((field) => field.name === 'template' && field.widget === 'select')?.options ?? [])
+					.map((option) => typeof option === 'string' ? option : option.value),
 				folder: item.folder,
 				extension: item.extension ?? 'md',
 				format: formatOf(item.format),
@@ -105,5 +98,7 @@ export function generateCollections(input: CmsCollection[]) {
 export const collections = ${JSON.stringify(collections, null, 2)} as const;
 
 export type CollectionName = keyof typeof collections;
+
+export const templateNames = ${JSON.stringify(templateNames)} as const;
 `;
 }
