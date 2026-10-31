@@ -209,6 +209,14 @@
 	.credits dd { margin: 0; line-height: 1.5; overflow-wrap: anywhere; }
 	.credits a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
 	.credits a:hover { text-decoration-thickness: 2px; }
+	@media (max-width: 48rem) {
+		h1 {
+			max-width: none;
+			font-size: clamp(1.75rem, 5vw, 2.4rem);
+			overflow-wrap: normal;
+			word-break: normal;
+		}
+	}
 	@media (min-width: 1100px) {
 		.episode-details.with-credits { grid-template-columns: 11rem minmax(0, 1fr); }
 		.credits dl { grid-template-columns: 1fr; gap: 2rem; }
