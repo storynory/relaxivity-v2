@@ -103,7 +103,7 @@ test('playlist is built, utility links are visible, and the legacy URL redirects
 	assert.match(utility, /href="\/audio\/"/);
 	assert.match(utility, /\/icons\.svg#headphones/);
 	const menu = html.match(/<nav\b[^>]*id="main-navigation"[^>]*>(.*?)<\/nav>/s)?.[1] ?? '';
-	for (const [route, label, icon] of [['audio', 'Audio', 'headphones'], ['playlist', 'Playlist', 'heart'], ['search', 'Search', 'search']]) {
+	for (const [route, label, icon] of [['audio', 'Stories', 'headphones'], ['playlist', 'Playlist', 'heart'], ['search', 'Search', 'search']]) {
 		const link = menu.match(new RegExp(`<a\\b[^>]*href="/${route}/"[^>]*>(.*?)</a>`, 's'))?.[1] ?? '';
 		assert.ok(link.includes(label), `${label} is labelled in the main menu`);
 		assert.ok(link.includes(`/icons.svg#${icon}`), `${label} has its menu icon`);
@@ -128,7 +128,7 @@ test('audio archive pages are crawlable, canonical, and cover every published ep
 		assert.ok(html.includes(`rel="canonical" href="https://relaxivity.app${href}"`), href);
 		assert.ok(sitemap.includes(`https://relaxivity.app${href}</loc>`), href);
 		assert.doesNotMatch(html, /href="\/podcasts\//);
-		const heading = page === 1 ? 'Audio' : `Audio Page ${page}`;
+		const heading = page === 1 ? 'Stories' : `Stories Page ${page}`;
 		assert.ok(html.includes(`<title>${heading}</title>`), href);
 		assert.match(html, new RegExp(`<h1[^>]*>${heading}</h1>`));
 		assert.doesNotMatch(html, /<p>Page \d+ of \d+<\/p>/);

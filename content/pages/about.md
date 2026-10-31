@@ -19,7 +19,7 @@ Our producer, [Hugh Fraser (aka Bertie](/people/bertie/)) founded [Storynory - a
 
 ## Why Audio?
 
-Listening to audio is, of course, far more relaxing and mentally beneficial than keeping your weary eyeballs glued to a screen.  Audio is one of the fastest growing markets in the world of publishing because it is so relaxing, absorbing and convenient.   
+Listening to audio is, of course, far more relaxing and mentally beneficial than keeping your tiered eyeballs glued to a screen.  A well-read audio story is a kind of virtual reality for your mind - without the need for a chip in your brain. Audio is one of the fastest growing markets in the world of publishing because it is so relaxing, absorbing and convenient.   
 
 ## The Story Selection
 
@@ -60,4 +60,4 @@ _Relaxivity_ is a measurement of how quickly atomic nuclei settle back after bei
 
 So now you know. 
 
-For us, he word suggests two opposites - Relaxation and Activity.  You can relax to our audio while we transport your imagination to a far away place.
+For us, he word suggests two opposites - Relaxation and Activity.  You can relax to our audio while letting your imagination do a little work-out as it takes you to far-away places.

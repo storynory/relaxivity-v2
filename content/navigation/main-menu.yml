@@ -12,7 +12,7 @@ items:
     url: /contact/
     newTab: false
     children: []
-  - label: Audio
+  - label: Stories
     url: /audio/
     newTab: false
     children: []

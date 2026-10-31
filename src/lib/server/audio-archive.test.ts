@@ -40,10 +40,10 @@ test('audio pages select ten published records newest first with complete, non-o
 	assert.deepEqual(pages.flatMap(({ items }) => items.map(({ slug }) => slug)),
 		Array.from({ length: 23 }, (_, i) => `story-${String(23 - i).padStart(2, '0')}`));
 	assert.equal(pages[0].pagination.total, 23);
-	assert.deepEqual(pages.map(({ title }) => title), ['Audio', 'Audio Page 2', 'Audio Page 3']);
+	assert.deepEqual(pages.map(({ title }) => title), ['Stories', 'Stories Page 2', 'Stories Page 3']);
 	assert.equal(pages[0].seo.description, '');
-	assert.equal(pages[1].seo.description, 'Audio Stories including Story 13 and Story 12. Audio Page 2.');
-	assert.equal(pages[2].seo.description, 'Audio Stories including Story 3 and Story 2. Audio Page 3.');
+	assert.equal(pages[1].seo.description, 'Audio Stories including Story 13 and Story 12. Stories Page 2.');
+	assert.equal(pages[2].seo.description, 'Audio Stories including Story 3 and Story 2. Stories Page 3.');
 	assert.deepEqual(pages[2].pagination.pages, [
 		{ number: 1, href: '/audio/' }, { number: 2, href: '/audio/page/2/' }, { number: 3, href: '/audio/page/3/' }
 	]);

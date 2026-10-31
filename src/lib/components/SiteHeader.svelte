@@ -17,7 +17,7 @@
 	let openDropdown = $state<number | null>(null);
 	let menuButton = $state<HTMLButtonElement>();
 	const utilityLinks = [
-		{ href: '/audio/', label: 'Audio', icon: 'headphones' },
+		{ href: '/audio/', label: 'Stories', icon: 'headphones' },
 		{ href: '/playlist/', label: 'Playlist', icon: 'heart' },
 		{ href: '/search/', label: 'Search', icon: 'search' }
 	];

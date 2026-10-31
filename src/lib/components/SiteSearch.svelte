@@ -93,7 +93,7 @@
 				<h2><a href={item.url}>{item.title}</a></h2>
 				{#if item.excerpt}<p>{item.excerpt}</p>{/if}
 				<small
-					>{item.kind === 'category' ? 'Category' : item.kind === 'tag' ? 'Tag' : item.collection}{item.categories.length
+					>{item.kind === 'category' ? 'Category' : item.kind === 'tag' ? 'Tag' : item.collection === 'audio' ? 'Story' : item.collection}{item.categories.length
 						? ` · ${item.categories.join(', ')}`
 						: ''}</small
 				>

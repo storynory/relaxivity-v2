@@ -24,7 +24,7 @@ export async function loadAudioArchive(page = 1) {
 		// Select the page before rendering Markdown and resolving relationships.
 		return eligible.slice((page - 1) * audioPageSize, page * audioPageSize);
 	});
-	const title = page === 1 ? 'Audio' : `Audio Page ${page}`;
+	const title = page === 1 ? 'Stories' : `Stories Page ${page}`;
 	return {
 		title,
 		seo: { description: page > 1 ? storyDescription(items, title) : '' },
