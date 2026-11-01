@@ -48,7 +48,7 @@ body {
 	font: var(--font-size) / var(--line-height) var(--font-body);
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 780px) {
 	.site {
 		--font-size: calc(var(--font-size-desktop, 20) / 16 * 1rem);
 	}
