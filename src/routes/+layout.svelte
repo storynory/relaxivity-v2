@@ -32,6 +32,7 @@
 
 <svelte:head>
 	{#if data.siteLogo}
+		<link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="/favicon.ico" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/app-icons/favicon-16.png" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/app-icons/favicon-32.png" />
 		<link rel="icon" type="image/png" sizes="48x48" href="/app-icons/favicon-48.png" />

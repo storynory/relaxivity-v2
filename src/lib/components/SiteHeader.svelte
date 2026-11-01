@@ -25,7 +25,7 @@
 	const navigationIcons: Record<string, string> = {
 		'/': 'home',
 		'/pages/about/': 'info',
-		'/contact/': 'mail'
+		'/pages/contact/': 'mail'
 	};
 
 	function current(href?: string) {

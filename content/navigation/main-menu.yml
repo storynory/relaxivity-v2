@@ -8,10 +8,6 @@ items:
     url: /pages/about/
     newTab: false
     children: []
-  - label: Contact
-    url: /contact/
-    newTab: false
-    children: []
   - label: Stories
     url: /audio/
     newTab: false

@@ -39,11 +39,28 @@ test('generates app icons, favicons and an Apple icon from the configured logo, 
 			assert.equal(metadata.hasAlpha, false);
 		}
 		const maskable = await sharp(path.join(root, 'static/app-icons/icon-maskable-512.png')).raw().toBuffer();
+		const faviconPath = path.join(root, 'static/favicon.ico');
+		const favicon = await fs.readFile(faviconPath);
+		assert.deepEqual([...favicon.subarray(0, 6)], [0, 0, 1, 0, 3, 0]);
+		let expectedOffset = 6 + 3 * 16;
+		for (const [index, size] of [16, 32, 48].entries()) {
+			const entry = 6 + index * 16;
+			assert.equal(favicon[entry], size);
+			assert.equal(favicon[entry + 1], size);
+			const length = favicon.readUInt32LE(entry + 8);
+			const offset = favicon.readUInt32LE(entry + 12);
+			assert.equal(offset, expectedOffset);
+			const png = await fs.readFile(path.join(root, `static/app-icons/favicon-${size}.png`));
+			assert.deepEqual(favicon.subarray(offset, offset + length), png);
+			expectedOffset += length;
+		}
+		assert.equal(favicon.length, expectedOffset);
 		assert.deepEqual([...maskable.subarray(0, 3)], [0x12, 0x34, 0x56]);
 		assert.deepEqual(await fs.readFile(source), original, 'source is never modified');
 		const oldIcon = await fs.readFile(path.join(root, 'static/app-icons/icon-192.png'));
 		await sharp({ create: { width: 600, height: 600, channels: 3, background: '#00ff00' } }).png().toFile(source);
 		await generateManifest(root);
+		assert.notDeepEqual(await fs.readFile(faviconPath), favicon);
 		assert.notDeepEqual(await fs.readFile(path.join(root, 'static/app-icons/icon-192.png')), oldIcon);
 		assert.deepEqual(JSON.parse(await fs.readFile(path.join(root, 'static/site.webmanifest'), 'utf8')), manifest);
 

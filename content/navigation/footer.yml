@@ -4,3 +4,7 @@ items:
     url: /pages/privacy/
     newTab: false
     children: []
+  - label: Contact
+    url: /contact/
+    newTab: false
+    children: []

@@ -23,6 +23,9 @@ test('web app manifest and linked icons are included in the production build', a
 		assert.equal(`${metadata.width}x${metadata.height}`, icon.sizes);
 	}
 	if (settings.siteLogo) {
+		assert.match(html, /href="\/favicon\.ico"/);
+		const favicon = await fs.readFile(path.join(buildDir, 'favicon.ico'));
+		assert.deepEqual([...favicon.subarray(0, 6)], [0, 0, 1, 0, 3, 0]);
 		assert.match(html, /rel="apple-touch-icon" sizes="180x180"/);
 		const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0] ?? '';
 		assert.match(header, /sizes="\(max-width: 22rem\) 3rem, \(max-width: 30rem\) 3.5rem, 5rem"/);
@@ -84,10 +87,19 @@ test('public prerendered pages have exactly one main landmark', async () => {
 	for (const page of pages) {
 		const html = await fs.readFile(page, 'utf8');
 		// SvelteKit emits a minimal HTML redirect for this legacy route.
-		if (path.relative(buildDir, page) === path.join('favourites', 'index.html')) continue;
+		if (['favourites', 'contact'].some((route) => path.relative(buildDir, page) === path.join(route, 'index.html'))) continue;
 		assert.equal([...html.matchAll(/<main(?:\s|>)/g)].length, 1, path.relative(buildDir, page));
 		assert.equal([...html.matchAll(/<\/main>/g)].length, 1, path.relative(buildDir, page));
 	}
+});
+
+test('contact uses a CMS page and the legacy URL redirects to it', async () => {
+	const html = await fs.readFile(path.join(buildDir, 'pages/contact/index.html'), 'utf8');
+	assert.match(html, /<h1[^>]*>Contact<\/h1>/);
+	assert.doesNotMatch(html, /<form\b/);
+	const redirect = await fs.readFile(path.join(buildDir, 'contact/index.html'), 'utf8');
+	assert.match(redirect, /http-equiv="refresh"/i);
+	assert.match(redirect, /0;url=\/pages\/contact\//);
 });
 
 test('playlist is built, utility links are visible, and the legacy URL redirects', async () => {

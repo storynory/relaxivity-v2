@@ -6,6 +6,25 @@ import { writeIfChanged } from '../generator/write-if-changed';
 
 type Icon = { src: string; sizes: string; type: string; purpose: 'any' | 'maskable' };
 
+async function writeFavicon(output: string, images: { size: number; png: Buffer }[]) {
+	// ICO directory followed by PNG images, with one 16-byte entry per size.
+	const directory = Buffer.alloc(6 + images.length * 16);
+	directory.writeUInt16LE(1, 2); // Image type: icon.
+	directory.writeUInt16LE(images.length, 4);
+	let offset = directory.length;
+	for (const [index, { size, png }] of images.entries()) {
+		const entry = 6 + index * 16;
+		directory.writeUInt8(size, entry);
+		directory.writeUInt8(size, entry + 1);
+		directory.writeUInt16LE(1, entry + 4); // Colour planes.
+		directory.writeUInt16LE(24, entry + 6); // Opaque RGB PNGs.
+		directory.writeUInt32LE(png.length, entry + 8);
+		directory.writeUInt32LE(offset, entry + 12);
+		offset += png.length;
+	}
+	await fs.writeFile(output, Buffer.concat([directory, ...images.map(({ png }) => png)]));
+}
+
 export async function generateManifest(root = process.cwd()) {
 	const settings = YAML.parse(await fs.readFile(path.join(root, 'content/settings/general.yml'), 'utf8'));
 	const scheme = YAML.parse(await fs.readFile(
@@ -46,7 +65,13 @@ export async function generateManifest(root = process.cwd()) {
 				purpose: maskable ? 'maskable' as const : 'any' as const };
 		}
 
-		for (const size of [16, 32, 48]) await icon(`favicon-${size}.png`, size);
+		const favicons: { size: number; png: Buffer }[] = [];
+		for (const size of [16, 32, 48]) {
+			const filename = `favicon-${size}.png`;
+			await icon(filename, size);
+			favicons.push({ size, png: await fs.readFile(path.join(output, filename)) });
+		}
+		await writeFavicon(path.join(staticDir, 'favicon.ico'), favicons);
 		await icon('apple-touch-icon.png', 180);
 		for (const size of [192, 512]) {
 			icons.push(await icon(`icon-${size}.png`, size));
