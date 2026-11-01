@@ -16,7 +16,6 @@
 	let { indexUrl = '/api/search-index' }: { indexUrl?: string } = $props();
 
 	let query = $state('');
-	const topics = $derived(items.filter((item) => item.kind === 'tag').sort((a, b) => a.title.localeCompare(b.title)));
 
 	async function followResult(event: MouseEvent, url: string) {
 		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -26,10 +25,11 @@
 		const searchUrl = new URL(window.location.href);
 		searchUrl.searchParams.set('q', term);
 		// Replace the current search entry before navigating to the chosen result.
-		await goto(searchUrl.pathname + searchUrl.search, { replaceState: true, noScroll: true, keepFocus: true });
+		await goto(searchUrl.pathname + searchUrl.search, { replaceState: true, keepFocus: true });
 		await goto(url);
 	}
 	let items = $state<SearchItem[]>([]);
+	const topics = $derived(items.filter((item) => item.kind === 'tag').sort((a, b) => a.title.localeCompare(b.title)));
 	let loading = $state(true);
 	let loadError = $state('');
 
