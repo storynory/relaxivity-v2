@@ -25,7 +25,7 @@
 		const searchUrl = new URL(window.location.href);
 		searchUrl.searchParams.set('q', term);
 		// Replace the current search entry before navigating to the chosen result.
-		await goto(searchUrl.pathname + searchUrl.search, { replaceState: true, keepFocus: true });
+		await goto(searchUrl.pathname + searchUrl.search, { replaceState: true });
 		await goto(url);
 	}
 	let items = $state<SearchItem[]>([]);
