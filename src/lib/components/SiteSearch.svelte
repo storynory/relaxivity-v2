@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Fuse from 'fuse.js';
+	import { goto } from '$app/navigation';
 
 	type SearchItem = {
 		title: string;
@@ -15,6 +16,19 @@
 	let { indexUrl = '/api/search-index' }: { indexUrl?: string } = $props();
 
 	let query = $state('');
+	const topics = $derived(items.filter((item) => item.kind === 'tag').sort((a, b) => a.title.localeCompare(b.title)));
+
+	async function followResult(event: MouseEvent, url: string) {
+		if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+		const term = query.trim();
+		if (!term) return;
+		event.preventDefault();
+		const searchUrl = new URL(window.location.href);
+		searchUrl.searchParams.set('q', term);
+		// Replace the current search entry before navigating to the chosen result.
+		await goto(searchUrl.pathname + searchUrl.search, { replaceState: true, noScroll: true, keepFocus: true });
+		await goto(url);
+	}
 	let items = $state<SearchItem[]>([]);
 	let loading = $state(true);
 	let loadError = $state('');
@@ -57,6 +71,7 @@
 	});
 
 	onMount(async () => {
+		query = new URL(window.location.href).searchParams.get('q') ?? '';
 		try {
 			const response = await fetch(indexUrl);
 			if (!response.ok) throw new Error('Search index unavailable');
@@ -69,7 +84,7 @@
 	});
 </script>
 
-<form role="search" onsubmit={(event) => event.preventDefault()}>
+<form role="search" onsubmit={(event) => { event.preventDefault(); const term = query.trim(); if (term) void goto(`/search/?q=${encodeURIComponent(term)}`); }}>
 	<label for="site-search">Search the site</label>
 	<input
 		id="site-search"
@@ -86,11 +101,22 @@
 	{:else if terms.length}{results.length} {results.length === 1 ? 'result' : 'results'} found{/if}
 </p>
 
+{#if !loading && !loadError && !terms.length && topics.length}
+	<section class="topics" aria-labelledby="topics-heading">
+		<h2 id="topics-heading">Explore by topic</h2>
+		<div class="topic-links">
+			{#each topics as topic (topic.url)}
+				<a href={topic.url}>{topic.title}</a>
+			{/each}
+		</div>
+	</section>
+{/if}
+
 {#if !loading && !loadError && terms.length}
 	<ul>
 		{#each results as item (item.url)}
 			<li>
-				<h2><a href={item.url}>{item.title}</a></h2>
+				<h2><a href={item.url} onclick={(event) => followResult(event, item.url)}>{item.title}</a></h2>
 				{#if item.excerpt}<p>{item.excerpt}</p>{/if}
 				<small
 					>{item.kind === 'category' ? 'Category' : item.kind === 'tag' ? 'Tag' : item.collection === 'audio' ? 'Story' : item.collection}{item.categories.length
@@ -103,6 +129,11 @@
 {/if}
 
 <style>
+	.topics { margin-top: 1.5rem; }
+	.topics h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+	.topic-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+	.topic-links a { padding: 0.35rem 0.75rem; border: 1px solid var(--gray); border-radius: 999px; color: var(--accent); text-decoration: none; }
+	.topic-links a:hover, .topic-links a:focus-visible { text-decoration: underline; }
 	form {
 		display: grid;
 		gap: 0.5rem;
