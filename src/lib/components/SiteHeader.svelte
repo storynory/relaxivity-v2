@@ -18,6 +18,7 @@
 	let menuButton = $state<HTMLButtonElement>();
 	const utilityLinks = [
 		{ href: '/', label: 'Home', icon: 'home' },
+		{ href: '/pages/about/', label: 'About', icon: 'info' },
 		{ href: '/audio/', label: 'Stories', icon: 'headphones' },
 		{ href: '/playlist/', label: 'Playlist', icon: 'heart' },
 		{ href: '/search/', label: 'Search', icon: 'search' }
