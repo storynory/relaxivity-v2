@@ -59,7 +59,7 @@
 								<div><span>Category</span><a href={`/category/${encodeURIComponent(category.slug)}/`}>{category.title}</a></div>
 							{/if}
 							{#if tags.length}
-								<div><span>Tags</span>
+								<div><span>Topics</span>
 									{#each tags as tag (tag.slug)}<a href={`/tag/${encodeURIComponent(tag.slug)}/`}>{tag.title}</a>{/each}
 								</div>
 							{/if}
@@ -160,7 +160,7 @@
 	.taxonomy, .taxonomy > div { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 	.taxonomy { margin-top: 1.25rem; gap: 0.75rem 1.25rem; }
 	.taxonomy span { font-size: 0.8em; }
-	.taxonomy a { font-size: 0.85em; padding: 0.25em 0.65em; border: 1px solid currentColor; border-radius: var(--radius); }
+	.taxonomy a { font-size: 0.85em; text-decoration: underline; text-underline-offset: 0.2em; }
 	.artwork {
 		min-width: 0;
 		padding: clamp(0.5rem, 1.5vw, 0.9rem);
