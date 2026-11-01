@@ -31,6 +31,9 @@
 /* Keep the page width steady when search results introduce a scrollbar. */
 html {
 	scrollbar-gutter: stable;
+	/* Our responsive typography handles sizing; keep rotation from inflating text. */
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 
 * {
@@ -97,6 +100,12 @@ h6 {
 }
 p {
 	margin-block: 0 1.25em;
+}
+
+/* Preserve editorial spacing without letting preformatted text widen the page. */
+pre {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 }
 
 a {
