@@ -37,7 +37,7 @@
 		new Fuse(items, {
 			includeScore: true,
 			ignoreLocation: true,
-			threshold: 0.3,
+			threshold: 0.4,
 			keys: [
 				{ name: 'title', weight: 5 },
 				{ name: 'excerpt', weight: 3 },
