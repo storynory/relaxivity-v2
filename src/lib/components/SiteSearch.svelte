@@ -132,7 +132,7 @@
 	.topics { margin-top: 1.5rem; }
 	.topics h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
 	.topic-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-	.topic-links a { padding: 0.35rem 0.75rem; border: 1px solid var(--gray); border-radius: 999px; color: var(--accent); text-decoration: none; }
+	.topic-links a { padding: 0.25rem 0; color: var(--accent); text-decoration: underline; text-underline-offset: 0.2em; }
 	.topic-links a:hover, .topic-links a:focus-visible { text-decoration: underline; }
 	form {
 		display: grid;
