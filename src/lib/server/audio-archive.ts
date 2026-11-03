@@ -39,7 +39,7 @@ export async function loadAudioArchive(page = 1) {
 			...archive.seo, title, description: storyDescription(items, title)
 		},
 		collection: 'audio',
-		listTemplate: 'episodes',
+		listTemplate: collections.audio.listTemplate,
 		items: items as unknown as Record<string, unknown>[],
 		pagination: {
 			page,
