@@ -25,7 +25,9 @@
 </main>
 
 <style>
-	main { max-width: var(--wide-width); margin: 3em auto; padding: 0 var(--space); }
-	article { padding-bottom: 1.5em; margin-bottom: 2em; border-bottom: 1px solid var(--prime); }
+	main { max-width: var(--wide-width); margin: var(--section-space) auto; padding: 0 var(--space); }
+	article { padding-block: 1rem; border-bottom: 1px solid var(--prime); }
+	article h2 { margin-top: 0; }
+	article > :last-child { margin-bottom: 0; }
 	a { color: var(--accent); }
 </style>

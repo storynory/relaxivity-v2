@@ -65,6 +65,9 @@
 							{/if}
 						</nav>
 					{/if}
+					<div class="player">
+						<EpisodeAudio {audio} slug={String(item.slug)} title={data.title} href={page.url.pathname} {artwork} />
+					</div>
 				</div>
 				{#if artwork}
 					<div class="artwork">
@@ -76,9 +79,6 @@
 						/>
 					</div>
 				{/if}
-			</div>
-			<div class="player">
-				<EpisodeAudio {audio} slug={String(item.slug)} title={data.title} href={page.url.pathname} {artwork} />
 			</div>
 		</header>
 
@@ -115,7 +115,7 @@
 
 <style>
 	main {
-		padding: clamp(1.5rem, 4vw, 3rem) min(var(--space), 5vw) 4rem;
+		padding: var(--section-space) min(var(--space), 5vw);
 	}
 	article {
 		max-width: var(--wide-width);
@@ -125,12 +125,12 @@
 		background: var(--prime);
 		color: var(--text);
 		border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime));
-		padding-top: clamp(1.5rem, 4vw, 3rem);
+		padding-top: var(--space);
 	}
 	.hero-layout {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
-		gap: clamp(2rem, 4vw, 3.5rem);
+		gap: var(--section-space);
 		align-items: center;
 	}
 	.hero-copy { min-width: 0; }
@@ -143,8 +143,7 @@
 	}
 	h1 {
 		max-width: 14ch;
-		margin-block: 0.3em 0.5em;
-		font-size: clamp(2.4rem, 5vw, 4.5rem);
+		margin-block: 0.5rem 0.75rem;
 		line-height: 1.15;
 		font-weight: 500;
 		letter-spacing: -0.025em;
@@ -155,7 +154,7 @@
 		max-width: 42ch;
 		font-size: 1.1em;
 		line-height: var(--line-height);
-		margin-block: 0 1.25em;
+		margin-block: 0 0.75rem;
 	}
 	time { font-size: 0.85em; }
 	.taxonomy, .taxonomy > div { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
@@ -170,13 +169,13 @@
 	}
 	.artwork :global(picture), .artwork :global(img) { display: block; width: 100%; }
 	.artwork :global(img) { height: auto; }
-	.player { margin-block: clamp(2rem, 4vw, 3rem); }
+	.player { margin-top: var(--space); }
 	.episode-details {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		gap: clamp(1.75rem, 3vw, 2.5rem);
 		align-items: start;
-		margin-top: clamp(2rem, 4vw, 3rem);
+		margin-top: var(--section-space);
 	}
 	.reading {
 		min-width: 0;
@@ -189,7 +188,7 @@
 		background-size: 180px 180px, 100% 100%, 100% 100%;
 		background-repeat: repeat, no-repeat, no-repeat;
 	}
-	.description { white-space: pre-line; margin-block: 0 2em; }
+	.description { white-space: pre-line; margin-block: 0 var(--space); }
 	.credits {
 		color: var(--text);
 		border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime));
@@ -214,9 +213,6 @@
 	@media (max-width: 48rem) {
 		h1 {
 			max-width: none;
-			font-size: clamp(1.75rem, 5vw, 2.4rem);
-			overflow-wrap: normal;
-			word-break: normal;
 		}
 	}
 	@media (min-width: 1100px) {

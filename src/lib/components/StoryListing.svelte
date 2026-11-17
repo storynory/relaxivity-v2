@@ -77,11 +77,11 @@
 </main>
 
 <style>
-	main { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
-	.pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+	main { max-width: 900px; margin: var(--section-space) auto; padding: 0 1.5rem; }
+	.pagination { margin-top: var(--space); display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 	.pagination a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0.35em 0.65em; border: 1px solid currentColor; border-radius: var(--radius); }
 	.pagination [aria-current="page"] { font-weight: 700; background: var(--text); color: var(--prime); text-decoration: none; }
 	.archive-image { margin-block: 1.5rem; }
 	.archive-image :global(img) { width: 100%; }
-	.playlist-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-block: 1.5rem; }
+	.playlist-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-block: var(--space) 0.5rem; }
 </style>

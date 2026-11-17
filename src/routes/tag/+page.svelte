@@ -11,4 +11,4 @@
     {/each}
   </ul>
 </main>
-<style>main { padding-block: calc(var(--space) * 2); }</style>
+<style>main { padding-block: var(--section-space); }</style>

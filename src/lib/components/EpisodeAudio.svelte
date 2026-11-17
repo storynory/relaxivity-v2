@@ -30,7 +30,8 @@
 </div>
 
 <style>
-	.episode-audio { margin-block: 1.25rem; }
+	.episode-audio > :first-child { margin-top: 0; }
+	.episode-audio > :last-child { margin-bottom: 0; }
 	p { margin-block: 0.75rem; }
 	a { color: var(--accent); text-underline-offset: 0.2em; }
 </style>

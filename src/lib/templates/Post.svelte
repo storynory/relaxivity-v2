@@ -43,7 +43,7 @@
 
 <style>
 	main {
-		padding: clamp(1.5rem, 4vw, 3rem) min(var(--space), 5vw) clamp(3rem, 6vw, 5rem);
+		padding: var(--section-space) min(var(--space), 5vw);
 	}
 	article { margin-inline: auto; }
 	.meta {
@@ -53,7 +53,7 @@
 		font-size: 0.8em;
 		line-height: 1.6;
 		color: var(--text);
-		margin-bottom: 2rem;
+		margin: 0;
 	}
 	footer {
 		display: flex;

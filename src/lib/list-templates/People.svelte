@@ -28,7 +28,7 @@
 </main>
 
 <style>
-	main { max-width: var(--wide-width); margin: 3em auto; padding: 0 var(--space); }
+	main { max-width: var(--wide-width); margin: var(--section-space) auto; padding: 0 var(--space); }
 	article { display: flex; align-items: center; gap: 1.5rem; padding-block: 1.5rem; border-bottom: 1px solid var(--accent); }
 	.portrait { width: clamp(4rem, 20vw, 8rem); flex-shrink: 0; }
 	h2 { margin: 0 0 0.35rem; }

@@ -53,8 +53,8 @@
 
 <style>
 	section {
-		margin: 2.5em 0;
-		padding: 1.5em;
+		margin: var(--section-space) 0 0;
+		padding-block: 1.25rem 0;
 		background: var(--prime, #052025);
 		color: var(--text);
 		border-top: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime));
@@ -73,10 +73,9 @@
 	.button:hover, .button:focus-visible { background: var(--prime); color: var(--text); }
 	a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
 	h2 { margin-top: 0; }
-	.intro { margin-bottom: 1.5em; }
+	.intro { margin-bottom: 0.5rem; }
+	.intro :global(:last-child) { margin-bottom: 0; }
+	.panel-text > :last-child { margin-bottom: 0; }
 	.block-action { margin: 1.5rem 0 0; }
 	.cards { display: grid; grid-template-columns: minmax(0, 1fr); }
-	@media (max-width: 48rem) {
-		section { padding: 0.5rem; margin-block: 1.5rem; }
-	}
 </style>

@@ -14,7 +14,7 @@
 <style>
 	main {
 		max-width: var(--content-width);
-		margin: 3rem auto;
+		margin: var(--section-space) auto;
 		padding: 0 var(--space);
 	}
 </style>

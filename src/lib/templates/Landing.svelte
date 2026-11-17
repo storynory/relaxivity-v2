@@ -16,10 +16,6 @@
 	.landing { display: flow-root; }
 	.landing :global(main > div > header) {
 		text-align: center;
-		padding-block: clamp(1rem, 4vw, 3rem);
-	}
-	.landing :global(main > div > header h1) {
-		font-size: clamp(2rem, 6vw, 4rem);
 	}
 	.landing :global(main > div > header .excerpt) {
 		max-width: 45ch;

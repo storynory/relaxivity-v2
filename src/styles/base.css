@@ -1,3 +1,5 @@
+@import './reading.css';
+
 @font-face {
 	font-family: 'Lora';
 	src: url('/fonts/lora.woff2') format('woff2');
@@ -23,6 +25,7 @@
 	--font-scale: 1.2;
 	--line-height: 1.6;
 	--space: 1.5rem;
+	--section-space: clamp(1.5rem, 3vw, 2rem);
 	--content-width: 50rem;
 	--wide-width: 68.75rem;
 	--radius: 0.75rem;
@@ -45,9 +48,13 @@ body {
 	font: var(--font-size) / var(--line-height) var(--font-body);
 }
 
-/* Convert the CMS font sizes into rem. */
+/* Derive one heading scale from the CMS preset, using rem for browser text sizing. */
 .site {
 	--font-size: calc(var(--font-size-mobile, 17) / 16 * 1rem);
+	--heading-size-4: var(--font-size);
+	--heading-size-3: calc(var(--heading-size-4) * var(--font-scale));
+	--heading-size-2: calc(var(--heading-size-3) * var(--font-scale));
+	--heading-size-1: calc(var(--heading-size-2) * var(--font-scale));
 	font: var(--font-size) / var(--line-height) var(--font-body);
 }
 
@@ -71,27 +78,22 @@ h6 {
 	line-height: 1.2;
 	letter-spacing: -0.025em;
 	text-wrap: balance;
-	margin-block: 1.5em 0.6em;
+	/* A heading belongs to the content below it, with more space above. */
+	margin-block: var(--section-space) 0.5rem;
 }
 
 h1 {
-	font-size: clamp(
-		2rem,
-		1.2rem + 3vw,
-		calc(
-			var(--font-size) * var(--font-scale) * var(--font-scale) * var(--font-scale) *
-				var(--font-scale)
-		)
-	);
+	margin-block: 0 0.75rem;
+	font-size: var(--heading-size-1);
 }
 h2 {
-	font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale));
+	font-size: var(--heading-size-2);
 }
 h3 {
-	font-size: calc(var(--font-size) * var(--font-scale));
+	font-size: var(--heading-size-3);
 }
 h4 {
-	font-size: var(--font-size);
+	font-size: var(--heading-size-4);
 }
 h5,
 h6 {
@@ -186,17 +188,4 @@ textarea:focus-visible,
 select:focus-visible {
 	outline: 3px solid var(--accent);
 	outline-offset: 3px;
-}
-
-.reading {
-	--text: var(--reading-text);
-	--accent: var(--reading-link);
-	background: var(--reading-background);
-	color: var(--text);
-	width: 100%;
-	max-width: 52rem;
-	padding: clamp(1.5rem, 6vw, 4.5rem);
-	border-radius: var(--radius);
-	line-height: var(--line-height);
-	overflow-wrap: anywhere;
 }

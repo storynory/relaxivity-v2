@@ -20,4 +20,4 @@
     </section>
   {/each}
 </main>
-<style>main { padding-block: calc(var(--space) * 2); } section { margin-block: 2rem; }</style>
+<style>main { padding-block: var(--section-space); } section { margin-block: 2rem; }</style>

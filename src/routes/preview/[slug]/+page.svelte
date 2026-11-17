@@ -51,7 +51,6 @@
 	}
 
 	h1 {
-		font-size: 2.5rem;
 		line-height: 1.2;
 		margin-bottom: 0.75rem;
 	}

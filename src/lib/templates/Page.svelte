@@ -46,16 +46,18 @@
 	}
 	.reading {
 		max-width: 100%;
-		margin-bottom: var(--space);
 	}
 
 	main {
 		max-width: var(--content-width);
-		margin: 3em auto;
+		margin: var(--section-space) auto;
 		padding: 0 var(--space);
 		line-height: var(--line-height);
 		background: var(--prime);
 	}
+	header { margin-bottom: var(--space); }
+	header > :last-child { margin-bottom: 0; }
+	.content:empty { display: none; }
 	.content :global(picture) {
 		display: block;
 		max-width: 100%;

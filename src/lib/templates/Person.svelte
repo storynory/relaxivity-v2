@@ -25,7 +25,7 @@
 </main>
 
 <style>
-	main { padding: clamp(1.5rem, 4vw, 3rem) min(var(--space), 5vw) clamp(3rem, 6vw, 5rem); }
+	main { padding: var(--section-space) min(var(--space), 5vw); }
 	article { margin-inline: auto; }
 	.portrait { max-width: 20rem; margin-block: 1.5rem; }
 	.bio { white-space: pre-line; }

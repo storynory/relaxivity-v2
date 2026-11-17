@@ -51,13 +51,13 @@
 </article>
 
 <style>
-	.story-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; padding-block: 1.25rem; border-bottom: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime)); }
+	.story-card { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem 1rem; padding-block: 1rem; border-bottom: 1px solid color-mix(in srgb, var(--text) 30%, var(--prime)); }
 	.with-artwork { grid-template-columns: minmax(0, 200px) minmax(0, 1fr); }
 	.artwork { display: block; align-self: start; aspect-ratio: 1; }
 	.artwork :global(picture) { display: block; width: 100%; height: 100%; }
 	.artwork :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
 	.story-copy { min-width: 0; overflow-wrap: anywhere; }
-	h2, h3 { margin: 0; font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale)); }
+	h2, h3 { margin: 0; }
 	a { color: inherit; }
 	.meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin-block: 0.5rem; font-size: 0.85em; }
 	.excerpt { margin-block: 0.5rem 0.75rem; font-size: 0.9em; line-height: 1.5; }
@@ -65,7 +65,6 @@
 	.actions { font-size: max(1rem, 0.85em); }
 	.availability { margin-block: 0.5rem 0; font-size: 0.9em; }
 	@media (max-width: 48rem) {
-		h2, h3 { font-size: calc(var(--font-size) * var(--font-scale) * var(--font-scale) * 0.9); }
 		.excerpt { font-size: max(1rem, 0.9em); }
 	}
 	@media (max-width: 560px) {

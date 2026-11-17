@@ -94,7 +94,7 @@
 
 <style>
 	main {
-		padding-block: 2rem 4rem;
+		padding-block: var(--section-space);
 	}
 	h1 {
 		margin-top: 0;
