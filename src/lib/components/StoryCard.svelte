@@ -29,13 +29,13 @@
 	<div class="story-copy">
 		<svelte:element this={`h${headingLevel}`}><a {href}>{title}</a></svelte:element>
 		{#if audio || narrator}
-			<p class="meta">
+			<a class="meta" {href}>
 				{#if audio?.duration}<span>{readableDuration(audio.duration)}</span>{/if}
 				{#if audio}<span>{audio.canPlayFullAudio ? 'Full Story · Free' : 'Audio Sample'}</span>{/if}
 				{#if narrator}<span>Narrated by {narrator}</span>{/if}
-			</p>
+			</a>
 		{/if}
-		{#if excerpt}<p class="excerpt">{excerpt}</p>{/if}
+		{#if excerpt}<p class="excerpt"><a {href}>{excerpt}</a></p>{/if}
 		{#if audio}
 			<div class="actions">
 				{#if audio.src}
@@ -59,6 +59,8 @@
 	.story-copy { min-width: 0; overflow-wrap: anywhere; }
 	h2, h3 { margin: 0; }
 	a { color: inherit; text-decoration: none; }
+	h2 a, h3 a, .excerpt a { display: block; }
+	a:hover, a:focus-visible { text-decoration: underline; }
 	.meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin-block: 0.5rem; font-size: 0.85em; }
 	.excerpt { margin-block: 0.5rem 0.75rem; font-size: 0.9em; line-height: 1.5; }
 	.actions, .ordering { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-top: 0.75rem; }

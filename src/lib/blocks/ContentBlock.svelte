@@ -6,7 +6,15 @@
 	import type { Track } from '#lib/audio/playback.ts';
 	import { page } from '$app/state';
 	let { block, queue = [] }: { block: RenderedBlock; queue?: Track[] } = $props();
+	const homeStories = $derived(page.url.pathname === '/' && block.slug === 'latest-stories');
 </script>
+
+{#snippet storyCard(item: RenderedBlock['items'][number])}
+	<StoryCard slug={item.slug} title={item.title} href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}
+		artwork={item.image} excerpt={item.excerpt} headingLevel={3}
+		audio={item.audioRecord ? publicAudio(item.audioRecord, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime) : undefined}
+		{queue} contextId={page.url.pathname} />
+{/snippet}
 
 <section class:hero={block.type === 'hero'} class:panel={block.type === 'panel'} aria-label={block.heading}>
 	{#if block.type === 'panel'}
@@ -37,17 +45,17 @@
 	{/if}
 	{/if}
 	{#if block.items.length}
-		<div class="cards">
-			{#each block.items as item (`${item.collection}/${item.slug}`)}
-				<StoryCard slug={item.slug} title={item.title} href={`/${item.collection}/${encodeURIComponent(item.slug)}/`}
-					artwork={item.image} excerpt={item.excerpt} headingLevel={3}
-					audio={item.audioRecord ? publicAudio(item.audioRecord, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime) : undefined}
-					{queue} contextId={page.url.pathname} />
-			{/each}
+		<div class:home-stories={homeStories}>
+			{#if homeStories}{@render storyCard(block.items[0])}{/if}
+			<div class="cards">
+				{#each homeStories ? block.items.slice(1) : block.items as item (`${item.collection}/${item.slug}`)}
+					{@render storyCard(item)}
+				{/each}
+			</div>
 		</div>
 	{/if}
 	{#if block.type !== 'hero' && block.type !== 'panel' && block.buttonText && block.buttonUrl}
-		<p class="block-action"><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
+		<p class="block-action" class:home-action={homeStories}><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
 	{/if}
 </section>
 
@@ -77,5 +85,34 @@
 	.intro :global(:last-child) { margin-bottom: 0; }
 	.panel-text > :last-child { margin-bottom: 0; }
 	.block-action { margin: 1.5rem 0 0; }
+	.block-action.home-action { text-align: right; }
 	.cards { display: grid; grid-template-columns: minmax(0, 1fr); }
+	.home-stories {
+		--story-button-background: var(--prime);
+		--story-button-text: var(--text);
+		--story-button-hover-text: var(--accent);
+		container-type: inline-size;
+		display: grid;
+		gap: var(--space);
+	}
+	.home-stories .cards {
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+		gap: var(--space);
+	}
+	.home-stories :global(.story-card) { min-width: 0; margin-bottom: 0; }
+	.home-stories .cards :global(.story-card) { align-content: start; }
+	.home-stories .cards :global(.with-artwork) { grid-template-columns: 5rem minmax(0, 1fr); }
+	.home-stories .cards :global(.story-copy) { display: contents; }
+	.home-stories .cards :global(.story-copy > *) { grid-column: 1 / -1; margin-block: 0; }
+	.home-stories .cards :global(.with-artwork h3) { grid-column: 2; grid-row: 1; }
+	.home-stories .cards :global(.with-artwork .meta) { grid-column: 2; grid-row: 2; }
+	.home-stories .cards :global(.artwork) { grid-column: 1; grid-row: 1 / 3; }
+	@container (max-width: 560px) {
+		.home-stories > :global(.with-artwork) { grid-template-columns: 5rem minmax(0, 1fr); }
+		.home-stories > :global(.story-card .story-copy) { display: contents; }
+		.home-stories > :global(.story-card .story-copy > *) { grid-column: 1 / -1; margin-block: 0; }
+		.home-stories > :global(.story-card.with-artwork h3) { grid-column: 2; grid-row: 1; }
+		.home-stories > :global(.story-card.with-artwork .meta) { grid-column: 2; grid-row: 2; }
+		.home-stories > :global(.story-card .artwork) { grid-column: 1; grid-row: 1 / 3; }
+	}
 </style>

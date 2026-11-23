@@ -39,14 +39,14 @@
 		gap: 0.45em;
 		min-height: 48px;
 		padding: 0.65em 1.25em;
-		border: 1px solid var(--text);
+		border: 1px solid var(--story-button-background, var(--text));
 		border-radius: var(--radius);
-		background: var(--text);
-		color: var(--prime);
+		background: var(--story-button-background, var(--text));
+		color: var(--story-button-text, var(--prime));
 		font: inherit;
 		cursor: pointer;
 	}
-	button:hover { background: var(--prime); color: var(--text); }
+	button:hover, button:focus-visible { background: var(--story-button-background, var(--prime)); color: var(--story-button-hover-text, var(--text)); }
 	svg { width: 1.1em; height: 1.1em; flex-shrink: 0; fill: currentColor; }
 	span { font-size: 0.85em; font-variant-numeric: tabular-nums; }
 	p { flex-basis: 100%; margin: 0; }
