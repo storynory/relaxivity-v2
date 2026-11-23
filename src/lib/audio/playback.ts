@@ -142,6 +142,11 @@ export function formatTime(seconds: number) {
 		: `${minutes}:${secs}`;
 }
 
+// Keep stored CMS/feed metadata intact; normalize exact times for display only.
+export function formatDuration(value: string) {
+	return /^\d{1,3}:\d{2}(?::\d{2})?$/.test(value) ? formatTime(durationSeconds(value)) : value;
+}
+
 function durationSeconds(value?: string): number {
 	if (!value || !/^\d{1,3}:\d{2}(?::\d{2})?$/.test(value)) return 0;
 	return value.split(':').reduce((seconds, part) => seconds * 60 + Number(part), 0);

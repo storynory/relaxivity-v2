@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { get } from 'svelte/store';
-import { autoAdvanceStorageKey, createPlayback } from './playback.ts';
+import { autoAdvanceStorageKey, createPlayback, formatDuration, formatTime } from './playback.ts';
 
 function setup() {
 	const playback = createPlayback();
@@ -238,4 +238,15 @@ test('automatic next preference persists, without restoring playback on reload',
 		if (descriptor) Object.defineProperty(globalThis, 'localStorage', descriptor);
 		else Reflect.deleteProperty(globalThis, 'localStorage');
 	}
+});
+
+test('exact display times omit zero hours while keeping hours and editorial durations', () => {
+	assert.equal(formatDuration('00:31:30'), '31:30');
+	assert.equal(formatDuration('31:30'), '31:30');
+	assert.equal(formatDuration('00:00:05'), '0:05');
+	assert.equal(formatDuration('01:02:03'), '1:02:03');
+	assert.equal(formatDuration('32 min'), '32 min');
+	assert.equal(formatDuration(''), '');
+	assert.equal(formatTime(1890), '31:30');
+	assert.equal(formatTime(3600), '1:00:00');
 });

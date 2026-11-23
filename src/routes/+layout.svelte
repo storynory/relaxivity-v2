@@ -65,7 +65,7 @@
 
 <div
 	class="site"
-	style:padding-bottom={`${$playback.visible ? playerHeight : 0}px`}
+	style:padding-bottom={$playback.visible ? `calc(${playerHeight}px + 1rem)` : '0px'}
 	style:--font-body={data.typography.bodyFont}
 	style:--font-heading={data.typography.headingFont}
 	style:--font-size-mobile={data.typography.fontSize}

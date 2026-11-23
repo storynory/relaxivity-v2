@@ -58,7 +58,7 @@
 	.artwork :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
 	.story-copy { min-width: 0; overflow-wrap: anywhere; }
 	h2, h3 { margin: 0; }
-	a { color: inherit; }
+	a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
 	.meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin-block: 0.5rem; font-size: 0.85em; }
 	.excerpt { margin-block: 0.5rem 0.75rem; font-size: 0.9em; line-height: 1.5; }
 	.actions, .ordering { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-top: 0.75rem; }

@@ -4,12 +4,13 @@
 	import Picture from '#lib/components/Picture.svelte';
 	import EpisodeAudio from '#lib/components/EpisodeAudio.svelte';
 	import { page } from '$app/state';
+	import { formatDuration } from '#lib/audio/playback.ts';
 	import { publicAudio } from '#lib/audio/availability.ts';
 
 	let { data }: { data: DetailTemplateData } = $props();
 	const item = $derived(data.item);
 	const audio = $derived(publicAudio(item, page.data.freeEpisodeSlugs, page.data.audioBaseUrl, page.data.audioPublicationTime));
-	const duration = $derived(audio.duration);
+	const duration = $derived(formatDuration(audio.duration));
 	const date = $derived(textField(item, 'date'));
 	const artwork = $derived(textField(item, 'featuredImage'));
 	const artworkAlt = $derived(textField(item, 'featuredImageAlt'));

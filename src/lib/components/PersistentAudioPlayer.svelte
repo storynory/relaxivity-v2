@@ -39,15 +39,6 @@
 			{#if $playback.track.artwork}<img class="track-artwork" src={$playback.track.artwork} alt="" />{/if}
 			<a href={$playback.track.href}>{$playback.track.title}</a>
 		</div>
-		<button class="close" type="button" onclick={dismiss} aria-label="Pause and close audio player">×</button>
-		<div class="timeline">
-			<input type="range" aria-label="Playback position" min="0" max={$playback.duration || 1} step="0.1"
-				value={$playback.current} disabled={$playback.duration <= 0}
-				oninput={(event) => playback.seek(Number(event.currentTarget.value))}
-				aria-valuetext={`${formatTime($playback.current)} of ${formatTime($playback.duration)}`} />
-			<span>{formatTime($playback.current)}</span>
-			<span class="duration">{formatTime($playback.duration)}</span>
-		</div>
 		<div class="controls">
 			{#if $playback.queue.length}
 				<button type="button" onclick={() => playback.previous()} disabled={$playback.queueIndex <= 0} aria-label="Previous story">⏮</button>
@@ -61,6 +52,15 @@
 				<button type="button" onclick={() => playback.next()} disabled={$playback.queueIndex >= $playback.queue.length - 1} aria-label="Next story">⏭</button>
 			{/if}
 		</div>
+		<div class="timeline">
+			<input type="range" aria-label="Playback position" min="0" max={$playback.duration || 1} step="0.1"
+				value={$playback.current} disabled={$playback.duration <= 0}
+				oninput={(event) => playback.seek(Number(event.currentTarget.value))}
+				aria-valuetext={`${formatTime($playback.current)} of ${formatTime($playback.duration)}`} />
+			<span>{formatTime($playback.current)}</span>
+			<span class="duration">{formatTime($playback.duration)}</span>
+		</div>
+		<button class="close" type="button" onclick={dismiss} aria-label="Pause and close audio player">×</button>
 		{#if $playback.status}<p class="status" role="status">{$playback.status}</p>{/if}
 	</section>
 {/if}
@@ -71,7 +71,7 @@
 		inset: auto 0 0;
 		z-index: 20;
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) auto auto;
+		grid-template-columns: minmax(0, 1fr) auto minmax(12rem, 1fr) auto;
 		align-items: center;
 		gap: 0.5rem 1rem;
 		padding: 0.65rem max(1rem, calc((100vw - var(--wide-width)) / 2)) calc(0.65rem + env(safe-area-inset-bottom));
@@ -97,15 +97,20 @@
 	button:disabled { opacity: 0.4; cursor: default; }
 	.play-toggle { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; }
 	.play-toggle svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
-	.close { grid-column: 3; grid-row: 1; font-size: 1.6rem; border-color: transparent; }
+	.close { grid-column: 4; grid-row: 1; font-size: 1.6rem; border-color: transparent; }
 	.episode { grid-column: 1; grid-row: 1; min-width: 0; display: flex; align-items: center; gap: 0.75rem; }
 	.track-artwork { flex: 0 0 48px; width: 48px; height: 48px; object-fit: cover; }
 	.episode a { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-	.timeline { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: 1fr 1fr; }
+	.timeline { grid-column: 3; grid-row: 1; min-width: 0; display: grid; grid-template-columns: 1fr 1fr; }
 	input[type="range"] { grid-column: 1 / -1; width: 100%; min-width: 0; height: 24px; margin: 0; accent-color: var(--accent); }
 	.timeline span { white-space: nowrap; font-size: 0.75rem; font-variant-numeric: tabular-nums; }
 	.duration { text-align: right; }
 	.status { grid-column: 1 / -1; margin: 0; font-size: 0.85rem; }
+	@media (max-width: 72rem) {
+		.player-bar { grid-template-columns: minmax(0, 1fr) auto auto; }
+		.timeline { grid-column: 1 / -1; grid-row: 2; }
+		.close { grid-column: 3; }
+	}
 	@media (max-width: 48rem) {
 		.player-bar { gap: 0.4rem; grid-template-columns: minmax(0, 1fr) auto; }
 		.controls { grid-column: 1 / -1; grid-row: 3; }
