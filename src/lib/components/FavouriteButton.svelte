@@ -11,7 +11,7 @@
 	}
 </script>
 
-<button type="button" class:saved disabled={!$favourites.ready} aria-pressed={saved}
+<button type="button" class="button button--ghost" class:saved disabled={!$favourites.ready} aria-pressed={saved}
 	aria-label={`${saved ? 'Remove' : 'Add'} ${title} ${saved ? 'from' : 'to'} playlist`}
 	onclick={toggle}>
 	<svg class:pulse={added && saved} aria-hidden="true" onanimationend={() => added = false}><use href="/icons.svg#heart" /></svg>
@@ -19,11 +19,7 @@
 </button>
 
 <style>
-	button { min-height: 48px; padding: 0.5em 0.8em; border: 1px solid var(--story-button-background, currentColor); border-radius: var(--radius); background: transparent; color: var(--story-button-background, var(--text)); font: inherit; cursor: pointer; transition: color 180ms ease; }
-	button.saved { color: var(--story-button-background, var(--accent)); }
-	button:hover, button:focus-visible { background: var(--story-button-background, transparent); color: var(--story-button-hover-text, var(--text)); }
-	button:disabled { opacity: 0.6; cursor: default; }
-	svg { width: 1.1em; height: 1.1em; margin-inline-end: 0.25em; vertical-align: -0.15em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+	svg { width: 1.1em; height: 1.1em; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 	.saved svg { fill: currentColor; }
 	.pulse { animation: pulse 280ms ease-out; }
 	@keyframes pulse { 50% { transform: scale(1.15); } }

@@ -51,7 +51,15 @@
 </article>
 
 <style>
-	.story-card { --prime: #efe2d1; --text: #342b29; --accent: #762f40; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem 1rem; margin-bottom: 0.75rem; padding: 1rem; background: var(--prime); color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 12%, transparent); border-radius: var(--radius); }
+	.story-card {
+		--card-background: #efe2d1;
+		--text: #342b29;
+		--button-background: var(--prime);
+		--button-text: var(--card-background);
+		--button-hover-background: var(--prime);
+		--button-hover-text: var(--accent);
+		display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem 1rem; margin-bottom: 0.75rem; padding: 1rem; background: var(--card-background); color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 12%, transparent); border-radius: var(--radius);
+	}
 	.with-artwork { grid-template-columns: minmax(0, 200px) minmax(0, 1fr); }
 	.artwork { display: block; align-self: start; aspect-ratio: 1; }
 	.artwork :global(picture) { display: block; width: 100%; height: 100%; }
@@ -61,6 +69,7 @@
 	a { color: inherit; text-decoration: none; }
 	h2 a, h3 a, .excerpt a { display: block; }
 	a:hover, a:focus-visible { text-decoration: underline; }
+	a:focus-visible, .story-card :global(button:focus-visible) { outline-color: var(--text); }
 	.meta { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; margin-block: 0.5rem; font-size: 0.85em; }
 	.excerpt { margin-block: 0.5rem 0.75rem; font-size: 0.9em; line-height: 1.5; }
 	.actions, .ordering { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; margin-top: 0.75rem; }

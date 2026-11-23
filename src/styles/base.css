@@ -133,6 +133,42 @@ img {
 	max-width: 100%;
 }
 
+/* Shared button appearance; the surrounding surface can supply its palette. */
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.45em;
+	min-height: 48px;
+	padding: 0.5em 0.8em;
+	border: 1px solid var(--button-background, var(--text));
+	border-radius: var(--radius);
+	font: inherit;
+	text-decoration: none;
+	cursor: pointer;
+}
+.button--primary {
+	background: var(--button-background, var(--text));
+	color: var(--button-text, var(--prime));
+}
+.button--ghost {
+	background: transparent;
+	color: var(--button-background, var(--text));
+}
+.button--ghost[aria-pressed='true'] {
+	color: var(--button-background, var(--accent));
+}
+.button:hover,
+.button:focus-visible {
+	background: var(--button-hover-background, var(--prime));
+	color: var(--button-hover-text, var(--text));
+	text-decoration: none;
+}
+.button:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
 /* A few repeatable helpers, not a utility framework. */
 .container,
 .container-narrow,

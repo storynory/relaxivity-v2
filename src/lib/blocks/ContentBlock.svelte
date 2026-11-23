@@ -23,7 +23,7 @@
 				{#if block.heading}<h2>{block.heading}</h2>{/if}
 				{#if block.introductionHtml}<div class="intro">{@html block.introductionHtml}</div>{/if}
 				{#if block.buttonText && block.buttonUrl}
-					<p><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
+					<p><a class="button button--primary" href={block.buttonUrl}>{block.buttonText}</a></p>
 				{/if}
 			</div>
 			{#if block.image}
@@ -40,7 +40,7 @@
 			<Picture src={block.image} alt={block.imageAlt} sizes="(min-width: 900px) 900px, 100vw" priority="high" />
 		{/if}
 		{#if block.buttonText && block.buttonUrl}
-			<p><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
+			<p><a class="button button--primary" href={block.buttonUrl}>{block.buttonText}</a></p>
 		{/if}
 	{/if}
 	{/if}
@@ -55,7 +55,7 @@
 		</div>
 	{/if}
 	{#if block.type !== 'hero' && block.type !== 'panel' && block.buttonText && block.buttonUrl}
-		<p class="block-action" class:home-action={homeStories}><a class="button" href={block.buttonUrl}>{block.buttonText}</a></p>
+		<p class="block-action" class:home-action={homeStories}><a class="button button--primary" href={block.buttonUrl}>{block.buttonText}</a></p>
 	{/if}
 </section>
 
@@ -77,8 +77,6 @@
 	.panel-image :global(picture) { display: block; }
 	.hero :global(picture) { display: block; margin: 1.5em 0; }
 	.hero :global(img) { display: block; width: 100%; height: auto; }
-	.button { display: inline-block; padding: 0.75em 1.25em; border-radius: var(--radius); background: var(--text); color: var(--prime); border: 1px solid var(--text); text-decoration: none; }
-	.button:hover, .button:focus-visible { background: var(--prime); color: var(--text); }
 	a:focus-visible { outline: 3px solid var(--text); outline-offset: 4px; }
 	h2 { margin-top: 0; }
 	.intro { margin-bottom: 0.5rem; }
@@ -88,9 +86,6 @@
 	.block-action.home-action { text-align: right; }
 	.cards { display: grid; grid-template-columns: minmax(0, 1fr); }
 	.home-stories {
-		--story-button-background: var(--prime);
-		--story-button-text: var(--text);
-		--story-button-hover-text: var(--accent);
 		container-type: inline-size;
 		display: grid;
 		gap: var(--space);

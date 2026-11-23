@@ -70,10 +70,10 @@
 				<li>
 					{#snippet reorder()}
 						{#if order === 'manual'}
-							<button type="button" disabled={index === 0}
+							<button class="button button--ghost" type="button" disabled={index === 0}
 								aria-label={`Move ${episode?.title ?? 'unavailable story'} earlier`}
 								onclick={() => favourites.move(slug, -1)}>↑ Earlier</button>
-							<button type="button" disabled={index === saved.length - 1}
+							<button class="button button--ghost" type="button" disabled={index === saved.length - 1}
 								aria-label={`Move ${episode?.title ?? 'unavailable story'} later`}
 								onclick={() => favourites.move(slug, 1)}>↓ Later</button>
 						{/if}
@@ -102,18 +102,4 @@
 	ol { padding-inline-start: 1.25rem; }
 	.playlist-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-block: 1rem; }
 
-	button {
-		min-height: 44px;
-		cursor: pointer;
-		padding: 0.5em 0.8em;
-		border: 1px solid currentColor;
-		border-radius: var(--radius);
-		background: transparent;
-		color: inherit;
-		font: inherit;
-	}
-	button:disabled {
-		opacity: 0.4;
-		cursor: default;
-	}
 </style>

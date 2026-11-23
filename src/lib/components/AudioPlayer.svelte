@@ -20,7 +20,7 @@
 </script>
 
 <div class="audio-player" role="group" aria-label={title}>
-	<button type="button" onclick={toggle} aria-label={active && $playback.playing ? `Pause ${title}` : `Play ${title}`}>
+	<button class="button button--primary" type="button" onclick={toggle} aria-label={active && $playback.playing ? `Pause ${title}` : `Play ${title}`}>
 		<svg aria-hidden="true" focusable="false"><use href={active && $playback.playing ? '/icons.svg#pause' : '/icons.svg#play'} /></svg>
 		{active && $playback.playing ? 'Pause' : active && $playback.current > 0 ? 'Resume' : 'Play'}
 	</button>
@@ -32,21 +32,6 @@
 
 <style>
 	.audio-player { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem 1rem; }
-	button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.45em;
-		min-height: 48px;
-		padding: 0.65em 1.25em;
-		border: 1px solid var(--story-button-background, var(--text));
-		border-radius: var(--radius);
-		background: var(--story-button-background, var(--text));
-		color: var(--story-button-text, var(--prime));
-		font: inherit;
-		cursor: pointer;
-	}
-	button:hover, button:focus-visible { background: var(--story-button-background, var(--prime)); color: var(--story-button-hover-text, var(--text)); }
 	svg { width: 1.1em; height: 1.1em; flex-shrink: 0; fill: currentColor; }
 	span { font-size: 0.85em; font-variant-numeric: tabular-nums; }
 	p { flex-basis: 100%; margin: 0; }
